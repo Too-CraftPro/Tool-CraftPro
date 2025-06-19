@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Color Blindness Simulator - Test Your Designs | ToolCraft Pro</title>
-    <meta name="description" content="A free online tool to simulate different types of color blindness (Protanopia, Deuteranopia, etc.). Upload an image to see how it appears to people with color vision deficiency.">
-    <meta name="keywords" content="color blindness simulator, color vision deficiency, cvd, protanopia, deuteranopia, tritanopia, accessibility tool, design testing">
+    <title>Color Palette Generator - Create & Discover Color Schemes | ToolCraft Pro</title>
+    <meta name="description" content="A free, instant color palette generator. Discover beautiful color schemes for your design projects, get hex codes, and create harmonious palettes with a single click.">
+    <meta name="keywords" content="color palette generator, color scheme, color picker, hex codes, design tool, color palette, color wheel, free color tool">
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,6 +24,7 @@
         :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
         .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
         .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; opacity: 0.5; }
         .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
         .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
         .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
@@ -58,52 +59,32 @@
         .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
         .tool-header .breadcrumb a { color: var(--neon-blue); }
-        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
         
-        /* --- Color Blindness Simulator Styles --- */
-        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
-        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
-        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
-        .upload-box p { font-size: 1.1rem; }
-        #image-input { display: none; }
-        
-        #simulator-ui { display: none; }
-        .simulation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .simulation-view { background: #0F0F1A; padding: 15px; border-radius: 8px; border: 1px solid var(--neon-blue); }
-        .simulation-view h3 { font-size: 1.2rem; text-align: center; color: var(--neon-blue); }
-        .simulation-view img { width: 100%; height: auto; border-radius: 4px; }
-        
-        .tool-controls { text-align: center; margin-top: 25px; }
-        
-        /* SVG filters for color blindness simulation */
-        svg#color-filters { position: absolute; height: 0; width: 0; }
+        /* --- Color Palette Generator Styles --- */
+        .tool-actions { text-align: center; margin-bottom: 25px; }
+        .palette-display-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .color-card { background-color: #0F0F1A; border-radius: 8px; overflow: hidden; border: 1px solid rgba(157, 0, 255, 0.3); transition: all 0.3s ease; }
+        .color-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 247, 255, 0.15); }
+        .color-swatch { height: 120px; cursor: pointer; }
+        .color-info { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #1A1A2E; }
+        .hex-code { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--neon-green); }
+        .copy-icon { font-size: 1.1rem; color: #A0A0A0; cursor: pointer; transition: color 0.3s ease; }
+        .copy-icon:hover { color: var(--neon-blue); }
 
         .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
         .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
     </style>
 </head>
 <body>
-    
-    <!-- SVG Filters Definition -->
-    <svg id="color-filters">
-        <defs>
-            <filter id="normal">
-                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
-            </filter>
-            <filter id="protanopia">
-                <feColorMatrix type="matrix" values="0.567 0.433 0 0 0   0.558 0.442 0 0 0   0 0.242 0.758 0 0   0 0 0 1 0" />
-            </filter>
-            <filter id="deuteranopia">
-                <feColorMatrix type="matrix" values="0.625 0.375 0 0 0   0.7 0.3 0 0 0   0 0.3 0.7 0 0   0 0 0 1 0" />
-            </filter>
-            <filter id="tritanopia">
-                <feColorMatrix type="matrix" values="0.95 0.05 0 0 0   0 0.433 0.567 0 0   0 0.475 0.525 0 0   0 0 0 1 0" />
-            </filter>
-            <filter id="achromatopsia">
-                <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0   0.299 0.587 0.114 0 0   0.299 0.587 0.114 0 0   0 0 0 1 0" />
-            </filter>
-        </defs>
-    </svg>
 
     <header>
         <div class="container">
@@ -129,68 +110,53 @@
         <section class="tool-header">
             <div class="container">
                 <nav class="breadcrumb" aria-label="breadcrumb">
-                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">Color Blindness Simulator</span>
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">Color Palette Generator</span>
                 </nav>
-                <h1><span class="neon-text">Color Blindness</span> Simulator</h1>
-                <p class="subtitle">See your designs through the eyes of users with color vision deficiency.</p>
+                <h1>Color Palette <span class="neon-text">Generator</span></h1>
+                <p class="subtitle">Instantly create beautiful color schemes for your projects.</p>
             </div>
         </section>
 
         <div class="container">
             <div class="tool-interface-container">
-                <input type="file" id="image-input" accept="image/jpeg, image/png, image/gif, image/webp">
-                
-                <div id="upload-container">
-                    <div id="upload-box" class="upload-box">
-                        <i class="fas fa-eye"></i>
-                        <p><strong>Drag & Drop</strong> your image here to simulate</p>
-                        <span>or click to select a file</span>
-                    </div>
+                <div class="tool-actions">
+                    <button id="generate-btn" class="btn btn-neon"><i class="fas fa-sync-alt"></i> Generate New Palette</button>
                 </div>
+                <div id="palette-grid" class="palette-display-grid">
+                    <!-- Color cards will be generated here by JavaScript -->
+                </div>
+            </div>
+        </div>
 
-                <div id="simulator-ui">
-                    <div class="simulation-grid">
-                        <div class="simulation-view">
-                            <h3>Normal Vision</h3>
-                            <img id="img-normal" src="">
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How It Works</h2>
+                    <p>Using the Color Palette Generator is effortless. Simply click the **"Generate New Palette"** button to instantly create a fresh, harmonious set of five colors. Each color is displayed with its corresponding hexadecimal (hex) code. To use a color, click the copy icon next to its hex code to copy it to your clipboard instantly. Hit the spacebar on your keyboard for a fast way to generate new palettes!</p>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Color Palette Generator</h2>
+                    <p>Whether you're a web designer, a graphic artist, a developer, or anyone working on a creative project, choosing the right colors is crucial. This tool is designed to spark your creativity and speed up your design process. It provides you with well-matched color schemes, taking the guesswork out of color theory. From vibrant and bold to subtle and professional, you can generate endless combinations until you find the perfect one for your brand, website, or artwork.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">How are the color palettes generated?</h3>
+                            <div class="faq-answer"><p>Our generator uses algorithms to create aesthetically pleasing color schemes. While the base colors are random, the process is designed to generate combinations that work well together, providing a solid starting point for any design project. Future versions will include options for complementary, analogous, and triadic schemes.</p></div>
                         </div>
-                        <div class="simulation-view">
-                            <h3>Protanopia (Red-Blind)</h3>
-                            <img id="img-protanopia" src="">
+                        <div class="faq-item">
+                            <h3 class="faq-question">What is a hex code?</h3>
+                            <div class="faq-answer"><p>A hex code is a six-digit hexadecimal number used in HTML, CSS, and design software to represent a specific color. For example, `#FFFFFF` is white and `#000000` is black. Our tool provides these codes for easy integration into your digital projects.</p></div>
                         </div>
-                        <div class="simulation-view">
-                            <h3>Deuteranopia (Green-Blind)</h3>
-                            <img id="img-deuteranopia" src="">
+                         <div class="faq-item">
+                            <h3 class="faq-question">Can I lock a color and generate others around it?</h3>
+                            <div class="faq-answer"><p>This feature is on our development roadmap! We are working on an update that will allow you to "lock" one or more colors you like and generate new colors that are complementary to your selection. Stay tuned for more advanced features.</p></div>
                         </div>
-                        <div class="simulation-view">
-                            <h3>Tritanopia (Blue-Blind)</h3>
-                            <img id="img-tritanopia" src="">
-                        </div>
-                        <div class="simulation-view">
-                            <h3>Achromatopsia (Monochrome)</h3>
-                            <img id="img-achromatopsia" src="">
-                        </div>
-                    </div>
-                    <div class="tool-controls">
-                        <button id="reset-btn" class="btn btn-outline-neon"><i class="fas fa-sync"></i> Try Another Image</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-             <div class="content-section">
-                <h2>Why Use a Color Blindness Simulator?</h2>
-                <p>Approximately 1 in 12 men and 1 in 200 women have some form of color vision deficiency (CVD). Designing without considering these users can lead to inaccessible interfaces, where important information conveyed by color is lost. This simulator is a crucial accessibility tool for designers, developers, and artists.</p>
-                <p>By uploading an image of your website, app, or artwork, you can instantly see how it would appear to someone with a common form of color blindness. This allows you to check for issues like:
-                    <ul>
-                        <li>Text or links that rely solely on color for differentiation.</li>
-                        <li>Important states in charts or graphs that become indistinguishable.</li>
-                        <li>Buttons or calls-to-action that blend into the background.</li>
-                    </ul>
-                Ensuring your design is accessible not only helps users with CVD but often leads to stronger, more robust designs for everyone.
-                </p>
-            </div>
-        </div>
+        </section>
     </main>
 
     <footer class="tool-page-footer">
@@ -209,66 +175,93 @@
             </div>
         </div>
         <div class="copyright">
-            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+            <p>© 2025 <a href="/">ToolCraft</a> Pro. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // --- Core Color Blindness Simulator Logic ---
-        const uploadContainer = document.getElementById('upload-container');
-        const imageInput = document.getElementById('image-input');
-        const simulatorUI = document.getElementById('simulator-ui');
-        const resetBtn = document.getElementById('reset-btn');
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
 
-        const imageTargets = {
-            normal: document.getElementById('img-normal'),
-            protanopia: document.getElementById('img-protanopia'),
-            deuteranopia: document.getElementById('img-deuteranopia'),
-            tritanopia: document.getElementById('img-tritanopia'),
-            achromatopsia: document.getElementById('img-achromatopsia'),
+        // --- Core Color Palette Generator Logic ---
+        const generateBtn = document.getElementById('generate-btn');
+        const paletteGrid = document.getElementById('palette-grid');
+
+        const generatePalette = () => {
+            paletteGrid.innerHTML = ''; // Clear existing palette
+            for (let i = 0; i < 5; i++) {
+                const randomColor = getRandomHexColor();
+                const colorCard = document.createElement('div');
+                colorCard.classList.add('color-card');
+                
+                colorCard.innerHTML = `
+                    <div class="color-swatch" style="background-color: ${randomColor}" title="Click to copy ${randomColor}"></div>
+                    <div class="color-info">
+                        <span class="hex-code">${randomColor}</span>
+                        <i class="fas fa-copy copy-icon" title="Copy hex code"></i>
+                    </div>
+                `;
+                paletteGrid.appendChild(colorCard);
+            }
         };
 
-        // --- Event Listeners ---
-        uploadContainer.addEventListener('click', () => imageInput.click());
-        uploadContainer.addEventListener('dragover', (e) => { e.preventDefault(); uploadContainer.firstElementChild.classList.add('dragover'); });
-        uploadContainer.addEventListener('dragleave', () => { uploadContainer.firstElementChild.classList.remove('dragover'); });
-        uploadContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadContainer.firstElementChild.classList.remove('dragover');
-            if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]);
-        });
-        imageInput.addEventListener('change', (e) => { if (e.target.files.length) handleImageFile(e.target.files[0]); });
-        resetBtn.addEventListener('click', resetTool);
-        
-        function handleImageFile(file) {
-            if (!file.type.startsWith('image/')) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageUrl = e.target.result;
-                displaySimulations(imageUrl);
-                uploadContainer.style.display = 'none';
-                simulatorUI.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
+        const getRandomHexColor = () => {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        };
 
-        function displaySimulations(imageUrl) {
-            for (const key in imageTargets) {
-                const imgElement = imageTargets[key];
-                imgElement.src = imageUrl;
-                imgElement.style.filter = `url(#${key})`;
+        // Event delegation for copy functionality
+        paletteGrid.addEventListener('click', (e) => {
+            const target = e.target;
+            let hexCode;
+            let copyElement;
+
+            if (target.classList.contains('copy-icon')) {
+                hexCode = target.previousElementSibling.textContent;
+                copyElement = target;
+            } else if (target.classList.contains('color-swatch')) {
+                hexCode = target.nextElementSibling.querySelector('.hex-code').textContent;
+                copyElement = target.nextElementSibling.querySelector('.copy-icon');
             }
-        }
+
+            if (hexCode && copyElement) {
+                navigator.clipboard.writeText(hexCode).then(() => {
+                    const originalIcon = copyElement.className;
+                    copyElement.className = 'fas fa-check';
+                    copyElement.style.color = 'var(--neon-green)';
+                    
+                    setTimeout(() => {
+                        copyElement.className = originalIcon;
+                        copyElement.style.color = ''; // Revert to original color
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+        });
         
-        function resetTool() {
-            uploadContainer.style.display = 'block';
-            simulatorUI.style.display = 'none';
-            imageInput.value = '';
-            for (const key in imageTargets) {
-                imageTargets[key].src = '';
+        // Generate on button click
+        generateBtn.addEventListener('click', generatePalette);
+        
+        // Generate with spacebar
+        document.body.addEventListener('keyup', (e) => {
+            if(e.code === 'Space' && !e.target.matches('input, textarea')) {
+                generatePalette();
             }
-        }
+        });
+
+        // Generate initial palette on page load
+        generatePalette();
 
     </script>
 </body>
