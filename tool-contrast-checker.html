@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Color Contrast Checker - WCAG AA & AAA Compliance | ToolCraft Pro</title>
+    <meta name="description" content="A free online tool to check the color contrast ratio of text and background colors. Ensure your website meets WCAG 2.1 accessibility standards (AA & AAA).">
+    <meta name="keywords" content="contrast checker, color contrast, accessibility, a11y, wcag, contrast ratio, web accessibility, color contrast tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        
+        /* --- Contrast Checker Styles --- */
+        .checker-input, .checker-output {
+            background-color: var(--card-bg); padding: 25px; border-radius: 12px;
+            border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.1);
+        }
+        
+        .color-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .color-input-group { display: flex; flex-direction: column; gap: 10px; }
+        .color-input-group label { font-weight: bold; }
+        .color-input-group input[type="color"] { width: 100%; height: 40px; background: none; border: 1px solid #555; border-radius: 5px; cursor: pointer; }
+        .color-input-group input[type="text"] { background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 10px; border-radius: 5px; font-family: monospace; }
+        
+        .preview-box {
+            margin-top: 25px; padding: 20px; border-radius: 8px;
+            border: 1px solid var(--neon-blue); transition: all 0.3s;
+        }
+        .preview-box h4 { margin-top: 0; font-family: 'Roboto', sans-serif; font-size: 1.5rem; }
+        .preview-box p { font-size: 1rem; }
+        
+        .results-section { text-align: center; }
+        #contrast-ratio-value { font-family: 'Orbitron'; font-size: 4rem; color: var(--neon-green); margin: 0; }
+        #contrast-ratio-text { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        .wcag-results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .wcag-result-item { background: #0F0F1A; padding: 15px; border-radius: 8px; }
+        .wcag-result-item h4 { font-size: 1rem; margin: 0 0 5px 0; color: #a0a0a0; }
+        .wcag-result-item .level { font-size: 0.8rem; font-weight: bold; padding: 2px 6px; border-radius: 3px; }
+        .wcag-result-item .status { font-size: 1.5rem; font-weight: bold; }
+        .pass { color: var(--neon-green); }
+        .fail { color: #ff5555; }
+        .level-aa { background: var(--neon-blue); color: var(--dark-bg); }
+        .level-aaa { background: var(--neon-pink); color: #fff; }
+
+        @media (min-width: 992px) {
+            .tool-interface-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools" class="active"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">Color Contrast Checker</span>
+                </nav>
+                <h1><span class="neon-text">Color Contrast</span> Checker</h1>
+                <p class="subtitle">Ensure your text is readable and accessible for everyone.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="checker-input">
+                    <div class="color-inputs">
+                        <div class="color-input-group">
+                            <label for="text-color">Text Color</label>
+                            <input type="color" id="text-color-picker" value="#FFFFFF">
+                            <input type="text" id="text-color-hex" value="#FFFFFF">
+                        </div>
+                        <div class="color-input-group">
+                            <label for="bg-color">Background Color</label>
+                            <input type="color" id="bg-color-picker" value="#0F0F1A">
+                            <input type="text" id="bg-color-hex" value="#0F0F1A">
+                        </div>
+                    </div>
+                    <div class="preview-box" id="preview-box">
+                        <h4>Example Heading Text</h4>
+                        <p>This is an example of some normal paragraph text. You can see how readable it is against the background.</p>
+                    </div>
+                </div>
+
+                <div class="checker-output">
+                    <div class="results-section">
+                        <h3 style="margin: 0; color: #a0a0a0;">Contrast Ratio</h3>
+                        <p id="contrast-ratio-value">21.00</p>
+                        <p id="contrast-ratio-text">Perfect Contrast</p>
+                    </div>
+                    <div class="wcag-results">
+                        <div class="wcag-result-item">
+                            <h4>Normal Text</h4>
+                            <p class="status pass" id="normal-aa-status">Pass</p>
+                            <span class="level level-aa">AA</span>
+                        </div>
+                        <div class="wcag-result-item">
+                            <h4>Large Text</h4>
+                            <p class="status pass" id="large-aa-status">Pass</p>
+                            <span class="level level-aa">AA</span>
+                        </div>
+                        <div class="wcag-result-item">
+                            <h4>Normal Text</h4>
+                            <p class="status pass" id="normal-aaa-status">Pass</p>
+                            <span class="level level-aaa">AAA</span>
+                        </div>
+                        <div class="wcag-result-item">
+                            <h4>Large Text</h4>
+                            <p class="status pass" id="large-aaa-status">Pass</p>
+                            <span class="level level-aaa">AAA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="content-section">
+                <h2>Understanding Web Content Accessibility Guidelines (WCAG)</h2>
+                <p>WCAG provides standards for web accessibility. For color contrast, there are two main levels of conformance: AA and AAA.</p>
+                <ul>
+                    <li><strong>Level AA:</strong> This is the widely accepted minimum level of accessibility. For normal text, it requires a contrast ratio of at least <strong>4.5:1</strong>. For large text (18pt/24px or 14pt/19px bold), it requires <strong>3:1</strong>.</li>
+                    <li><strong>Level AAA:</strong> This is an enhanced level of accessibility. For normal text, it requires a contrast ratio of at least <strong>7:1</strong>. For large text, it requires <strong>4.5:1</strong>.</li>
+                </ul>
+                <p>Our tool checks your color combination against all four of these requirements, giving you a clear "Pass" or "Fail" for each one. Striving for at least AA compliance is essential for creating websites that are usable by people with visual impairments, such as color blindness.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Contrast Checker Logic ---
+        const textColorPicker = document.getElementById('text-color-picker');
+        const textColorHex = document.getElementById('text-color-hex');
+        const bgColorPicker = document.getElementById('bg-color-picker');
+        const bgColorHex = document.getElementById('bg-color-hex');
+        
+        const previewBox = document.getElementById('preview-box');
+        const contrastRatioValue = document.getElementById('contrast-ratio-value');
+        const contrastRatioText = document.getElementById('contrast-ratio-text');
+        
+        // Status elements
+        const normalAaStatus = document.getElementById('normal-aa-status');
+        const largeAaStatus = document.getElementById('large-aa-status');
+        const normalAaaStatus = document.getElementById('normal-aaa-status');
+        const largeAaaStatus = document.getElementById('large-aaa-status');
+
+        // --- Event Listeners ---
+        textColorPicker.addEventListener('input', (e) => syncAndUpdate(e.target.value, 'text'));
+        textColorHex.addEventListener('input', (e) => syncAndUpdate(e.target.value, 'text'));
+        bgColorPicker.addEventListener('input', (e) => syncAndUpdate(e.target.value, 'bg'));
+        bgColorHex.addEventListener('input', (e) => syncAndUpdate(e.target.value, 'bg'));
+
+        function syncAndUpdate(color, type) {
+            if (type === 'text') {
+                textColorPicker.value = color;
+                textColorHex.value = color.toUpperCase();
+            } else {
+                bgColorPicker.value = color;
+                bgColorHex.value = color.toUpperCase();
+            }
+            checkContrast();
+        }
+
+        function checkContrast() {
+            const textColor = textColorHex.value;
+            const bgColor = bgColorHex.value;
+
+            // Update preview
+            previewBox.style.color = textColor;
+            previewBox.style.backgroundColor = bgColor;
+
+            // Calculate contrast
+            const textLuminance = getLuminance(textColor);
+            const bgLuminance = getLuminance(bgColor);
+            
+            const ratio = textLuminance > bgLuminance 
+                ? (textLuminance + 0.05) / (bgLuminance + 0.05)
+                : (bgLuminance + 0.05) / (textLuminance + 0.05);
+
+            contrastRatioValue.textContent = ratio.toFixed(2);
+            updateStatusUI(ratio);
+        }
+        
+        function updateStatusUI(ratio) {
+            // Update ratio text
+            if (ratio > 12) contrastRatioText.textContent = "Excellent Contrast";
+            else if (ratio > 7) contrastRatioText.textContent = "Great Contrast";
+            else if (ratio > 4.5) contrastRatioText.textContent = "Good Contrast";
+            else if (ratio > 3) contrastRatioText.textContent = "Poor Contrast";
+            else contrastRatioText.textContent = "Very Poor Contrast";
+            
+            // WCAG AA
+            updateStatus(normalAaStatus, ratio >= 4.5);
+            updateStatus(largeAaStatus, ratio >= 3);
+            // WCAG AAA
+            updateStatus(normalAaaStatus, ratio >= 7);
+            updateStatus(largeAaaStatus, ratio >= 4.5);
+        }
+        
+        function updateStatus(element, passes) {
+            element.textContent = passes ? 'Pass' : 'Fail';
+            element.className = passes ? 'status pass' : 'status fail';
+        }
+
+        function getLuminance(hex) {
+            const rgb = hexToRgb(hex);
+            if (!rgb) return 0;
+            
+            const a = [rgb.r, rgb.g, rgb.b].map(v => {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+        }
+
+        function hexToRgb(hex) {
+            let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+            
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        
+        // Initial check on load
+        checkContrast();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ToolCraft Pro!</title>
+    <!-- All head content and CSS from about.html can be copied here for consistency -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        
+        /* Centered Content Layout */
+        .centered-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .welcome-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 30px rgba(157, 0, 255, 0.3);
+            max-width: 600px;
+        }
+        .welcome-box .fa-rocket {
+            font-size: 4rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            margin-bottom: 20px;
+        }
+        .welcome-box h1 {
+            font-size: 2.5rem;
+        }
+        .welcome-box p {
+            font-size: 1.1rem;
+            color: #c0c0c0;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="centered-section">
+            <div class="welcome-box">
+                <i class="fas fa-rocket"></i>
+                <h1><span class="neon-text">Welcome to ToolCraft Pro!</span></h1>
+                <p>Your account is ready. A confirmation link has been sent to your email. You can now explore all our powerful tools.</p>
+                <a href="index.html" class="btn btn-neon">Go to All Tools <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free PDF Metadata Editor | Edit PDF Properties Online | ToolCraft Pro</title>
+    <meta name="description" content="View and edit PDF metadata such as Title, Author, Subject, and Keywords for free. Our online tool is fast, secure, and works directly in your browser.">
+    <meta name="keywords" content="pdf metadata editor, edit pdf properties, pdf author, pdf title, pdf metadata, free pdf tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <!-- PDF-Lib for editing -->
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; background-color: #555 !important; box-shadow: none !important; color: #999 !important; border-color: #555 !important; transform: none !important; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); }
+        .btn-red-outline { background-color: transparent; color: #ff3860; border-color: #ff3860; }
+        .btn-red-outline:hover { background-color: #ff3860; color: #fff; }
+
+        /* Header & Footer */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.6rem; font-weight: bold; color: #fff; text-decoration: none; display: flex; align-items: center;}
+        .logo i { margin-right: 10px; color: var(--neon-blue);}
+        .logo .neon-pink { color: var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* Tool Page Specific Styles */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); text-align: center; }
+        
+        input[type="file"] { display: none; }
+        .upload-area { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; transition: all 0.3s ease; cursor: pointer; }
+        .upload-area:hover { border-color: var(--neon-pink); background-color: #1A1A2E; }
+        .upload-area i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
+        
+        .file-info { margin: 20px auto; font-size: 1rem; color: #E0E0E0; background-color: #0F0F1A; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--neon-purple); display: inline-block; }
+        .file-info i { color: var(--neon-green); margin-right: 8px; }
+
+        .metadata-form { max-width: 600px; margin: 20px auto; text-align: left; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--neon-blue); }
+        .form-group input { width: 100%; background-color: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 10px; border-radius: 5px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: var(--neon-pink); }
+        
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools" class="active"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <h1 class="neon-text">PDF Metadata Editor</h1>
+                <p>View and change the Title, Author, and other properties of your PDF.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                
+                <div id="uploadArea" class="upload-area">
+                    <input type="file" id="fileInput" accept="application/pdf">
+                    <i class="fas fa-file-pdf"></i>
+                    <p><strong>Drag & Drop</strong> or click to upload PDF</p>
+                </div>
+
+                <div id="editorSection" style="display: none;">
+                    <div id="fileInfo" class="file-info"></div>
+                    <form id="metadataForm" class="metadata-form">
+                        <div class="form-group"><label for="title">Title</label><input type="text" id="title" name="title"></div>
+                        <div class="form-group"><label for="author">Author</label><input type="text" id="author" name="author"></div>
+                        <div class="form-group"><label for="subject">Subject</label><input type="text" id="subject" name="subject"></div>
+                        <div class="form-group"><label for="keywords">Keywords (comma-separated)</label><input type="text" id="keywords" name="keywords"></div>
+                        <div class="form-group"><label for="creator">Creator</label><input type="text" id="creator" name="creator"></div>
+                        <div class="form-group"><label for="producer">Producer</label><input type="text" id="producer" name="producer"></div>
+                    </form>
+                    <div class="tool-controls">
+                        <button id="saveBtn" class="btn btn-neon"><i class="fas fa-save"></i> Save & Download</button>
+                        <button id="resetBtn" class="btn btn-red-outline"><i class="fas fa-sync"></i> Use Another PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        const { PDFDocument } = PDFLib;
+
+        // --- DOM Elements ---
+        const uploadArea = document.getElementById('uploadArea');
+        const editorSection = document.getElementById('editorSection');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        
+        const form = document.getElementById('metadataForm');
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const subjectInput = document.getElementById('subject');
+        const keywordsInput = document.getElementById('keywords');
+        const creatorInput = document.getElementById('creator');
+        const producerInput = document.getElementById('producer');
+        
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        let originalPdfBytes = null;
+        let originalFileName = '';
+
+        // --- Event Listeners ---
+        uploadArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
+        
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFileUpload(e.dataTransfer.files[0]);
+        });
+        
+        saveBtn.addEventListener('click', savePdf);
+        resetBtn.addEventListener('click', resetUI);
+
+        // --- Core Functions ---
+        async function handleFileUpload(file) {
+            if (!file || file.type !== 'application/pdf') {
+                alert('Please select a valid PDF file.');
+                return;
+            }
+            
+            originalFileName = file.name;
+            originalPdfBytes = await file.arrayBuffer();
+            fileInfo.innerHTML = `<i class="fas fa-file-pdf"></i> ${originalFileName}`;
+            
+            try {
+                const pdfDoc = await PDFDocument.load(originalPdfBytes);
+                
+                titleInput.value = pdfDoc.getTitle() || '';
+                authorInput.value = pdfDoc.getAuthor() || '';
+                subjectInput.value = pdfDoc.getSubject() || '';
+                keywordsInput.value = pdfDoc.getKeywords() || '';
+                creatorInput.value = pdfDoc.getCreator() || '';
+                producerInput.value = pdfDoc.getProducer() || '';
+
+                setUIState('EDITING');
+            } catch (err) {
+                console.error("Error reading PDF:", err);
+                alert("Could not read PDF. It might be encrypted or corrupted.");
+                resetUI();
+            }
+        }
+
+        async function savePdf() {
+            if (!originalPdfBytes) return;
+            
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const pdfDoc = await PDFDocument.load(originalPdfBytes);
+
+                if (titleInput.value) pdfDoc.setTitle(titleInput.value);
+                if (authorInput.value) pdfDoc.setAuthor(authorInput.value);
+                if (subjectInput.value) pdfDoc.setSubject(subjectInput.value);
+                if (keywordsInput.value) pdfDoc.setKeywords(keywordsInput.value);
+                if (creatorInput.value) pdfDoc.setCreator(creatorInput.value);
+                if (producerInput.value) pdfDoc.setProducer(producerInput.value);
+                
+                const pdfBytes = await pdfDoc.save();
+
+                const originalName = originalFileName.replace(/\.pdf$/i, '');
+                download(pdfBytes, `${originalName}-metadata-edited.pdf`, "application/pdf");
+            } catch(err) {
+                console.error("Failed to save PDF:", err);
+                alert("An error occurred while saving the PDF.");
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save and Download PDF';
+            }
+        }
+
+        function download(bytes, name, mimeType) {
+            const blob = new Blob([bytes], { type: mimeType });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = name;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        function setUIState(state) {
+            uploadArea.style.display = state === 'IDLE' ? 'block' : 'none';
+            editorSection.style.display = state === 'EDITING' ? 'block' : 'none';
+        }
+
+        function resetUI() {
+            originalPdfBytes = null;
+            originalFileName = '';
+            fileInput.value = '';
+            form.reset();
+            setUIState('IDLE');
+        }
+
+        resetUI();
+    </script>
+</body>
+</html>

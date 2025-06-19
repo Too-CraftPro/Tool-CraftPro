@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Word Counter (SEO Edition) - Analyze Text & Keyword Density | ToolCraft Pro</title>
+    <meta name="description" content="An advanced online word counter for SEO. Analyze word and character count, reading time, and keyword density in real-time. Optimize your content for users and search engines.">
+    <meta name="keywords" content="word counter, seo word count, keyword density, reading time, content analysis, seo tool, text analysis">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        
+        /* --- Word Counter (SEO) Styles --- */
+        .seo-counter-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .text-input-section textarea {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
+            padding: 12px; border-radius: 8px; font-size: 1rem; width: 100%;
+            font-family: 'Roboto', sans-serif; resize: vertical; min-height: 400px;
+        }
+        
+        .results-section { display: flex; flex-direction: column; gap: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
+        .stat-box { background: #0F0F1A; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid var(--neon-blue); }
+        .stat-box h3 { font-size: 0.9rem; margin: 0 0 8px 0; color: #a0a0a0; text-transform: uppercase; }
+        .stat-box p { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--neon-green); margin: 0; }
+        
+        .keyword-density-section { background: #0F0F1A; padding: 15px; border-radius: 8px; }
+        .keyword-density-section h3 { margin-top: 0; color: var(--neon-blue); }
+        .keyword-density-table { width: 100%; border-collapse: collapse; }
+        .keyword-density-table th, .keyword-density-table td { padding: 8px; text-align: left; font-size: 0.9rem; border-bottom: 1px solid rgba(157, 0, 255, 0.2); }
+        .keyword-density-table th { font-weight: bold; }
+        
+        @media (min-width: 992px) {
+            .seo-counter-grid { grid-template-columns: 2fr 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools" class="active"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#seo-tools-section">SEO Tools</a> &gt; <span class="current">Word Counter (SEO Edition)</span>
+                </nav>
+                <h1><span class="neon-text">Word Counter</span> (SEO Edition)</h1>
+                <p class="subtitle">Real-time content analysis for writers and SEO professionals.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="seo-counter-grid">
+                    <div class="text-input-section">
+                        <textarea id="text-input" placeholder="Start writing or paste your content here for a real-time SEO analysis..."></textarea>
+                    </div>
+                    <div class="results-section">
+                        <div class="stats-grid">
+                            <div class="stat-box"><h3>Words</h3><p id="word-count">0</p></div>
+                            <div class="stat-box"><h3>Characters</h3><p id="char-count">0</p></div>
+                            <div class="stat-box"><h3>Reading Time</h3><p id="reading-time">~0 min</p></div>
+                        </div>
+                        <div class="keyword-density-section">
+                            <h3>Top Keywords (1-word)</h3>
+                            <table class="keyword-density-table">
+                                <tbody id="keyword-density-1"></tbody>
+                            </table>
+                        </div>
+                        <div class="keyword-density-section">
+                            <h3>Top Keywords (2-word)</h3>
+                            <table class="keyword-density-table">
+                                <tbody id="keyword-density-2"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="content-section">
+                <h2>Content Analysis for Modern SEO</h2>
+                <p>Writing for the web in the modern era is a balance between creating engaging content for users and providing clear signals to search engines. This tool is designed to help you with both. By providing real-time feedback on key metrics, you can refine your writing on the fly.</p>
+                <ul>
+                    <li><strong>Word Count:</strong> Essential for meeting content length guidelines and ensuring your articles are substantial.</li>
+                    <li><strong>Reading Time:</strong> An estimate of how long it will take an average person to read your text, helping you gauge user engagement.</li>
+                    <li><strong>Keyword Density:</strong> Shows the most frequent one- and two-word phrases in your text. This helps you check if your content is focused on your target keywords without "stuffing" them unnaturally.</li>
+                </ul>
+                <p>Use this tool to draft articles, blog posts, or landing page copy and ensure your final text is well-structured, focused, and user-friendly.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const wordCountEl = document.getElementById('word-count');
+        const charCountEl = document.getElementById('char-count');
+        const readingTimeEl = document.getElementById('reading-time');
+        const keywordDensity1 = document.getElementById('keyword-density-1');
+        const keywordDensity2 = document.getElementById('keyword-density-2');
+
+        const stopwords = new Set("a,about,above,after,again,against,all,am,an,and,any,are,as,at,be,because,been,before,being,below,between,both,but,by,can,did,do,does,doing,down,during,each,few,for,from,further,had,has,have,having,he,her,here,hers,herself,him,himself,his,how,i,if,in,into,is,it,its,itself,just,me,more,most,my,myself,no,nor,not,now,of,off,on,once,only,or,other,our,ours,ourselves,out,over,own,s,same,she,should,so,some,such,t,than,that,the,their,theirs,them,themselves,then,there,these,they,this,those,through,to,too,under,until,up,very,was,we,were,what,when,where,which,while,who,whom,why,will,with,you,your,yours,yourself,yourselves".split(','));
+
+        let debounceTimer;
+        textInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(analyze, 300);
+        });
+        
+        function analyze() {
+            const text = textInput.value;
+            
+            // Basic Counts
+            const words = text.match(/\b\w+\b/g) || [];
+            wordCountEl.textContent = words.length.toLocaleString();
+            charCountEl.textContent = text.length.toLocaleString();
+
+            // Reading Time
+            const wpm = 200; // Average words per minute
+            const readingTime = Math.ceil(words.length / wpm);
+            readingTimeEl.textContent = `~${readingTime} min`;
+
+            // Keyword Density
+            const filteredWords = words.map(w => w.toLowerCase()).filter(w => !stopwords.has(w) && w.length > 1);
+            
+            updateDensityTable(getFrequency(filteredWords, 1), keywordDensity1, words.length);
+            updateDensityTable(getFrequency(filteredWords, 2), keywordDensity2, words.length);
+        }
+        
+        function getFrequency(words, phraseLength) {
+            const freq = new Map();
+            for (let i = 0; i <= words.length - phraseLength; i++) {
+                const phrase = words.slice(i, i + phraseLength).join(' ');
+                freq.set(phrase, (freq.get(phrase) || 0) + 1);
+            }
+            return freq;
+        }
+
+        function updateDensityTable(freqMap, tableBody, totalWords) {
+            tableBody.innerHTML = '';
+            const sorted = [...freqMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5); // Top 5
+            
+            if (sorted.length === 0) {
+                 tableBody.innerHTML = `<tr><td colspan="3">Not enough data.</td></tr>`;
+                 return;
+            }
+            
+            sorted.forEach(([phrase, count]) => {
+                const density = totalWords > 0 ? (count / totalWords) * 100 : 0;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${phrase}</td>
+                    <td>${count}</td>
+                    <td>${density.toFixed(2)}%</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initial analysis
+        analyze();
+    </script>
+</body>
+</html>

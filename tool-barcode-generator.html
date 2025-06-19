@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free Barcode Generator - Create Custom Barcodes Online | ToolCraft Pro</title>
+    <meta name="description" content="A free and advanced online barcode generator. Create various barcode types like Code 128, EAN, UPC, and more. Customize colors, size, and text. Download as PNG or SVG.">
+    <meta name="keywords" content="barcode generator, create barcode, free barcode, code 128 generator, ean-13 generator, upc generator, online barcode">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- JsBarcode Library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        
+        /* --- Barcode Generator Styles --- */
+        .barcode-controls, .barcode-output {
+            background-color: var(--card-bg); padding: 25px; border-radius: 12px;
+            border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.1);
+        }
+        
+        .control-group { margin-bottom: 20px; }
+        .control-group label { font-weight: bold; display: block; margin-bottom: 8px; }
+        .control-group input[type="text"], .control-group select {
+            width: 100%; background: #0F0F1A; border: 1px solid var(--neon-blue);
+            color: #E0E0E0; padding: 10px; border-radius: 5px; font-family: monospace;
+        }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-item input[type="color"] { width: 100%; height: 35px; background: none; border: 1px solid #555; border-radius: 5px; cursor: pointer; }
+        .option-item input[type="range"] { width: 100%; }
+        .option-item input[type="checkbox"] { margin-right: 10px; }
+        
+        .barcode-output { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #barcode-svg { background: #fff; padding: 20px 10px; border-radius: 8px; max-width: 100%; }
+        .download-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        #status-message { color: #ff5555; margin-top: 15px; font-weight: bold; }
+
+        @media (min-width: 992px) {
+            .tool-interface-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools" class="active"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#utility-tools-section">Utility Tools</a> &gt; <span class="current">Barcode Generator</span>
+                </nav>
+                <h1><span class="neon-text">Barcode</span> Generator</h1>
+                <p class="subtitle">Create and customize various types of barcodes online.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="barcode-controls">
+                    <div class="control-group">
+                        <label for="barcode-data">Data</label>
+                        <input type="text" id="barcode-data" value="TOOLCRAFT-PRO">
+                    </div>
+                    <div class="control-group">
+                        <label for="barcode-format">Barcode Format</label>
+                        <select id="barcode-format">
+                            <option value="CODE128" selected>CODE 128</option>
+                            <option value="CODE39">CODE 39</option>
+                            <option value="EAN13">EAN-13</option>
+                            <option value="UPC">UPC-A</option>
+                            <option value="ITF14">ITF-14</option>
+                            <option value="MSI">MSI</option>
+                        </select>
+                    </div>
+                    <div class="options-grid">
+                        <div class="option-item">
+                            <label for="bar-color">Bar Color</label>
+                            <input type="color" id="bar-color" value="#0F0F1A">
+                        </div>
+                        <div class="option-item">
+                            <label for="bg-color">Background Color</label>
+                            <input type="color" id="bg-color" value="#FFFFFF">
+                        </div>
+                        <div class="option-item">
+                            <label for="bar-width">Bar Width</label>
+                            <input type="range" id="bar-width" min="1" max="4" step="0.5" value="2">
+                        </div>
+                        <div class="option-item">
+                            <label for="bar-height">Bar Height</label>
+                            <input type="range" id="bar-height" min="20" max="150" step="5" value="80">
+                        </div>
+                    </div>
+                    <div class="control-group options-grid" style="margin-top: 20px;">
+                        <label><input type="checkbox" id="display-value" checked> Display Value</label>
+                    </div>
+                </div>
+
+                <div class="barcode-output">
+                    <svg id="barcode-svg"></svg>
+                    <div id="status-message"></div>
+                    <div class="download-buttons">
+                        <button id="download-png" class="btn btn-neon">Download PNG</button>
+                        <button id="download-svg" class="btn btn-outline-neon">Download SVG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Barcode Generator Logic ---
+        const barcodeDataInput = document.getElementById('barcode-data');
+        const barcodeFormatSelect = document.getElementById('barcode-format');
+        const barColorInput = document.getElementById('bar-color');
+        const bgColorInput = document.getElementById('bg-color');
+        const barWidthInput = document.getElementById('bar-width');
+        const barHeightInput = document.getElementById('bar-height');
+        const displayValueCheckbox = document.getElementById('display-value');
+        const barcodeSvg = document.getElementById('barcode-svg');
+        const statusMessage = document.getElementById('status-message');
+        
+        const downloadPngBtn = document.getElementById('download-png');
+        const downloadSvgBtn = document.getElementById('download-svg');
+        
+        const allInputs = [barcodeDataInput, barcodeFormatSelect, barColorInput, bgColorInput, barWidthInput, barHeightInput, displayValueCheckbox];
+        allInputs.forEach(input => input.addEventListener('input', generateBarcode));
+
+        function generateBarcode() {
+            const data = barcodeDataInput.value;
+            const format = barcodeFormatSelect.value;
+            
+            statusMessage.textContent = ''; // Clear previous errors
+
+            try {
+                JsBarcode(barcodeSvg, data, {
+                    format: format,
+                    lineColor: barColorInput.value,
+                    background: bgColorInput.value,
+                    width: barWidthInput.value,
+                    height: barHeightInput.value,
+                    displayValue: displayValueCheckbox.checked
+                });
+            } catch (e) {
+                statusMessage.textContent = "Error: Invalid data for this barcode format.";
+                // Clear the SVG on error
+                barcodeSvg.innerHTML = '';
+            }
+        }
+
+        function downloadAs(format) {
+            const svgData = new XMLSerializer().serializeToString(barcodeSvg);
+            if (format === 'svg') {
+                const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                triggerDownload(url, 'barcode.svg');
+            } else if (format === 'png') {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const pngUrl = canvas.toDataURL('image/png');
+                    triggerDownload(pngUrl, 'barcode.png');
+                };
+                img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+            }
+        }
+        
+        function triggerDownload(url, filename) {
+             const a = document.createElement('a');
+             a.href = url;
+             a.download = filename;
+             document.body.appendChild(a);
+             a.click();
+             document.body.removeChild(a);
+             URL.revokeObjectURL(url);
+        }
+
+        downloadPngBtn.addEventListener('click', () => downloadAs('png'));
+        downloadSvgBtn.addEventListener('click', () => downloadAs('svg'));
+        
+        // Initial Barcode
+        generateBarcode();
+    </script>
+</body>
+</html>

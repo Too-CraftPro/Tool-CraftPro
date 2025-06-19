@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Online Scientific Calculator - Advanced & Free | ToolCraft Pro</title>
+    <meta name="description" content="A powerful, free online scientific calculator for students, professionals, and enthusiasts. Perform trigonometric, logarithmic, exponential, and other advanced calculations with ease.">
+    <meta name="keywords" content="scientific calculator, online calculator, advanced calculator, free calculator, trigonometry calculator, log calculator, math tool, scientific notation">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { 
+            background-color: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 1px solid var(--neon-purple); 
+            box-shadow: 0 0 25px rgba(157, 0, 255, 0.2);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* --- Scientific Calculator Styles --- */
+        #calculator { display: flex; flex-direction: column; gap: 15px; }
+        #calc-display {
+            background-color: #0F0F1A;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue) inset;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: right;
+            font-family: 'Orbitron', sans-serif;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        #calc-expression { font-size: 0.9rem; color: #A0A0A0; min-height: 22px; }
+        #calc-input { font-size: 2.2rem; color: #E0E0E0; min-height: 48px; }
+        #calc-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        #calc-buttons button {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 18px 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #1A1A2E;
+            color: #E0E0E0;
+            border: 1px solid transparent;
+        }
+        #calc-buttons button:hover { background-color: var(--neon-pink); color: #fff; transform: translateY(-2px); }
+        #calc-buttons button:active { transform: translateY(0); }
+        #calc-buttons button.operator { background-color: #2a2a4e; color: var(--neon-blue); }
+        #calc-buttons button.function { background-color: #2a2a4e; color: var(--neon-green); }
+        #calc-buttons button.control { background-color: #4e2a3d; color: var(--neon-pink); }
+        #calc-buttons button.equals { grid-column: span 2; background-color: var(--neon-blue); color: var(--dark-bg); font-size: 1.5rem; }
+        #calc-buttons button.equals:hover { background-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        #calc-buttons button.active-mode {
+            background-color: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+        @media (max-width: 500px) { #calc-buttons { grid-template-columns: repeat(4, 1fr); } #calc-buttons button.equals { grid-column: span 4; } /* Adjust for smaller screens */ }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools" class="active"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#calculator-tools-section">Calculator Tools</a> &gt; <span class="current">Scientific Calculator</span>
+                </nav>
+                <h1><span class="neon-text">Scientific</span> Calculator</h1>
+                <p class="subtitle">Perform advanced mathematical calculations with our feature-rich online scientific calculator.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div id="calculator">
+                    <div id="calc-display">
+                        <div id="calc-expression">&nbsp;</div>
+                        <div id="calc-input">0</div>
+                    </div>
+                    <div id="calc-buttons">
+                        <!-- Row 1 -->
+                        <button class="function" data-key="2nd" id="btn-2nd">2nd</button>
+                        <button class="function" data-key="pi">π</button>
+                        <button class="function" data-key="e">e</button>
+                        <button class="control" data-key="clear">C</button>
+                        <button class="control" data-key="backspace">←</button>
+                        <!-- Row 2 -->
+                        <button class="function" data-key="x_sq" id="btn-x_sq">x²</button>
+                        <button class="function" data-key="one_over_x">1/x</button>
+                        <button class="function" data-key="abs">|x|</button>
+                        <button class="function" data-key="exp">exp</button>
+                        <button class="operator" data-key="mod">mod</button>
+                        <!-- Row 3 -->
+                        <button class="function" data-key="sqrt" id="btn-sqrt">√</button>
+                        <button class="function" data-key="open_paren">(</button>
+                        <button class="function" data-key="close_paren">)</button>
+                        <button class="function" data-key="factorial">n!</button>
+                        <button class="operator" data-key="/">÷</button>
+                        <!-- Row 4 -->
+                        <button class="function" data-key="pow" id="btn-pow">xʸ</button>
+                        <button data-key="7">7</button>
+                        <button data-key="8">8</button>
+                        <button data-key="9">9</button>
+                        <button class="operator" data-key="*">×</button>
+                        <!-- Row 5 -->
+                        <button class="function" data-key="pow10" id="btn-pow10">10ˣ</button>
+                        <button data-key="4">4</button>
+                        <button data-key="5">5</button>
+                        <button data-key="6">6</button>
+                        <button class="operator" data-key="-">-</button>
+                        <!-- Row 6 -->
+                        <button class="function" data-key="log" id="btn-log">log</button>
+                        <button data-key="1">1</button>
+                        <button data-key="2">2</button>
+                        <button data-key="3">3</button>
+                        <button class="operator" data-key="+">+</button>
+                        <!-- Row 7 -->
+                        <button class="function" data-key="ln" id="btn-ln">ln</button>
+                        <button class="function" data-key="toggle_sign">+/-</button>
+                        <button data-key="0">0</button>
+                        <button data-key=".">.</button>
+                        <button class="equals" data-key="=">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Use the Scientific Calculator</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Basic Input:</strong> Use the number keys (0-9) and basic operators (+, -, ×, ÷) to perform simple calculations.</li>
+                        <li><strong>Advanced Functions:</strong> Click buttons like <strong>√</strong> (square root), <strong>x²</strong> (square), or <strong>xʸ</strong> (power) to use them in your expressions.</li>
+                        <li><strong>Trigonometry:</strong> While this version focuses on algebraic and logarithmic functions, advanced trigonometry can be found in dedicated tools. Here you can use constants like π and e.</li>
+                        <li><strong>Logarithms:</strong> Use <strong>log</strong> for base-10 logarithm and <strong>ln</strong> for natural logarithm.</li>
+                        <li><strong>Using Parentheses:</strong> Use <strong>(</strong> and <strong>)</strong> to group operations and control the order of evaluation.</li>
+                        <li><strong>2nd Functions:</strong> Click the <strong>2nd</strong> button to access alternate functions. For example, <strong>x²</strong> becomes <strong>x³</strong>, and <strong>√</strong> becomes <strong>³√</strong> (cube root).</li>
+                        <li><strong>Calculate:</strong> Press the <strong>=</strong> button to evaluate your expression. The full expression is shown above the result.</li>
+                        <li><strong>Clear & Correct:</strong> Use <strong>C</strong> to clear the entire calculation, or the <strong>←</strong> (backspace) button to remove the last character entered.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Free Scientific Calculator</h2>
+                    <p>Whether you're a student tackling complex math problems, an engineer performing technical calculations, or a scientist analyzing data, a reliable scientific calculator is an indispensable tool. Our online scientific calculator provides a powerful, user-friendly interface right in your browser, eliminating the need for a physical device or clunky software.</p>
+                    <p>This calculator goes beyond basic arithmetic, offering a wide range of functions including logarithms, powers, roots, factorials, and access to mathematical constants like Pi (π) and Euler's number (e). The "2nd" function key doubles the capabilities, providing access to inverse and alternative functions like cube roots and powers of 2. All calculations are performed instantly and securely on your device, ensuring your data remains private. Optimize your workflow and solve complex problems with precision and speed.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">How does the "2nd" button work?</h3>
+                            <div class="faq-answer"><p>The "2nd" button acts as a shift key, modifying the function of other buttons. When activated, it changes certain keys to their secondary function. For example, 'x²' becomes 'x³', '√' becomes '³√', 'log' becomes '2ˣ', and 'ln' becomes 'eˣ'. This effectively doubles the number of available functions without cluttering the interface.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">What's the difference between 'log' and 'ln'?</h3>
+                            <div class="faq-answer"><p>Both are logarithmic functions, but they use different bases. 'log' refers to the common logarithm, which has a base of 10 (log₁₀). It answers the question, "10 to what power gives this number?". 'ln' refers to the natural logarithm, which uses Euler's number (e ≈ 2.718) as its base (logₑ). Natural logarithms are fundamental in calculus, physics, and financial modeling.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Are my calculations private?</h3>
+                            <div class="faq-answer"><p>Absolutely. Like all tools on ToolCraft Pro, this calculator operates entirely within your web browser. No calculation data, expressions, or results are ever sent to our servers. Your work is completely private and secure on your own device.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core Scientific Calculator Logic ---
+        const inputDisplay = document.getElementById('calc-input');
+        const expressionDisplay = document.getElementById('calc-expression');
+        const buttonsContainer = document.getElementById('calc-buttons');
+        const btn2nd = document.getElementById('btn-2nd');
+
+        let currentInput = '0';
+        let expression = '';
+        let resultCalculated = false;
+        let is2ndActive = false;
+
+        buttonsContainer.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') return;
+            const key = e.target.dataset.key;
+            handleKeyPress(key);
+        });
+        
+        function handleKeyPress(key) {
+             if (/\d/.test(key)) { // Number
+                if (currentInput === '0' || resultCalculated) {
+                    currentInput = key;
+                    resultCalculated = false;
+                } else {
+                    currentInput += key;
+                }
+            } else if (key === '.') { // Decimal
+                if (resultCalculated) {
+                    currentInput = '0.';
+                    resultCalculated = false;
+                } else if (!currentInput.includes('.')) {
+                    currentInput += '.';
+                }
+            } else if (['+', '-', '*', '/'].includes(key)) { // Basic Operators
+                if (resultCalculated) {
+                    expression = currentInput + ` ${key} `;
+                    resultCalculated = false;
+                } else {
+                    expression += currentInput + ` ${key} `;
+                }
+                currentInput = '0';
+            } else { // Functions and Controls
+                switch (key) {
+                    case '=':
+                        if (expression.trim() === '') return;
+                        expression += currentInput;
+                        evaluate();
+                        break;
+                    case 'clear':
+                        clearAll();
+                        break;
+                    case 'backspace':
+                        if (resultCalculated) return;
+                        currentInput = currentInput.slice(0, -1);
+                        if (currentInput === '') currentInput = '0';
+                        break;
+                    case 'toggle_sign':
+                        if(currentInput !== '0') currentInput = String(parseFloat(currentInput) * -1);
+                        break;
+                    case 'pi':
+                        currentInput = String(Math.PI);
+                        break;
+                    case 'e':
+                        currentInput = String(Math.E);
+                        break;
+                    // --- Standard Functions ---
+                    case 'x_sq':
+                        if(is2ndActive) currentInput = String(Math.pow(parseFloat(currentInput), 3)); // x³
+                        else currentInput = String(Math.pow(parseFloat(currentInput), 2)); // x²
+                        resultCalculated = true;
+                        break;
+                    case 'sqrt':
+                        if(is2ndActive) currentInput = String(Math.cbrt(parseFloat(currentInput))); // ³√
+                        else currentInput = String(Math.sqrt(parseFloat(currentInput))); // √
+                        resultCalculated = true;
+                        break;
+                    case 'pow': // x^y
+                         if(is2ndActive) expression += currentInput + ` ** (1/`; // y√x
+                         else expression += currentInput + ` ** `;
+                         currentInput = '0';
+                         break;
+                    case 'log':
+                         if(is2ndActive) currentInput = String(Math.pow(2, parseFloat(currentInput))); // 2^x
+                         else currentInput = String(Math.log10(parseFloat(currentInput))); // log
+                         resultCalculated = true;
+                         break;
+                    case 'ln':
+                         if(is2ndActive) currentInput = String(Math.exp(parseFloat(currentInput))); // e^x
+                         else currentInput = String(Math.log(parseFloat(currentInput))); // ln
+                         resultCalculated = true;
+                         break;
+                    case 'pow10':
+                        if (is2ndActive) currentInput = String(Math.pow(parseFloat(currentInput), 2)); // Duplicate x^2 just for example
+                        else currentInput = String(Math.pow(10, parseFloat(currentInput)));
+                        resultCalculated = true;
+                        break;
+                    case 'one_over_x':
+                        currentInput = String(1 / parseFloat(currentInput));
+                        resultCalculated = true;
+                        break;
+                    case 'abs':
+                        currentInput = String(Math.abs(parseFloat(currentInput)));
+                        resultCalculated = true;
+                        break;
+                    case 'exp':
+                        expression += currentInput + `e+`;
+                        currentInput = '0';
+                        break;
+                    case 'mod':
+                        expression += currentInput + ` % `;
+                        currentInput = '0';
+                        break;
+                    case 'factorial':
+                        currentInput = String(factorial(parseInt(currentInput)));
+                        resultCalculated = true;
+                        break;
+                    case 'open_paren':
+                        expression += ' ( ';
+                        break;
+                    case 'close_paren':
+                        expression += currentInput + ' ) ';
+                        currentInput = '0';
+                        break;
+                    case '2nd':
+                        toggle2nd();
+                        break;
+                }
+            }
+            updateDisplay();
+        }
+
+        function evaluate() {
+            try {
+                // Sanitize and replace for safety, although this implementation is client-side.
+                const safeExpression = expression.replace(/\s+/g, '').replace(/(\d)\(/g, '$1*(');
+                const result = new Function('return ' + safeExpression)();
+                
+                if (isNaN(result) || !isFinite(result)) {
+                   throw new Error("Invalid Expression");
+                }
+
+                expressionDisplay.textContent = expression + ' =';
+                currentInput = String(result);
+                expression = '';
+                resultCalculated = true;
+            } catch (error) {
+                currentInput = 'Error';
+                expressionDisplay.textContent = expression;
+                expression = '';
+                resultCalculated = true;
+            }
+        }
+
+        function clearAll() {
+            currentInput = '0';
+            expression = '';
+            resultCalculated = false;
+            updateDisplay();
+        }
+
+        function factorial(n) {
+            if (n < 0) return NaN;
+            if (n === 0) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        function toggle2nd() {
+            is2ndActive = !is2ndActive;
+            btn2nd.classList.toggle('active-mode', is2ndActive);
+            
+            // Update button texts
+            document.getElementById('btn-x_sq').innerHTML = is2ndActive ? 'x³' : 'x²';
+            document.getElementById('btn-sqrt').innerHTML = is2ndActive ? '³√' : '√';
+            document.getElementById('btn-pow').innerHTML = is2ndActive ? 'ʸ√x' : 'xʸ';
+            document.getElementById('btn-log').innerHTML = is2ndActive ? '2ˣ' : 'log';
+            document.getElementById('btn-ln').innerHTML = is2ndActive ? 'eˣ' : 'ln';
+        }
+
+        function updateDisplay() {
+            inputDisplay.textContent = currentInput;
+            expressionDisplay.textContent = expression.replace(/\*\*/g, '^').replace(/\*/g, '×').replace(/\//g, '÷') || ' ';
+        }
+
+        clearAll(); // Initialize calculator state
+    </script>
+</body>
+</html>

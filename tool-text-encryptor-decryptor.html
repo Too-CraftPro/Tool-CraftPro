@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Text Encryptor & Decryptor - AES, Base64, ROT13 | ToolCraft Pro</title>
+    <meta name="description" content="A free online tool to encrypt and decrypt text using various algorithms like AES, Base64, and ROT13. Securely encode or decode your text right in your browser.">
+    <meta name="keywords" content="text encryption, text decryption, encrypt text, decrypt text, AES encryption, base64 encode, base64 decode, ROT13, cryptography tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- CryptoJS Library for AES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
+        
+        /* --- Encryptor/Decryptor Styles --- */
+        .encryptor-io { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: bold; margin-bottom: 8px; font-size: 1rem; color: #E0E0E0; }
+        .input-group textarea, .input-group select, .input-group input[type="password"] {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
+            padding: 12px; border-radius: 8px; font-size: 1rem; width: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
+        .input-group textarea { resize: vertical; min-height: 150px; }
+        
+        .tool-controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 25px; }
+        .tool-controls button { font-size: 1rem; }
+        #key-group { display: none; }
+        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; background-color: rgba(255, 85, 85, 0.1); color: #ff5555; border: 1px solid #ff5555; }
+        
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools" class="active"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#text-tools-section">Text Tools</a> &gt; <span class="current">Text Encryptor & Decryptor</span>
+                </nav>
+                <h1><span class="neon-text">Text</span> Encryptor & Decryptor</h1>
+                <p class="subtitle">Securely encode and decode text using various algorithms.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="encryptor-io">
+                    <div class="input-group">
+                        <label for="input-text">Input Text</label>
+                        <textarea id="input-text" placeholder="Type or paste your sensitive text here..."></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="algorithm-select">Algorithm</label>
+                        <select id="algorithm-select">
+                            <option value="aes">AES (Advanced Encryption Standard)</option>
+                            <option value="base64">Base64 Encoding</option>
+                            <option value="rot13">ROT13 Cipher</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group" id="key-group">
+                        <label for="key-input">Secret Key (Password)</label>
+                        <input type="password" id="key-input" placeholder="Enter a strong secret key">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="output-text">Output Text</label>
+                        <textarea id="output-text" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="tool-controls">
+                    <button id="encrypt-btn" class="btn btn-neon"><i class="fas fa-lock"></i> Encrypt</button>
+                    <button id="decrypt-btn" class="btn btn-outline-neon"><i class="fas fa-unlock-alt"></i> Decrypt</button>
+                </div>
+
+                <div id="status-message"></div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Encrypt & Decrypt Text</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Input Text:</strong> Type or paste the text you want to process into the "Input Text" box.</li>
+                        <li><strong>Select Algorithm:</strong> Choose an algorithm from the dropdown. For strong security, use AES. For simple encoding, use Base64. For a fun, simple cipher, use ROT13.</li>
+                        <li><strong>Enter Secret Key (if required):</strong> If you select AES, a "Secret Key" field will appear. Enter a strong password that you can remember. This key is required for both encryption and decryption.</li>
+                        <li><strong>Encrypt or Decrypt:</strong> Click the "Encrypt" button to encode your text or the "Decrypt" button to decode it.</li>
+                        <li><strong>Get the Result:</strong> The processed text will appear in the "Output Text" box.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Text Encryption Tool</h2>
+                    <p>In a digital world, protecting information is crucial. Our Text Encryptor & Decryptor provides a simple, accessible way to apply cryptographic techniques to your text. Whether you need to send a private message, store sensitive notes, or simply learn about ciphers, this tool offers several methods right in your browser. All operations are performed locally on your machine, ensuring your data and secret keys are never transmitted to our servers.</p>
+                    <ul>
+                        <li><strong>AES:</strong> The Advanced Encryption Standard is a symmetric encryption algorithm used worldwide. It is highly secure and requires a secret key (password) to encrypt and decrypt data. <strong>Remember your key, as there is no way to recover the data without it.</strong></li>
+                        <li><strong>Base64:</strong> This is an encoding scheme, not an encryption method. It represents binary data in an ASCII string format. It's useful for transmitting data but does not provide security as it can be easily reversed by anyone.</li>
+                        <li><strong>ROT13:</strong> A simple letter substitution cipher that replaces a letter with the 13th letter after it in the alphabet. It's a fun, classic cipher but offers no real security.</li>
+                    </ul>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">Is AES encryption truly secure on this tool?</h3>
+                            <div class="faq-answer"><p>Yes, the AES algorithm itself is a NIST-approved, industry-standard cryptographic method. Our tool uses a robust JavaScript implementation (CryptoJS) to perform the encryption. The security of your encrypted data depends entirely on the strength and secrecy of your password. Use a long, complex, and unique password for best results. Since all processing is client-side, your key is never exposed to the internet.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">What's the difference between encryption and encoding (like Base64)?</h3>
+                            <div class="faq-answer"><p><strong>Encryption</strong> is a two-way process designed for confidentiality. It uses a key to transform data into an unreadable format, and only someone with the correct key can reverse it. <strong>Encoding</strong> is a two-way process designed for usability. It transforms data into a standard format that can be safely transmitted or stored. It is not secure and can be reversed by anyone without a key.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">What if I forget my AES secret key?</h3>
+                            <div class="faq-answer"><p>If you forget the secret key used for AES encryption, your data is permanently lost. There is no "forgot password" feature or backdoor. The security of the system relies on the fact that only the key can decrypt the data. Store your key in a safe and secure place.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core Encryptor/Decryptor Logic ---
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const algorithmSelect = document.getElementById('algorithm-select');
+        const keyGroup = document.getElementById('key-group');
+        const keyInput = document.getElementById('key-input');
+        const encryptBtn = document.getElementById('encrypt-btn');
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        algorithmSelect.addEventListener('change', () => {
+            keyGroup.style.display = algorithmSelect.value === 'aes' ? 'flex' : 'none';
+        });
+
+        encryptBtn.addEventListener('click', () => processText('encrypt'));
+        decryptBtn.addEventListener('click', () => processText('decrypt'));
+
+        function showStatus(message) {
+            statusMessage.textContent = message;
+            statusMessage.style.display = 'block';
+        }
+
+        function processText(mode) {
+            const text = inputText.value;
+            const algorithm = algorithmSelect.value;
+            const key = keyInput.value;
+            statusMessage.style.display = 'none';
+
+            if (!text) {
+                showStatus("Input text cannot be empty.");
+                return;
+            }
+
+            try {
+                let result = '';
+                switch (algorithm) {
+                    case 'aes':
+                        if (!key) {
+                            showStatus("Secret Key cannot be empty for AES.");
+                            return;
+                        }
+                        result = (mode === 'encrypt') ? CryptoJS.AES.encrypt(text, key).toString() : CryptoJS.AES.decrypt(text, key).toString(CryptoJS.enc.Utf8);
+                        if (mode === 'decrypt' && !result) throw new Error("Decryption failed. Check your key or input text.");
+                        break;
+                    case 'base64':
+                        result = (mode === 'encrypt') ? btoa(unescape(encodeURIComponent(text))) : decodeURIComponent(escape(atob(text)));
+                        break;
+                    case 'rot13':
+                        // ROT13 is its own inverse, so the function is the same for encrypt/decrypt
+                        result = text.replace(/[a-zA-Z]/g, function(c){
+                            return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+                        });
+                        break;
+                }
+                outputText.value = result;
+            } catch (error) {
+                showStatus(`An error occurred: ${error.message}. Please check your input and key.`);
+                outputText.value = '';
+            }
+        }
+        
+        // Initialize view
+        algorithmSelect.dispatchEvent(new Event('change'));
+
+    </script>
+</body>
+</html>

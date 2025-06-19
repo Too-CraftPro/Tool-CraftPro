@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CSS Gradient Generator - Create Linear & Radial Gradients | ToolCraft Pro</title>
+    <meta name="description" content="A free and interactive CSS gradient generator. Create beautiful linear and radial gradients, adjust colors and angles, and get the CSS code instantly.">
+    <meta name="keywords" content="css gradient generator, gradient generator, css gradient, linear gradient, radial gradient, color gradient, gradient tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        
+        /* --- Gradient Generator Styles --- */
+        .gradient-controls, .gradient-output {
+            background-color: var(--card-bg); padding: 25px; border-radius: 12px;
+            border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.1);
+        }
+        
+        #gradient-preview { width: 100%; height: 300px; border-radius: 8px; border: 1px solid var(--neon-blue); transition: background 0.2s; }
+        
+        .control-group { margin-bottom: 20px; }
+        .control-group label { font-weight: bold; display: block; margin-bottom: 8px; }
+        .type-switcher { display: flex; gap: 10px; margin-bottom: 15px; }
+        .type-switcher button { flex-grow: 1; }
+        
+        .color-stops { display: flex; flex-direction: column; gap: 10px; }
+        .color-stop-item { display: flex; align-items: center; gap: 10px; }
+        .color-stop-item input[type="color"] { background: none; border: 1px solid #555; border-radius: 5px; width: 40px; height: 40px; cursor: pointer; }
+        .color-stop-item input[type="text"] { width: 100px; background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 8px; border-radius: 5px; font-family: monospace; }
+        
+        .angle-control { display: flex; align-items: center; gap: 10px; }
+        .angle-control input[type="range"] { flex-grow: 1; }
+        .angle-control input[type="number"] { width: 70px; background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 8px; border-radius: 5px; text-align: center; }
+        
+        #css-output {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); padding: 15px;
+            border-radius: 8px; font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap; word-wrap: break-word; position: relative;
+        }
+        #copy-css-btn {
+            position: absolute; top: 10px; right: 10px; background: none;
+            border: 1px solid var(--neon-pink); color: var(--neon-pink);
+            padding: 5px 10px; border-radius: 5px; cursor: pointer;
+        }
+        #copy-css-btn:hover { background: var(--neon-pink); color: #fff; }
+
+        @media (min-width: 992px) {
+            .tool-interface-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools" class="active"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">CSS Gradient Generator</span>
+                </nav>
+                <h1><span class="neon-text">CSS Gradient</span> Generator</h1>
+                <p class="subtitle">Visually create stunning gradients and get the CSS code.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="gradient-controls">
+                    <div class="control-group">
+                        <label>Gradient Type</label>
+                        <div class="type-switcher">
+                            <button id="linear-btn" class="btn btn-neon active">Linear</button>
+                            <button id="radial-btn" class="btn btn-outline-neon">Radial</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Colors</label>
+                        <div class="color-stops" id="color-stops-container">
+                            <div class="color-stop-item">
+                                <input type="color" class="color-picker" value="#9d00ff">
+                                <input type="text" class="color-hex" value="#9d00ff">
+                            </div>
+                            <div class="color-stop-item">
+                                <input type="color" class="color-picker" value="#00f7ff">
+                                <input type="text" class="color-hex" value="#00f7ff">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group" id="angle-control-group">
+                        <label>Angle</label>
+                        <div class="angle-control">
+                            <input type="range" id="angle-slider" min="0" max="360" value="90">
+                            <input type="number" id="angle-input" min="0" max="360" value="90">
+                            <span>deg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gradient-output">
+                    <div id="gradient-preview"></div>
+                    <div class="control-group" style="margin-top: 20px;">
+                        <label>CSS Code</label>
+                        <div id="css-output">
+                            background: linear-gradient(90deg, #9d00ff, #00f7ff);
+                            <button id="copy-css-btn" title="Copy CSS"><i class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="content-section">
+                <h2>How to Generate a CSS Gradient</h2>
+                <ol style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Choose Gradient Type:</strong> Select either "Linear" or "Radial" to start.</li>
+                    <li><strong>Select Colors:</strong> Use the color pickers to choose your desired colors. The text field next to each picker will update with the HEX code, which you can also edit directly.</li>
+                    <li><strong>Adjust Angle (for Linear):</strong> If you selected a linear gradient, use the slider or number input to change the angle of the gradient.</li>
+                    <li><strong>Preview the Result:</strong> The large preview box will update in real-time to show you exactly what your gradient looks like.</li>
+                    <li><strong>Copy the CSS:</strong> The generated CSS code will appear below the preview. Click the copy icon to copy it to your clipboard and use it in your projects.</li>
+                </ol>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Gradient Generator Logic ---
+        const linearBtn = document.getElementById('linear-btn');
+        const radialBtn = document.getElementById('radial-btn');
+        const colorStopsContainer = document.getElementById('color-stops-container');
+        const angleControlGroup = document.getElementById('angle-control-group');
+        const angleSlider = document.getElementById('angle-slider');
+        const angleInput = document.getElementById('angle-input');
+        const gradientPreview = document.getElementById('gradient-preview');
+        const cssOutput = document.getElementById('css-output');
+        const copyCssBtn = document.getElementById('copy-css-btn');
+        
+        let gradientType = 'linear';
+        let colors = ['#9d00ff', '#00f7ff'];
+        let angle = 90;
+
+        // --- Event Listeners ---
+        linearBtn.addEventListener('click', () => setGradientType('linear'));
+        radialBtn.addEventListener('click', () => setGradientType('radial'));
+        angleSlider.addEventListener('input', () => {
+            angle = angleSlider.value;
+            angleInput.value = angle;
+            updateGradient();
+        });
+        angleInput.addEventListener('input', () => {
+            angle = angleInput.value;
+            angleSlider.value = angle;
+            updateGradient();
+        });
+        copyCssBtn.addEventListener('click', () => {
+            const codeToCopy = cssOutput.textContent.replace(/Copy$/, '').trim(); // Remove the button text if caught
+            navigator.clipboard.writeText(codeToCopy);
+        });
+
+        function attachColorListeners() {
+            document.querySelectorAll('.color-picker').forEach((picker, index) => {
+                picker.addEventListener('input', (e) => {
+                    colors[index] = e.target.value;
+                    document.querySelectorAll('.color-hex')[index].value = e.target.value;
+                    updateGradient();
+                });
+            });
+            document.querySelectorAll('.color-hex').forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    colors[index] = e.target.value;
+                    document.querySelectorAll('.color-picker')[index].value = e.target.value;
+                    updateGradient();
+                });
+            });
+        }
+
+        function setGradientType(type) {
+            gradientType = type;
+            if (type === 'linear') {
+                linearBtn.classList.add('active', 'btn-neon');
+                linearBtn.classList.remove('btn-outline-neon');
+                radialBtn.classList.remove('active', 'btn-neon');
+                radialBtn.classList.add('btn-outline-neon');
+                angleControlGroup.style.display = 'block';
+            } else {
+                radialBtn.classList.add('active', 'btn-neon');
+                radialBtn.classList.remove('btn-outline-neon');
+                linearBtn.classList.remove('active', 'btn-neon');
+                linearBtn.classList.add('btn-outline-neon');
+                angleControlGroup.style.display = 'none';
+            }
+            updateGradient();
+        }
+
+        function updateGradient() {
+            const colorString = colors.join(', ');
+            let gradientCss = '';
+
+            if (gradientType === 'linear') {
+                gradientCss = `linear-gradient(${angle}deg, ${colorString})`;
+            } else {
+                gradientCss = `radial-gradient(circle, ${colorString})`;
+            }
+
+            gradientPreview.style.background = gradientCss;
+            cssOutput.firstChild.textContent = `background: ${gradientCss};`;
+        }
+        
+        // Initial setup
+        attachColorListeners();
+        updateGradient();
+
+    </script>
+</body>
+</html>

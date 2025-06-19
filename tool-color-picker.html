@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free Color Picker from Image - Online Eyedropper Tool | ToolCraft Pro</title>
+    <meta name="description" content="Use our online eyedropper tool to pick colors from any uploaded image. Get HEX, RGB, and HSL color codes instantly. Perfect for designers and developers.">
+    <meta name="keywords" content="color picker, image color picker, eyedropper tool, get color from image, hex color picker, online color tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); transform: translateY(-3px); }
+
+        /* Header & Footer */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* Tool Page Specific Styles */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        .tool-section { margin-bottom: 2rem; }
+        .tool-section:last-child { margin-bottom: 0; }
+        .tool-section h3 { color: var(--neon-blue); border-bottom: 1px solid var(--neon-purple); padding-bottom: 10px; margin-bottom: 15px; font-size: 1.4rem; }
+        .tool-section h3 i { margin-right: 10px; }
+        
+        input[type="file"] { display: none; }
+        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
+        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
+        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
+        
+        .color-picker-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 992px) { .color-picker-layout { grid-template-columns: 2fr 1fr; } }
+
+        #canvas-container { position: relative; cursor: crosshair; }
+        #imageCanvas { max-width: 100%; border-radius: 8px; border: 1px solid rgba(0,247,255,0.2); }
+        #loupe { position: absolute; width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--neon-blue); background-color: rgba(15, 15, 26, 0.5); box-shadow: 0 0 15px rgba(0,0,0,0.5); display: none; pointer-events: none; background-repeat: no-repeat; image-rendering: pixelated; }
+        #loupe::after { content: ''; position: absolute; top: 50%; left: 50%; width: 5px; height: 5px; background: var(--neon-pink); border: 1px solid white; transform: translate(-50%, -50%); }
+
+        .color-info-panel { background-color: #0F0F1A; padding: 20px; border-radius: 8px; border: 1px solid rgba(157, 0, 255, 0.3); }
+        .color-preview { width: 100%; height: 80px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #fff; transition: background-color 0.2s; }
+        .color-value { background-color: var(--card-bg); padding: 10px; border-radius: 5px; margin-bottom: 10px; font-family: 'Courier New', Courier, monospace; }
+        .color-value strong { color: var(--neon-blue); display: block; margin-bottom: 5px; font-family: 'Roboto', sans-serif;}
+        .color-value span { cursor: pointer; display: block; }
+        .color-value span:hover { color: var(--neon-pink); }
+        
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <h1 class="neon-text">Color Picker from Image</h1>
+                <p>Use our online eyedropper to get HEX, RGB, and HSL codes from any image.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div id="uploadSection" class="tool-section">
+                    <h3><i class="fas fa-upload"></i> 1. Upload Your Image</h3>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <div id="uploadBox" class="upload-box">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p><strong>Drag & Drop</strong> or click to upload an image</p>
+                    </div>
+                </div>
+                
+                <div id="pickerSection" class="tool-section" style="display: none;">
+                     <h3><i class="fas fa-eye-dropper"></i> 2. Pick a Color</h3>
+                     <p style="margin-bottom:15px; text-align:center;">Hover over the image to see a live preview and click to select a color.</p>
+                     <div class="color-picker-layout">
+                         <div id="canvas-container">
+                             <canvas id="imageCanvas"></canvas>
+                             <div id="loupe"></div>
+                         </div>
+                         <div class="color-info-panel">
+                             <div id="colorPreview" class="color-preview"></div>
+                             <div class="color-value">
+                                 <strong>HEX:</strong>
+                                 <span id="hexValue" title="Click to copy">#0F0F1A</span>
+                             </div>
+                             <div class="color-value">
+                                 <strong>RGB:</strong>
+                                 <span id="rgbValue" title="Click to copy">rgb(15, 15, 26)</span>
+                             </div>
+                             <div class="color-value">
+                                 <strong>HSL:</strong>
+                                 <span id="hslValue" title="Click to copy">hsl(240, 29%, 8%)</span>
+                             </div>
+                             <button id="resetBtn" class="btn btn-outline-neon" style="width:100%; margin-top:10px;"><i class="fas fa-sync"></i> Pick New Image</button>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Use the Color Picker</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Upload an Image:</strong> Drag your file to the upload box or click to select it from your device.</li>
+                        <li><strong>Hover to Find Colors:</strong> Move your mouse over the image. A magnifying loupe will show you a pixel-perfect preview, and the color codes (HEX, RGB, HSL) will update in real-time.</li>
+                        <li><strong>Click to Select:</strong> Click on any part of the image to lock in that color.</li>
+                        <li><strong>Copy the Code:</strong> Click on any of the color code values (e.g., the HEX code) to instantly copy it to your clipboard.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadSection = document.getElementById('uploadSection');
+        const uploadBox = document.getElementById('uploadBox');
+        const pickerSection = document.getElementById('pickerSection');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        const loupe = document.getElementById('loupe');
+        
+        const colorPreview = document.getElementById('colorPreview');
+        const hexValue = document.getElementById('hexValue');
+        const rgbValue = document.getElementById('rgbValue');
+        const hslValue = document.getElementById('hslValue');
+        
+        let image = new Image();
+
+        // --- Event Listeners ---
+        uploadBox.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileUpload);
+        uploadBox.addEventListener('dragover', (e) => { e.preventDefault(); uploadBox.classList.add('dragover'); });
+        uploadBox.addEventListener('dragleave', () => uploadBox.classList.remove('dragover'));
+        uploadBox.addEventListener('drop', (e) => { e.preventDefault(); uploadBox.classList.remove('dragover'); handleFileUpload(e); });
+        resetBtn.addEventListener('click', resetUI);
+        
+        // --- Core Functions ---
+        function handleFileUpload(event) {
+            const file = event.target.files ? event.target.files[0] : event.dataTransfer.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                image.onload = () => {
+                    drawImageToCanvas();
+                    setUIState('PICKING');
+                };
+                image.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function drawImageToCanvas() {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const [r, g, b] = pixel;
+
+            updateColorInfo(r, g, b);
+
+            loupe.style.display = 'block';
+            loupe.style.left = `${e.clientX - rect.left - loupe.offsetWidth / 2}px`;
+            loupe.style.top = `${e.clientY - rect.top - loupe.offsetHeight / 2}px`;
+
+            const zoom = 5;
+            loupe.style.backgroundImage = `url(${canvas.toDataURL()})`;
+            loupe.style.backgroundSize = `${canvas.width * zoom}px ${canvas.height * zoom}px`;
+            loupe.style.backgroundPosition = `-${x * zoom - loupe.offsetWidth / 2}px -${y * zoom - loupe.offsetHeight / 2}px`;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            loupe.style.display = 'none';
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            copyToClipboard(rgbToHex(pixel[0], pixel[1], pixel[2]));
+            alert(`Copied HEX code: ${rgbToHex(pixel[0], pixel[1], pixel[2])}`);
+        });
+
+        function updateColorInfo(r, g, b) {
+            const hex = rgbToHex(r, g, b);
+            const rgb = `rgb(${r}, ${g}, ${b})`;
+            const hsl = rgbToHsl(r, g, b);
+
+            colorPreview.style.backgroundColor = hex;
+            hexValue.textContent = hex;
+            rgbValue.textContent = rgb;
+            hslValue.textContent = hsl;
+        }
+
+        hexValue.addEventListener('click', () => copyToClipboard(hexValue.textContent));
+        rgbValue.addEventListener('click', () => copyToClipboard(rgbValue.textContent));
+        hslValue.addEventListener('click', () => copyToClipboard(hslValue.textContent));
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // You can add a success message here if you want
+            }).catch(err => console.error('Failed to copy text: ', err));
+        }
+
+        // --- Color Conversion Helpers ---
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+        
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; } 
+            else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+        }
+
+        function setUIState(state) {
+            uploadSection.style.display = state === 'IDLE' ? 'block' : 'none';
+            pickerSection.style.display = state === 'PICKING' ? 'block' : 'none';
+        }
+
+        function resetUI() {
+            fileInput.value = '';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            setUIState('IDLE');
+        }
+
+        resetUI();
+    </script>
+</body>
+</html>

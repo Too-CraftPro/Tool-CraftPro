@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free Online Image Cropper - Crop by Pixels, Ratio & Manual Input | ToolCraft Pro</title>
+    <meta name="description" content="Precisely crop images online with our free tool. Use a visual cropper, preset aspect ratios, or enter exact pixel coordinates for perfect results.">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" integrity="sha512-hvNR0F/e2Jb1Js1MWOKJYubwcX4s2ML8ocOKemOthzCFJsFNU2GQdpOCALM_HSTAcaCmoGjiAYCJQvgn59giOQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); transform: translateY(-3px); }
+
+        /* Header & Footer */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* Tool Page Specific Styles */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
+        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
+        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
+        #file-input { display: none; }
+        .cropper-container-wrapper { background-color: #080810; padding: 10px; border-radius: 8px; border: 1px solid rgba(157, 0, 255, 0.3); min-height: 400px; }
+        #image-to-crop { display: block; max-width: 100%; }
+        .cropper-controls { background: #0F0F1A; padding: 15px; border-radius: 8px; margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; }
+        .control-group { display: flex; gap: 10px; align-items: center; border-left: 2px solid var(--neon-purple); padding-left: 15px;}
+        .control-group:first-child { border-left: none; padding-left: 0; }
+        .control-group .btn { padding: 8px 15px; font-size: 0.8rem; }
+        .manual-crop-inputs label { font-size: 0.8rem; color: #A0A0A0; margin-right: 5px; }
+        .manual-crop-inputs input { width: 70px; background-color: var(--card-bg); border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 5px; border-radius: 4px; text-align: center; }
+        .tool-controls { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        
+        @media (max-width: 991px) { .cropper-controls, .control-group { flex-direction: column; border-left: none; padding-left: 0; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <h1 class="neon-text">Image Cropper</h1>
+                <p>Select the perfect area of your image with our intuitive online cropping tool.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <input type="file" id="file-input" accept="image/*">
+                
+                <div id="upload-container">
+                    <div id="upload-box" class="upload-box">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p><strong>Drag & Drop</strong> or click to upload an image</p>
+                    </div>
+                </div>
+
+                <div id="cropper-main" style="display: none;">
+                    <div class="cropper-container-wrapper">
+                        <img id="image-to-crop">
+                    </div>
+                    <div class="cropper-controls">
+                        <div class="control-group">
+                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="1.7777777777777777" title="16:9"><i class="fas fa-tv"></i> 16:9</button>
+                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="1" title="1:1"><i class="fas fa-square"></i> 1:1</button>
+                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="NaN" title="Free"><i class="fas fa-arrows-alt"></i> Free</button>
+                        </div>
+                        <div class="control-group">
+                            <button class="btn btn-outline-neon" data-action="rotate-left" title="Rotate Left"><i class="fas fa-undo"></i></button>
+                            <button class="btn btn-outline-neon" data-action="rotate-right" title="Rotate Right"><i class="fas fa-redo"></i></button>
+                        </div>
+                        <div class="control-group manual-crop-inputs">
+                            <label>X:</label><input type="number" id="crop-x">
+                            <label>Y:</label><input type="number" id="crop-y">
+                            <label>W:</label><input type="number" id="crop-w">
+                            <label>H:</label><input type="number" id="crop-h">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-controls">
+                    <button id="crop-btn" class="btn btn-neon" style="display: none;"><i class="fas fa-crop-alt"></i> Crop Image</button>
+                    <button id="new-btn" class="btn btn-outline-neon" style="display: none;"><i class="fas fa-sync"></i> Crop Another</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Crop Your Image</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Upload Your Image:</strong> Drag your file to the upload box or click to select it.</li>
+                        <li><strong>Adjust Crop Area:</strong> A draggable crop box will appear. Drag the corners or edges to resize it, or move the entire box.</li>
+                        <li><strong>Use Controls:</strong> Use the buttons for fixed aspect ratios or enter exact pixel coordinates in the manual input boxes for precision.</li>
+                        <li><strong>Crop and Download:</strong> When ready, click "Crop Image". Your new file will download automatically.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" integrity="sha512-9KkIqdfN7ipEW6B6k+Aq20PVSAUiGpwSY8q9xZNuxLfXcOlHYRT9TfujaJDOAQItkdguLAZVRabIFnaJEOoP6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // --- DOM Elements ---
+        const uploadContainer = document.getElementById('upload-container');
+        const fileInput = document.getElementById('file-input');
+        const cropperMain = document.getElementById('cropper-main');
+        const image = document.getElementById('image-to-crop');
+        const cropBtn = document.getElementById('crop-btn');
+        const newBtn = document.getElementById('new-btn');
+        const controls = document.querySelector('.cropper-controls');
+        const cropInputs = {
+            x: document.getElementById('crop-x'),
+            y: document.getElementById('crop-y'),
+            w: document.getElementById('crop-w'),
+            h: document.getElementById('crop-h'),
+        };
+        
+        // --- State Variables ---
+        let cropper;
+        let originalFile = null;
+        let debounceTimer;
+
+        // --- Event Listeners ---
+        uploadContainer.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        
+        uploadContainer.addEventListener('dragover', (e) => { e.preventDefault(); uploadContainer.firstElementChild.classList.add('dragover'); });
+        uploadContainer.addEventListener('dragleave', () => uploadContainer.firstElementChild.classList.remove('dragover'));
+        uploadContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadContainer.firstElementChild.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+        
+        controls.addEventListener('click', handleControlEvents);
+        Object.values(cropInputs).forEach(input => {
+            input.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(updateCropperFromInputs, 300);
+            });
+        });
+
+        cropBtn.addEventListener('click', downloadCroppedImage);
+        newBtn.addEventListener('click', resetUI);
+        
+        // --- Core Functions ---
+        function handleFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                return;
+            }
+            originalFile = file;
+            const reader = new FileReader();
+
+            // This is the correct, robust sequence for loading
+            reader.onload = (e) => {
+                image.onload = () => {
+                    initCropper();
+                };
+                image.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function initCropper() {
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(image, {
+                viewMode: 1,
+                background: false,
+                autoCropArea: 0.8,
+                crop(event) {
+                    updateInputsFromCropper(event.detail);
+                },
+            });
+            setUIState('CROPPING');
+        }
+
+        function setUIState(state) {
+            uploadContainer.style.display = state === 'IDLE' ? 'block' : 'none';
+            cropperMain.style.display = state === 'CROPPING' ? 'block' : 'none';
+            cropBtn.style.display = state === 'CROPPING' ? 'inline-block' : 'none';
+            newBtn.style.display = state === 'CROPPING' ? 'inline-block' : 'none';
+        }
+
+        function handleControlEvents(e) {
+            const target = e.target.closest('button');
+            if (!target || !cropper) return;
+            const action = target.dataset.action;
+            if (action) e.preventDefault();
+            switch (action) {
+                case 'set-aspect-ratio': cropper.setAspectRatio(parseFloat(target.dataset.ratio)); break;
+                case 'rotate-left': cropper.rotate(-90); break;
+                case 'rotate-right': cropper.rotate(90); break;
+            }
+        }
+
+        function updateInputsFromCropper(data) {
+            cropInputs.x.value = Math.round(data.x);
+            cropInputs.y.value = Math.round(data.y);
+            cropInputs.w.value = Math.round(data.width);
+            cropInputs.h.value = Math.round(data.height);
+        }
+
+        function updateCropperFromInputs() {
+            if (!cropper) return;
+            cropper.setData({
+                x: parseInt(cropInputs.x.value) || 0,
+                y: parseInt(cropInputs.y.value) || 0,
+                width: parseInt(cropInputs.w.value) || 0,
+                height: parseInt(cropInputs.h.value) || 0,
+            });
+        }
+
+        function downloadCroppedImage() {
+            if (!cropper || !originalFile) return;
+            const canvas = cropper.getCroppedCanvas({ imageSmoothingQuality: 'high' });
+            const mimeType = originalFile.type;
+            const originalName = originalFile.name.substring(0, originalFile.name.lastIndexOf('.'));
+            const extension = mimeType.split('/')[1] === 'jpeg' ? 'jpg' : mimeType.split('/')[1];
+            
+            canvas.toBlob((blob) => {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${originalName}-cropped.${extension}`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }, mimeType);
+        }
+
+        function resetUI() {
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            fileInput.value = '';
+            image.src = '';
+            setUIState('IDLE');
+        }
+
+        resetUI();
+    </script>
+</body>
+</html>

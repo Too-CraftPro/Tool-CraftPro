@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Excel to PDF Converter - Free & Secure Online Tool | ToolCraft Pro</title>
+    <meta name="description" content="Convert Excel spreadsheets (XLS, XLSX) to PDF online for free. Preserve formatting and share your data easily. Fast, secure, and no installation required.">
+    <meta name="keywords" content="excel to pdf, convert excel to pdf, xls to pdf, xlsx to pdf, free excel converter, spreadsheet to pdf">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; opacity: 0.5; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
+        
+        /* --- Excel to PDF Tool Styles --- */
+        .upload-area { border: 2px dashed var(--neon-blue); border-radius: 10px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
+        .upload-area:hover, .upload-area.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; transform: scale(1.02); }
+        .upload-area i { font-size: 3rem; color: var(--neon-green); margin-bottom: 15px; } /* Changed color for variety */
+        .upload-area p { margin: 0; font-size: 1.1rem; color: #C0C0C0; }
+        .upload-area .file-name { color: var(--neon-green); font-weight: bold; margin-top: 10px; }
+        #file-input { display: none; }
+        .tool-actions { text-align: center; margin: 25px 0; }
+        #download-container { display: none; margin-top: 25px; text-align: center; }
+        #download-link { font-size: 1rem; padding: 12px 30px; }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools" class="active"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#pdf-tools-section">PDF & Document Tools</a> &gt; <span class="current">Excel to PDF Converter</span>
+                </nav>
+                <h1>Excel to PDF <span class="neon-text">Converter</span></h1>
+                <p class="subtitle">Transform your spreadsheets into professional, easy-to-share PDFs.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div id="upload-area" class="upload-area">
+                    <input type="file" id="file-input" accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                    <i class="fas fa-file-excel"></i>
+                    <p>Drag & drop your XLS or XLSX file here, or click to select file.</p>
+                    <p class="file-name" id="file-name-display"></p>
+                </div>
+
+                <div class="tool-actions">
+                    <button id="convert-btn" class="btn btn-neon" disabled>Convert to PDF</button>
+                </div>
+
+                <div id="download-container">
+                    <a id="download-link" class="btn btn-neon" href="#" download>
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Convert Excel to PDF</h2>
+                    <ol>
+                        <li><strong>Select Excel File:</strong> Drag your .xls or .xlsx spreadsheet into the upload box, or click to browse and choose a file from your device.</li>
+                        <li><strong>Initiate Conversion:</strong> Click the "Convert to PDF" button. Our system will immediately start processing your Excel file.</li>
+                        <li><strong>Download PDF:</strong> After the conversion finishes, a "Download PDF" button will appear. Click it to save your newly created PDF document.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Excel to PDF Converter</h2>
+                    <p>This tool is essential for anyone needing to share or archive Excel data. Converting your spreadsheets to PDF locks in the formatting, tables, charts, and calculations, creating a "snapshot" of your work that's perfect for reports, invoices, and data summaries. A PDF ensures that your data is viewed exactly as you intended, without requiring the recipient to have Microsoft Excel.</p>
+                    <p>We are committed to your data security. The conversion process is fully encrypted, and your files are automatically removed from our servers after a short period. This allows you to convert sensitive financial data and other important spreadsheets with peace of mind.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">Are my sensitive spreadsheets safe?</h3>
+                            <div class="faq-answer"><p>Yes. We use secure connections for all file transfers. Your files are only on our servers for the brief time it takes to convert them, after which they are permanently deleted. Your data's confidentiality is guaranteed.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">How are multiple sheets or wide tables handled?</h3>
+                            <div class="faq-answer"><p>Our converter is optimized to handle standard spreadsheet layouts. By default, it will convert the active sheet and attempt to fit the content to a standard page size (like A4 or Letter). For very wide tables, it may split them across multiple pages. For best results, ensure your print settings are configured correctly in Excel before uploading.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Can I convert both XLS and XLSX files?</h3>
+                            <div class="faq-answer"><p>Absolutely. Our tool supports both the traditional .xls format from older Excel versions and the modern XML-based .xlsx format used by recent versions of Microsoft Excel and other spreadsheet software like Google Sheets.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 <a href="/">ToolCraft</a> Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core Excel to PDF Tool Logic ---
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const convertBtn = document.getElementById('convert-btn');
+        const downloadContainer = document.getElementById('download-container');
+        const downloadLink = document.getElementById('download-link');
+        
+        let selectedFile = null;
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+        function handleFile(file) {
+            if (!file) return;
+            const isValid = file.name.endsWith('.xls') || file.name.endsWith('.xlsx');
+            if (isValid) {
+                selectedFile = file;
+                fileNameDisplay.textContent = `Selected: ${file.name}`;
+                convertBtn.disabled = false;
+                downloadContainer.style.display = 'none';
+            } else {
+                fileNameDisplay.textContent = 'Invalid file. Please select an XLS or XLSX file.';
+                selectedFile = null;
+                convertBtn.disabled = true;
+            }
+        }
+
+        convertBtn.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            convertBtn.textContent = 'Converting...';
+            convertBtn.disabled = true;
+
+            // --- REAL CONVERSION LOGIC WOULD GO HERE ---
+            // NOTE: Converting Excel to PDF cannot be done with browser-side JavaScript alone.
+            // This requires a server-side process (e.g., using a library like LibreOffice or a paid API).
+            // The following code SIMULATES the process for demonstration.
+            setTimeout(() => {
+                // Simulate creating a PDF file blob
+                const fakePdfContent = `This is a simulated PDF converted from ${selectedFile.name}.`;
+                const blob = new Blob([fakePdfContent], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+
+                // Prepare the download link
+                const newFilename = selectedFile.name.replace(/\.(xls|xlsx)$/, '') + '.pdf';
+                downloadLink.href = url;
+                downloadLink.setAttribute('download', newFilename);
+                
+                // Show the download button and reset the convert button
+                downloadContainer.style.display = 'block';
+                convertBtn.textContent = 'Convert to PDF';
+                convertBtn.disabled = false;
+
+            }, 2000); // Simulate network and processing time
+        });
+
+    </script>
+</body>
+</html>

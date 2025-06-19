@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free Image Resizer - Resize JPG, PNG, WEBP Images Online | ToolCraft Pro</title>
+    <meta name="description" content="Easily resize images to specific dimensions (pixels) or by percentage with our free online image resizer. Maintain aspect ratio to prevent distortion. Fast and secure.">
+    <meta name="keywords" content="image resizer, resize image, change image size, photo resizer, resize png, resize jpg, online tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; background-color: #555 !important; box-shadow: none !important; color: #999 !important; border-color: #555 !important; transform: none !important; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* Header & Footer */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* Tool Page Specific Styles */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
+        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
+        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
+        #file-input { display: none; }
+        .image-preview-container { text-align: center; margin: 20px 0; }
+        #image-preview { max-width: 100%; max-height: 250px; border-radius: 8px; border: 2px solid var(--neon-blue); }
+        .resize-options { margin-top: 20px; background: #0F0F1A; padding: 20px; border-radius: 8px; border: 1px solid rgba(0,247,255,0.1); }
+        .options-tabs { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 1px solid var(--neon-purple); }
+        .tab-btn { background: none; border: none; color: #A0A0A0; font-size: 1rem; padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s ease; }
+        .tab-btn.active { color: var(--neon-blue); border-bottom-color: var(--neon-blue); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .dimension-inputs { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .dimension-inputs input[type="number"] { width: 100px; background-color: var(--card-bg); border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 8px; border-radius: 5px; text-align: center; font-size: 1rem; }
+        .dimension-inputs .link-icon { font-size: 1.2rem; cursor: pointer; }
+        .dimension-inputs .link-icon.locked { color: var(--neon-green); }
+        .percent-input { text-align: center; }
+        .percent-input input { width: 150px; margin-top: 10px; }
+        .tool-controls { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
+        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; }
+        #status-message.success { background-color: rgba(0, 255, 132, 0.1); color: var(--neon-green); }
+        #status-message.error { background-color: rgba(255, 47, 0, 0.1); color: var(--neon-red); }
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <h1 class="neon-text">Image Resizer</h1>
+                <p>Change image dimensions by pixels or percentage with ease.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <input type="file" id="file-input" accept="image/*">
+                
+                <div id="upload-container">
+                    <div id="upload-box" class="upload-box">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p><strong>Drag & Drop</strong> your image here</p>
+                    </div>
+                </div>
+
+                <div id="processing-container" style="display: none;">
+                    <div class="image-preview-container">
+                        <img id="image-preview" src="" alt="Image Preview">
+                    </div>
+                    <div class="resize-options">
+                        <div class="options-tabs">
+                            <button class="tab-btn active" data-tab="pixels">By Pixels</button>
+                            <button class="tab-btn" data-tab="percentage">By Percentage</button>
+                        </div>
+                        <div id="pixels-tab" class="tab-content active">
+                            <div class="dimension-inputs">
+                                <input type="number" id="width-input" placeholder="Width">
+                                <i id="aspect-ratio-lock" class="fas fa-link link-icon locked"></i>
+                                <input type="number" id="height-input" placeholder="Height">
+                            </div>
+                        </div>
+                        <div id="percentage-tab" class="tab-content">
+                            <div class="percent-input">
+                                <label for="percentage-slider">Scale: <span id="percentage-value">100%</span></label>
+                                <input type="range" id="percentage-slider" min="1" max="200" value="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="status-message"></div>
+
+                <div class="tool-controls">
+                    <button id="resize-btn" class="btn btn-neon" style="display: none;"><i class="fas fa-expand-arrows-alt"></i> Resize Image</button>
+                    <button id="download-btn" class="btn btn-neon" style="display: none;"><i class="fas fa-download"></i> Download Resized Image</button>
+                    <button id="new-btn" class="btn btn-outline-neon" style="display: none;"><i class="fas fa-sync"></i> Resize Another</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Resize Your Images</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Upload an Image:</strong> Drag your file to the upload box or click to select it.</li>
+                        <li><strong>Choose a Method:</strong> Select "By Pixels" or "By Percentage".</li>
+                        <li><strong>Enter Dimensions:</strong> 
+                            <ul>
+                                <li><strong>For Pixels:</strong> Enter your desired width or height. The other dimension will update automatically if the aspect ratio lock is on. Click the lock icon to unlock and set them independently.</li>
+                                <li><strong>For Percentage:</strong> Use the slider to scale your image up or down.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Resize and Download:</strong> Click "Resize Image". A download button will appear. Click it to save your new file.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Free Image Resizer</h2>
+                    <p>Whether you're preparing images for a website, a social media post, or an email newsletter, having the right dimensions is crucial. Our Free Image Resizer makes it incredibly simple to change the size of any image without needing complicated software. You can scale your images to exact pixel dimensions or by a simple percentage.</p>
+                    <p>A key feature of our tool is the "maintain aspect ratio" lock. By default, it's enabled to ensure that when you change an image's width, the height adjusts proportionally (and vice versa). This prevents your images from looking stretched or squashed. For advanced use cases, you can unlock it to set custom dimensions. All processing happens securely in your browser, guaranteeing your privacy.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        const uploadContainer = document.getElementById('upload-container');
+        const fileInput = document.getElementById('file-input');
+        const processingContainer = document.getElementById('processing-container');
+        const imagePreview = document.getElementById('image-preview');
+        
+        const widthInput = document.getElementById('width-input');
+        const heightInput = document.getElementById('height-input');
+        const aspectRatioLock = document.getElementById('aspect-ratio-lock');
+        
+        const percentageSlider = document.getElementById('percentage-slider');
+        const percentageValue = document.getElementById('percentage-value');
+
+        const tabs = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        const resizeBtn = document.getElementById('resize-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const newBtn = document.getElementById('new-btn');
+
+        let originalFile = null;
+        let image = new Image();
+        let aspectRatio = 1;
+
+        // Event Listeners
+        uploadContainer.addEventListener('click', () => fileInput.click());
+        uploadContainer.addEventListener('dragover', (e) => { e.preventDefault(); uploadContainer.firstElementChild.classList.add('dragover'); });
+        uploadContainer.addEventListener('dragleave', () => uploadContainer.firstElementChild.classList.remove('dragover'));
+        uploadContainer.addEventListener('drop', (e) => { e.preventDefault(); if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+        fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFile(e.target.files[0]); });
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+            });
+        });
+
+        aspectRatioLock.addEventListener('click', () => aspectRatioLock.classList.toggle('locked'));
+
+        widthInput.addEventListener('input', () => {
+            if (aspectRatioLock.classList.contains('locked')) {
+                heightInput.value = Math.round(widthInput.value / aspectRatio);
+            }
+        });
+        heightInput.addEventListener('input', () => {
+            if (aspectRatioLock.classList.contains('locked')) {
+                widthInput.value = Math.round(heightInput.value * aspectRatio);
+            }
+        });
+
+        percentageSlider.addEventListener('input', () => {
+            percentageValue.textContent = `${percentageSlider.value}%`;
+        });
+
+        resizeBtn.addEventListener('click', processResize);
+        newBtn.addEventListener('click', resetUI);
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            originalFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                image.onload = () => {
+                    aspectRatio = image.width / image.height;
+                    widthInput.value = image.width;
+                    heightInput.value = image.height;
+                    imagePreview.src = image.src;
+                    setUIState('LOADED');
+                };
+                image.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setUIState(state) {
+            uploadContainer.style.display = state === 'IDLE' ? 'block' : 'none';
+            processingContainer.style.display = state === 'LOADED' || state === 'RESIZED' ? 'block' : 'none';
+            resizeBtn.style.display = state === 'LOADED' ? 'inline-block' : 'none';
+            downloadBtn.style.display = state === 'RESIZED' ? 'inline-block' : 'none';
+            newBtn.style.display = state === 'RESIZED' ? 'inline-block' : 'none';
+        }
+
+        function processResize() {
+            let newWidth, newHeight;
+            const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
+
+            if (activeTab === 'pixels') {
+                newWidth = parseInt(widthInput.value);
+                newHeight = parseInt(heightInput.value);
+            } else {
+                const scale = parseInt(percentageSlider.value) / 100;
+                newWidth = Math.round(image.width * scale);
+                newHeight = Math.round(image.height * scale);
+            }
+
+            if (!newWidth || !newHeight || newWidth <= 0 || newHeight <= 0) {
+                alert('Please enter valid dimensions.');
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0, newWidth, newHeight);
+
+            const dataUrl = canvas.toDataURL(originalFile.type);
+            imagePreview.src = dataUrl; // Show resized preview
+            
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                const nameParts = originalFile.name.split('.');
+                const extension = nameParts.pop();
+                link.download = `${nameParts.join('.')}-resized.${extension}`;
+                link.click();
+            };
+
+            setUIState('RESIZED');
+        }
+
+        function resetUI() {
+            originalFile = null;
+            image = new Image();
+            fileInput.value = '';
+            widthInput.value = '';
+            heightInput.value = '';
+            percentageSlider.value = 100;
+            percentageValue.textContent = '100%';
+            setUIState('IDLE');
+        }
+        
+        resetUI();
+    </script>
+</body>
+</html>

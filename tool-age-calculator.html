@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Age Calculator - Calculate Your Age in Years, Months, Days | ToolCraft Pro</title>
+    <meta name="description" content="Accurately calculate your age from your date of birth down to the exact day. Find out your chronological age in years, months, weeks, days, hours, and minutes.">
+    <meta name="keywords" content="age calculator, date of birth calculator, how old am I, chronological age, calculate age, date difference, birthday calculator, time between dates">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        
+        /* --- Age Calculator Styles --- */
+        .date-inputs { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 25px; }
+        .input-group { display: flex; flex-direction: column; align-items: center; }
+        .input-group label { font-size: 1.1rem; color: #E0E0E0; margin-bottom: 10px; font-weight: bold; }
+        .input-group input[type="date"] {
+            background-color: #0F0F1A;
+            border: 1px solid var(--neon-blue);
+            color: #E0E0E0;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            width: 220px;
+            cursor: pointer;
+        }
+        .input-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(1.5) sepia(1) saturate(5) hue-rotate(150deg); /* Neon-ish color */
+            cursor: pointer;
+        }
+        .tool-controls { text-align: center; margin-top: 20px; }
+        
+        #result-container { display: none; margin-top: 30px; text-align: center; }
+        #age-summary { font-size: 1.5rem; margin-bottom: 25px; color: #fff; font-weight: bold; }
+        #age-summary span { color: var(--neon-green); font-family: 'Orbitron'; }
+        
+        .detailed-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .result-box {
+            background: #0F0F1A;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .result-box:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 5px 15px rgba(0, 247, 255, 0.2);
+        }
+        .result-box h3 { font-size: 0.9rem; color: var(--neon-blue); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
+        .result-box p { font-size: 1.4rem; font-weight: bold; color: #E0E0E0; font-family: 'Orbitron', sans-serif;}
+
+        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; background-color: rgba(255, 47, 0, 0.1); color: #ff5555; border: 1px solid #ff5555; }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools" class="active"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#calculator-tools-section">Calculator Tools</a> &gt; <span class="current">Age Calculator</span>
+                </nav>
+                <h1><span class="neon-text">Age</span> Calculator</h1>
+                <p class="subtitle">Accurately calculate your age or the time between any two dates.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="date-inputs">
+                    <div class="input-group">
+                        <label for="dob-input">Your Date of Birth</label>
+                        <input type="date" id="dob-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="today-date-input">Age at the Date of</label>
+                        <input type="date" id="today-date-input">
+                    </div>
+                </div>
+
+                <div class="tool-controls">
+                    <button id="calculate-age-btn" class="btn btn-neon"><i class="fas fa-rocket"></i> Calculate Age</button>
+                </div>
+                
+                <div id="status-message"></div>
+                
+                <div id="result-container">
+                    <p id="age-summary">You are <span id="years">0</span> years, <span id="months">0</span> months & <span id="days">0</span> days old</p>
+                    <div class="detailed-results">
+                        <div class="result-box">
+                            <h3>Total Months</h3>
+                            <p id="total-months">0</p>
+                        </div>
+                        <div class="result-box">
+                            <h3>Total Weeks</h3>
+                            <p id="total-weeks">0</p>
+                        </div>
+                        <div class="result-box">
+                            <h3>Total Days</h3>
+                            <p id="total-days">0</p>
+                        </div>
+                        <div class="result-box">
+                            <h3>Total Hours</h3>
+                            <p id="total-hours">0</p>
+                        </div>
+                        <div class="result-box">
+                            <h3>Total Minutes</h3>
+                            <p id="total-minutes">0</p>
+                        </div>
+                        <div class="result-box">
+                            <h3>Total Seconds</h3>
+                            <p id="total-seconds">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Calculate Your Age</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Enter Date of Birth:</strong> Click or tap on the "Your Date of Birth" field and select your birth date from the calendar.</li>
+                        <li><strong>Select Target Date:</strong> The "Age at the Date of" field is automatically set to today's date. You can change it to any other date to calculate age at a specific point in time.</li>
+                        <li><strong>Calculate:</strong> Click the "Calculate Age" button.</li>
+                        <li><strong>View Results:</strong> Your age will be displayed in years, months, and days, along with a detailed breakdown into total months, weeks, days, and more.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Free Age Calculator</h2>
+                    <p>Ever wondered exactly how old you are, down to the day? Or needed to find the precise duration between two important events? Our Age Calculator is a simple yet powerful tool designed for just that. It provides an instant and accurate chronological age calculation based on a given date of birth. Beyond just telling you your age in years, it breaks down the duration into a detailed summary of months, weeks, days, hours, minutes, and even seconds.</p>
+                    <p>This tool is perfect for personal curiosity, filling out applications that require exact age, planning events, or historical research. The calculation logic correctly accounts for the varying number of days in months and leap years, ensuring precision. As with all our tools, the entire calculation is performed in your browser, guaranteeing that your personal data (like your date of birth) remains completely private and is never sent to our servers.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">How is the age calculated so precisely?</h3>
+                            <div class="faq-answer"><p>Our calculator determines the years, months, and days by subtracting the start date's components from the end date's components. It intelligently "borrows" from the next highest unit (e.g., borrows a month to calculate days, or borrows a year to calculate months) when necessary. This method correctly handles variations in month lengths and leap years, providing a human-readable and intuitive result, which is more accurate for this purpose than simply converting the total time difference.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">Can I calculate the age of my pet or the duration of a project?</h3>
+                            <div class="faq-answer"><p>Yes, absolutely! The calculator is not limited to human ages. You can use it to find the duration between any two dates. Simply enter the project's start date in the "Date of Birth" field and the end date in the "Age at the Date of" field to get a precise duration.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Is my date of birth saved anywhere?</h3>
+                            <div class="faq-answer"><p>No. Your privacy is our priority. All calculations are performed directly on your computer using JavaScript in your browser. The dates you enter are never transmitted or stored on our servers. Once you leave the page, the data is gone.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core Age Calculator Logic ---
+        const dobInput = document.getElementById('dob-input');
+        const todayDateInput = document.getElementById('today-date-input');
+        const calculateBtn = document.getElementById('calculate-age-btn');
+        const resultContainer = document.getElementById('result-container');
+        const statusMessage = document.getElementById('status-message');
+        
+        // Result fields
+        const yearsSpan = document.getElementById('years');
+        const monthsSpan = document.getElementById('months');
+        const daysSpan = document.getElementById('days');
+        const totalMonthsSpan = document.getElementById('total-months');
+        const totalWeeksSpan = document.getElementById('total-weeks');
+        const totalDaysSpan = document.getElementById('total-days');
+        const totalHoursSpan = document.getElementById('total-hours');
+        const totalMinutesSpan = document.getElementById('total-minutes');
+        const totalSecondsSpan = document.getElementById('total-seconds');
+
+        function setTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            todayDateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+        
+        function showStatus(message) {
+            statusMessage.textContent = message;
+            statusMessage.style.display = 'block';
+            resultContainer.style.display = 'none';
+        }
+        
+        function hideStatus() {
+            statusMessage.style.display = 'none';
+        }
+
+        calculateBtn.addEventListener('click', () => {
+            const dobValue = dobInput.value;
+            const todayValue = todayDateInput.value;
+
+            if (!dobValue || !todayValue) {
+                showStatus("Please select both dates.");
+                return;
+            }
+
+            const startDate = new Date(dobValue);
+            const endDate = new Date(todayValue);
+
+            if (startDate > endDate) {
+                showStatus("Date of Birth cannot be in the future.");
+                return;
+            }
+            
+            hideStatus();
+
+            // --- Calculation for Years, Months, Days ---
+            let endYear = endDate.getFullYear();
+            let endMonth = endDate.getMonth() + 1;
+            let endDay = endDate.getDate();
+
+            const startYear = startDate.getFullYear();
+            const startMonth = startDate.getMonth() + 1;
+            const startDay = startDate.getDate();
+            
+            let yearAge = endYear - startYear;
+            let monthAge, dayAge;
+
+            if (endMonth >= startMonth) {
+                monthAge = endMonth - startMonth;
+            } else {
+                yearAge--;
+                monthAge = 12 + endMonth - startMonth;
+            }
+
+            if (endDay >= startDay) {
+                dayAge = endDay - startDay;
+            } else {
+                monthAge--;
+                if (monthAge < 0) {
+                    monthAge = 11;
+                    yearAge--;
+                }
+                // get days in the previous month of the end date
+                let daysInPrevMonth = new Date(endYear, endMonth - 1, 0).getDate();
+                dayAge = daysInPrevMonth + endDay - startDay;
+            }
+            
+            yearsSpan.textContent = yearAge;
+            monthsSpan.textContent = monthAge;
+            daysSpan.textContent = dayAge;
+
+            // --- Calculation for detailed totals ---
+            const timeDiff = endDate.getTime() - startDate.getTime();
+            const totalSeconds = Math.floor(timeDiff / 1000);
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const totalHours = Math.floor(totalMinutes / 60);
+            const totalDays = Math.floor(totalHours / 24);
+            const totalWeeks = (totalDays / 7).toFixed(1);
+            const totalMonths = yearAge * 12 + monthAge;
+
+            totalMonthsSpan.textContent = totalMonths.toLocaleString();
+            totalWeeksSpan.textContent = totalWeeks.toLocaleString();
+            totalDaysSpan.textContent = totalDays.toLocaleString();
+            totalHoursSpan.textContent = totalHours.toLocaleString();
+            totalMinutesSpan.textContent = totalMinutes.toLocaleString();
+            totalSecondsSpan.textContent = totalSeconds.toLocaleString();
+            
+            resultContainer.style.display = 'block';
+        });
+
+        // Initialize the 'today' date input on page load
+        window.onload = setTodayDate;
+    </script>
+</body>
+</html>

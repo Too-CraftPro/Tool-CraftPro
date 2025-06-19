@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Color Blindness Simulator - Test Your Designs | ToolCraft Pro</title>
+    <meta name="description" content="A free online tool to simulate different types of color blindness (Protanopia, Deuteranopia, etc.). Upload an image to see how it appears to people with color vision deficiency.">
+    <meta name="keywords" content="color blindness simulator, color vision deficiency, cvd, protanopia, deuteranopia, tritanopia, accessibility tool, design testing">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        
+        /* --- Color Blindness Simulator Styles --- */
+        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
+        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
+        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
+        .upload-box p { font-size: 1.1rem; }
+        #image-input { display: none; }
+        
+        #simulator-ui { display: none; }
+        .simulation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .simulation-view { background: #0F0F1A; padding: 15px; border-radius: 8px; border: 1px solid var(--neon-blue); }
+        .simulation-view h3 { font-size: 1.2rem; text-align: center; color: var(--neon-blue); }
+        .simulation-view img { width: 100%; height: auto; border-radius: 4px; }
+        
+        .tool-controls { text-align: center; margin-top: 25px; }
+        
+        /* SVG filters for color blindness simulation */
+        svg#color-filters { position: absolute; height: 0; width: 0; }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .content-section ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    
+    <!-- SVG Filters Definition -->
+    <svg id="color-filters">
+        <defs>
+            <filter id="normal">
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+            </filter>
+            <filter id="protanopia">
+                <feColorMatrix type="matrix" values="0.567 0.433 0 0 0   0.558 0.442 0 0 0   0 0.242 0.758 0 0   0 0 0 1 0" />
+            </filter>
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix" values="0.625 0.375 0 0 0   0.7 0.3 0 0 0   0 0.3 0.7 0 0   0 0 0 1 0" />
+            </filter>
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix" values="0.95 0.05 0 0 0   0 0.433 0.567 0 0   0 0.475 0.525 0 0   0 0 0 1 0" />
+            </filter>
+            <filter id="achromatopsia">
+                <feColorMatrix type="matrix" values="0.299 0.587 0.114 0 0   0.299 0.587 0.114 0 0   0.299 0.587 0.114 0 0   0 0 0 1 0" />
+            </filter>
+        </defs>
+    </svg>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools" class="active"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">Color Blindness Simulator</span>
+                </nav>
+                <h1><span class="neon-text">Color Blindness</span> Simulator</h1>
+                <p class="subtitle">See your designs through the eyes of users with color vision deficiency.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <input type="file" id="image-input" accept="image/jpeg, image/png, image/gif, image/webp">
+                
+                <div id="upload-container">
+                    <div id="upload-box" class="upload-box">
+                        <i class="fas fa-eye"></i>
+                        <p><strong>Drag & Drop</strong> your image here to simulate</p>
+                        <span>or click to select a file</span>
+                    </div>
+                </div>
+
+                <div id="simulator-ui">
+                    <div class="simulation-grid">
+                        <div class="simulation-view">
+                            <h3>Normal Vision</h3>
+                            <img id="img-normal" src="">
+                        </div>
+                        <div class="simulation-view">
+                            <h3>Protanopia (Red-Blind)</h3>
+                            <img id="img-protanopia" src="">
+                        </div>
+                        <div class="simulation-view">
+                            <h3>Deuteranopia (Green-Blind)</h3>
+                            <img id="img-deuteranopia" src="">
+                        </div>
+                        <div class="simulation-view">
+                            <h3>Tritanopia (Blue-Blind)</h3>
+                            <img id="img-tritanopia" src="">
+                        </div>
+                        <div class="simulation-view">
+                            <h3>Achromatopsia (Monochrome)</h3>
+                            <img id="img-achromatopsia" src="">
+                        </div>
+                    </div>
+                    <div class="tool-controls">
+                        <button id="reset-btn" class="btn btn-outline-neon"><i class="fas fa-sync"></i> Try Another Image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="content-section">
+                <h2>Why Use a Color Blindness Simulator?</h2>
+                <p>Approximately 1 in 12 men and 1 in 200 women have some form of color vision deficiency (CVD). Designing without considering these users can lead to inaccessible interfaces, where important information conveyed by color is lost. This simulator is a crucial accessibility tool for designers, developers, and artists.</p>
+                <p>By uploading an image of your website, app, or artwork, you can instantly see how it would appear to someone with a common form of color blindness. This allows you to check for issues like:</p>
+                    <ul>
+                        <li>Text or links that rely solely on color for differentiation.</li>
+                        <li>Important states in charts or graphs that become indistinguishable.</li>
+                        <li>Buttons or calls-to-action that blend into the background.</li>
+                    </ul>
+                <p>Ensuring your design is accessible not only helps users with CVD but often leads to stronger, more robust designs for everyone.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Color Blindness Simulator Logic ---
+        const uploadContainer = document.getElementById('upload-container');
+        const imageInput = document.getElementById('image-input');
+        const simulatorUI = document.getElementById('simulator-ui');
+        const resetBtn = document.getElementById('reset-btn');
+
+        const imageTargets = {
+            normal: document.getElementById('img-normal'),
+            protanopia: document.getElementById('img-protanopia'),
+            deuteranopia: document.getElementById('img-deuteranopia'),
+            tritanopia: document.getElementById('img-tritanopia'),
+            achromatopsia: document.getElementById('img-achromatopsia'),
+        };
+
+        // --- Event Listeners ---
+        uploadContainer.addEventListener('click', () => imageInput.click());
+        uploadContainer.addEventListener('dragover', (e) => { e.preventDefault(); uploadContainer.firstElementChild.classList.add('dragover'); });
+        uploadContainer.addEventListener('dragleave', () => { uploadContainer.firstElementChild.classList.remove('dragover'); });
+        uploadContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadContainer.firstElementChild.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]);
+        });
+        imageInput.addEventListener('change', (e) => { if (e.target.files.length) handleImageFile(e.target.files[0]); });
+        resetBtn.addEventListener('click', resetTool);
+        
+        function handleImageFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageUrl = e.target.result;
+                displaySimulations(imageUrl);
+                uploadContainer.style.display = 'none';
+                simulatorUI.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displaySimulations(imageUrl) {
+            for (const key in imageTargets) {
+                const imgElement = imageTargets[key];
+                imgElement.src = imageUrl;
+                imgElement.style.filter = `url(#${key})`;
+            }
+        }
+        
+        function resetTool() {
+            uploadContainer.style.display = 'block';
+            simulatorUI.style.display = 'none';
+            imageInput.value = '';
+            for (const key in imageTargets) {
+                imageTargets[key].src = '';
+            }
+        }
+
+    </script>
+</body>
+</html>

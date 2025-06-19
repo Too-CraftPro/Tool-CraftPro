@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Free Image to Text Converter (OCR) | ToolCraft Pro</title>
+    <meta name="description" content="Extract text from images online with our free and accurate OCR tool. Convert scanned documents, photos, and screenshots to editable text instantly.">
+    <meta name="keywords" content="image to text, ocr online, extract text from image, photo to text, free ocr, ocr tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; background-color: #555 !important; box-shadow: none !important; color: #999 !important; border-color: #555 !important; transform: none !important; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); transform: translateY(-3px); }
+        .btn-red-outline { background-color: transparent; color: #ff3860; border-color: #ff3860; }
+        .btn-red-outline:hover { background-color: #ff3860; color: #fff; }
+
+        /* Header & Footer */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* Tool Page Specific Styles */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+        
+        .upload-section { text-align: center; margin-bottom: 2rem; }
+        .upload-controls { margin-bottom: 1rem; }
+        input[type="file"] { display: none; }
+        
+        .ocr-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+        @media (min-width: 768px) { .ocr-layout { grid-template-columns: 1fr 1fr; } }
+        
+        .ocr-box h3 { color: var(--neon-blue); font-size: 1.4rem; margin-bottom: 15px; text-align: center; }
+        .image-preview-container { min-height: 250px; display: flex; align-items: center; justify-content: center; background: #0f0f1a; border: 1px solid rgba(0,247,255,0.2); border-radius: 8px; padding: 10px; }
+        .image-preview { max-width: 100%; max-height: 300px; border-radius: 4px; }
+        
+        #resultText {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            background-color: #0F0F1A;
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            padding: 15px;
+            resize: vertical;
+        }
+        #resultText:focus { outline: none; border-color: var(--neon-pink); }
+        
+        #statusMessage { margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; display: none; }
+        #statusMessage.processing { background-color: rgba(0, 247, 255, 0.1); color: var(--neon-blue); }
+        #statusMessage.error { background-color: rgba(255, 56, 96, 0.1); color: #ff3860; }
+        .result-controls { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <h1 class="neon-text">Image to Text (OCR)</h1>
+                <p>Extract text from any image or scanned document with high accuracy.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="upload-section">
+                    <input type="file" id="fileInput" accept="image/*">
+                    <div class="upload-controls">
+                        <label for="fileInput" class="btn btn-outline-neon"><i class="fas fa-file-image"></i> Choose Image to Upload</label>
+                    </div>
+                </div>
+                
+                <div id="statusMessage"></div>
+
+                <div id="main-content" class="ocr-layout" style="display: none;">
+                    <div class="ocr-box">
+                         <h3><i class="fas fa-image"></i> Your Image</h3>
+                         <div class="image-preview-container">
+                             <img id="imagePreview" class="image-preview" alt="Selected image preview">
+                         </div>
+                    </div>
+                    <div class="ocr-box">
+                        <h3><i class="fas fa-align-left"></i> Extracted Text</h3>
+                        <textarea id="resultText" readonly placeholder="Extracting text..."></textarea>
+                    </div>
+                </div>
+
+                <div class="result-controls" style="display: none;">
+                    <button id="copyBtn" class="btn btn-outline-neon"><i class="fas fa-copy"></i> Copy Text</button>
+                    <button id="resetBtn" class="btn btn-red-outline"><i class="fas fa-sync"></i> New Image</button>
+                </div>
+
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Convert Image to Text</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Upload Image:</strong> Click "Choose Image" to select a file (JPG, PNG, etc.) from your device.</li>
+                        <li><strong>Automatic Processing:</strong> The tool will automatically start processing the image once uploaded.</li>
+                        <li><strong>Copy Your Text:</strong> The recognized text will appear in the text box on the right. Use the "Copy Text" button for convenience.</li>
+                        <li><strong>Start Over:</strong> Click "New Image" to clear the results and process another file.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const resultText = document.getElementById('resultText');
+        const copyBtn = document.getElementById('copyBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const mainContent = document.getElementById('main-content');
+        const resultControls = document.querySelector('.result-controls');
+
+        // --- Event Listeners ---
+        fileInput.addEventListener('change', handleFileSelect);
+        copyBtn.addEventListener('click', copyResultText);
+        resetBtn.addEventListener('click', resetUI);
+
+        // --- Core Functions ---
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                resetUI();
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                mainContent.style.display = 'grid'; // Show the grid
+                processImage(file);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function processImage(file) {
+            setUIState('PROCESSING');
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('apikey', 'helloworld'); // Public key for ocr.space
+            formData.append('language', 'eng');
+            formData.append('isOverlayRequired', 'false');
+
+            try {
+                const response = await fetch('https://api.ocr.space/parse/image', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Network response error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (data.IsErroredOnProcessing) {
+                    throw new Error(data.ErrorMessage.join('\n'));
+                }
+                
+                const extractedText = data.ParsedResults[0]?.ParsedText || 'No text could be found in the image.';
+                resultText.value = extractedText;
+                setUIState('SUCCESS');
+
+            } catch (error) {
+                console.error('OCR Error:', error);
+                setUIState('ERROR', `Error: ${error.message}`);
+            }
+        }
+
+        function copyResultText() {
+            if (!resultText.value) return;
+            navigator.clipboard.writeText(resultText.value).then(() => {
+                alert('Text copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy text.');
+            });
+        }
+        
+        function setUIState(state, message = '') {
+            statusMessage.style.display = 'block';
+            statusMessage.className = ''; 
+
+            if (state === 'PROCESSING') {
+                statusMessage.textContent = 'Processing... Please wait.';
+                statusMessage.classList.add('processing');
+                resultControls.style.display = 'none';
+                resultText.value = 'Extracting text...';
+            } else if (state === 'SUCCESS') {
+                statusMessage.style.display = 'none';
+                resultControls.style.display = 'flex';
+            } else if (state === 'ERROR') {
+                statusMessage.textContent = message;
+                statusMessage.classList.add('error');
+                resultControls.style.display = 'flex';
+                resultText.value = 'An error occurred during processing.';
+            }
+        }
+        
+        function resetUI() {
+            fileInput.value = '';
+            imagePreview.src = '';
+            resultText.value = '';
+            mainContent.style.display = 'none';
+            resultControls.style.display = 'none';
+            statusMessage.style.display = 'none';
+        }
+
+        resetUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Currency Converter - Live Foreign Exchange Rates | ToolCraft Pro</title>
+    <meta name="description" content="Free online currency converter with live exchange rates. Convert any amount between hundreds of world currencies instantly. Fast, accurate, and easy to use.">
+    <meta name="keywords" content="currency converter, exchange rate, convert money, forex calculator, live exchange rates, dollar to euro, pound to dollar, currency exchange">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 800px; margin: 0 auto; }
+        
+        /* --- Currency Converter Styles --- */
+        .converter-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: bold; margin-bottom: 8px; font-size: 1rem; color: #E0E0E0; }
+        .input-group input, .input-group select {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
+            padding: 12px; border-radius: 8px; font-size: 1.1rem; width: 100%;
+        }
+        .converter-main { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+        .converter-main .input-group { flex: 2; min-width: 150px; }
+        #swap-btn {
+            background: transparent; border: 2px solid var(--neon-pink); color: var(--neon-pink);
+            border-radius: 50%; width: 50px; height: 50px; cursor: pointer;
+            font-size: 1.2rem; transition: all 0.3s ease; margin-bottom: 8px;
+        }
+        #swap-btn:hover { background: var(--neon-pink); color: #fff; transform: rotate(180deg); }
+        
+        .tool-controls { text-align: center; margin-top: 25px; }
+        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; }
+        #status-message.error { background-color: rgba(255, 85, 85, 0.1); color: #ff5555; border: 1px solid #ff5555; }
+        #status-message.loading { background-color: rgba(0, 247, 255, 0.1); color: var(--neon-blue); border: 1px solid var(--neon-blue); }
+
+        #result-container { display: none; margin-top: 30px; padding: 25px; border-top: 1px solid var(--neon-purple); text-align: center; }
+        #result-text { font-size: 2rem; color: var(--neon-green); font-family: 'Orbitron'; margin-bottom: 10px; word-wrap: break-word; }
+        #exchange-rate-text { color: #c0c0c0; }
+        
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+        @media (max-width: 500px) { .converter-main { flex-direction: column; align-items: center; } #swap-btn { transform: rotate(90deg); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools" class="active"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#calculator-tools-section">Calculator Tools</a> &gt; <span class="current">Currency Converter</span>
+                </nav>
+                <h1><span class="neon-text">Currency</span> Converter</h1>
+                <p class="subtitle">Convert between global currencies with live exchange rates.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="converter-grid">
+                    <div class="input-group">
+                        <label for="amount-input">Amount</label>
+                        <input type="number" id="amount-input" value="100">
+                    </div>
+                    <div class="converter-main">
+                        <div class="input-group">
+                            <label for="from-currency">From</label>
+                            <select id="from-currency"></select>
+                        </div>
+                        <button id="swap-btn" title="Swap Currencies"><i class="fas fa-exchange-alt"></i></button>
+                        <div class="input-group">
+                            <label for="to-currency">To</label>
+                            <select id="to-currency"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-controls">
+                    <button id="convert-btn" class="btn btn-neon"><i class="fas fa-sync-alt"></i> Convert</button>
+                </div>
+                
+                <div id="status-message"></div>
+
+                <div id="result-container">
+                    <p id="result-text">100 USD = 92.54 EUR</p>
+                    <p id="exchange-rate-text">1 USD = 0.9254 EUR</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Convert Currencies</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Enter Amount:</strong> Type the amount of money you want to convert in the "Amount" field.</li>
+                        <li><strong>Select 'From' Currency:</strong> Choose the currency you are converting from in the first dropdown menu.</li>
+                        <li><strong>Select 'To' Currency:</strong> Choose the currency you want to convert to in the second dropdown menu.</li>
+                        <li><strong>Swap (Optional):</strong> Click the swap button (<i class="fas fa-exchange-alt"></i>) to quickly reverse the 'From' and 'To' currencies.</li>
+                        <li><strong>Convert:</strong> Hit the "Convert" button to get the latest conversion. The result and the live exchange rate will be displayed.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our Live Currency Converter</h2>
+                    <p>Whether you're a traveler planning a trip, an online shopper buying from an international store, or a business professional dealing with foreign transactions, our Currency Converter is your go-to tool. It provides fast and accurate conversions for hundreds of world currencies using up-to-date exchange rates.</p>
+                    <p>We fetch data from a reliable financial data provider to ensure the rates are current, giving you a precise estimate for your conversion needs. The interface is designed for speed and simplicity, allowing you to get the information you need with just a few clicks. Please note that these are mid-market rates and are for informational purposes only; your bank or money transfer service may apply a different rate.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">How often are the exchange rates updated?</h3>
+                            <div class="faq-answer"><p>Our exchange rates are sourced from a third-party provider and are updated frequently, typically every few hours. This ensures that the conversions you see are based on recent market activity, providing a reliable and timely estimate.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">Why is the rate different from what my bank offers?</h3>
+                            <div class="faq-answer"><p>The rates shown here are "mid-market" rates, which are the midpoint between the buy and sell rates on the global currency markets. Banks, credit card companies, and money transfer services typically add a margin (a spread) to these rates as part of their fee. Therefore, the rate you receive from a financial institution will usually be slightly different.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Which currencies are supported?</h3>
+                            <div class="faq-answer"><p>Our tool supports over 150 major world currencies, including the US Dollar (USD), Euro (EUR), British Pound (GBP), Japanese Yen (JPY), Canadian Dollar (CAD), Australian Dollar (AUD), Swiss Franc (CHF), and many more. The dropdown lists are populated automatically with all available currencies.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core Currency Converter Logic ---
+        const fromCurrencySelect = document.getElementById('from-currency');
+        const toCurrencySelect = document.getElementById('to-currency');
+        const amountInput = document.getElementById('amount-input');
+        const swapBtn = document.getElementById('swap-btn');
+        const convertBtn = document.getElementById('convert-btn');
+        const resultContainer = document.getElementById('result-container');
+        const resultText = document.getElementById('result-text');
+        const exchangeRateText = document.getElementById('exchange-rate-text');
+        const statusMessage = document.getElementById('status-message');
+
+        const API_URL = 'https://api.exchangerate-api.com/v4/latest/USD'; // Free API for rates based on USD
+
+        // --- Event Listeners ---
+        swapBtn.addEventListener('click', swapCurrencies);
+        convertBtn.addEventListener('click', performConversion);
+
+        // --- Functions ---
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = type;
+            statusMessage.style.display = 'block';
+            resultContainer.style.display = 'none';
+        }
+
+        async function populateCurrencies() {
+            showStatus('Loading currency list...', 'loading');
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Failed to load currency data.');
+                const data = await fetch(API_URL).then(res => res.json());
+                const currencies = Object.keys(data.rates);
+
+                currencies.forEach(currency => {
+                    const option1 = document.createElement('option');
+                    option1.value = currency;
+                    option1.textContent = currency;
+                    fromCurrencySelect.appendChild(option1);
+
+                    const option2 = document.createElement('option');
+                    option2.value = currency;
+                    option2.textContent = currency;
+                    toCurrencySelect.appendChild(option2);
+                });
+
+                // Set default values
+                fromCurrencySelect.value = 'USD';
+                toCurrencySelect.value = 'EUR';
+                statusMessage.style.display = 'none';
+
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function swapCurrencies() {
+            const temp = fromCurrencySelect.value;
+            fromCurrencySelect.value = toCurrencySelect.value;
+            toCurrencySelect.value = temp;
+        }
+
+        async function performConversion() {
+            const amount = parseFloat(amountInput.value);
+            const fromCurrency = fromCurrencySelect.value;
+            const toCurrency = toCurrencySelect.value;
+
+            if (isNaN(amount) || amount <= 0) {
+                showStatus('Please enter a valid amount.', 'error');
+                return;
+            }
+
+            showStatus('Fetching latest rates...', 'loading');
+
+            try {
+                // Fetch rates based on the 'from' currency for better accuracy
+                const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
+                if (!response.ok) throw new Error('Could not fetch exchange rates.');
+                const data = await response.json();
+                
+                const rate = data.rates[toCurrency];
+                if (!rate) throw new Error(`Rate for ${toCurrency} not available.`);
+                
+                const convertedAmount = amount * rate;
+                
+                statusMessage.style.display = 'none';
+                resultText.textContent = `${amount.toLocaleString()} ${fromCurrency} = ${convertedAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4})} ${toCurrency}`;
+                exchangeRateText.textContent = `1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+                resultContainer.style.display = 'block';
+
+            } catch (error) {
+                 showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', populateCurrencies);
+    </script>
+</body>
+</html>

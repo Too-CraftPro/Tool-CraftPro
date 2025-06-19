@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JSON Formatter & Validator - Online JSON Tool | ToolCraft Pro</title>
+    <meta name="description" content="A free and powerful online tool to format (beautify), minify, and validate your JSON data. Instantly clean up your JSON and check for syntax errors.">
+    <meta name="keywords" content="json formatter, json validator, json beautifier, json minify, format json, validate json, json viewer, online json tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
+        
+        /* --- JSON Formatter Styles --- */
+        .formatter-io { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .textarea-group { position: relative; display: flex; flex-direction: column; }
+        .textarea-group textarea {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
+            padding: 12px; border-radius: 8px; font-size: 1rem; width: 100%;
+            font-family: 'Courier New', Courier, monospace; resize: vertical; min-height: 400px;
+        }
+        
+        .tool-controls { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 20px; }
+        .utility-buttons { position: absolute; top: 10px; right: 10px; display: flex; gap: 10px; }
+        .btn-utility { background: rgba(26, 26, 46, 0.8); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 10px; border-radius: 5px; cursor: pointer; backdrop-filter: blur(2px); }
+        .btn-utility:hover { background: var(--neon-pink); color: #fff; }
+        
+        #status-message {
+            margin-top: 20px; padding: 12px 15px; border-radius: 5px; text-align: center;
+            font-weight: bold; display: none; transition: all 0.3s ease;
+        }
+        #status-message.success { background-color: rgba(0, 255, 132, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); }
+        #status-message.error { background-color: rgba(255, 85, 85, 0.1); color: #ff5555; border: 1px solid #ff5555; }
+        .error-line { text-decoration: underline; cursor: help; }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+        
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools" class="active"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#developer-tools-section">Developer Tools</a> &gt; <span class="current">JSON Formatter & Validator</span>
+                </nav>
+                <h1><span class="neon-text">JSON</span> Formatter & Validator</h1>
+                <p class="subtitle">Beautify, minify, and validate your JSON data with ease.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="formatter-io">
+                    <div class="textarea-group">
+                        <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>
+                        <div class="utility-buttons">
+                            <button id="paste-btn" class="btn-utility" title="Paste from Clipboard"><i class="fas fa-paste"></i></button>
+                            <button id="copy-btn" class="btn-utility" title="Copy to Clipboard"><i class="fas fa-copy"></i></button>
+                            <button id="clear-btn" class="btn-utility" title="Clear Text"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-controls">
+                    <button id="format-btn" class="btn btn-neon"><i class="fas fa-align-left"></i> Format / Beautify</button>
+                    <button id="minify-btn" class="btn btn-outline-neon"><i class="fas fa-compress-arrows-alt"></i> Minify</button>
+                </div>
+
+                <div id="status-message"></div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Use the JSON Tool</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Paste Your JSON:</strong> Paste your JSON data into the text area. You can use the "Paste" icon for convenience.</li>
+                        <li><strong>Validate Automatically:</strong> As you paste or type, the tool will automatically validate your JSON. A status message will appear below the buttons indicating if the JSON is valid or not.</li>
+                        <li><strong>Format or Minify:</strong>
+                            <ul>
+                                <li>Click <strong>"Format / Beautify"</strong> to convert messy or minified JSON into a readable, indented format.</li>
+                                <li>Click <strong>"Minify"</strong> to remove all whitespace and comments, making the JSON compact.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Copy Result:</strong> Use the "Copy" icon to copy the processed JSON to your clipboard.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About Our JSON Formatter & Validator</h2>
+                    <p>JSON (JavaScript Object Notation) has become the de facto standard for data interchange on the web. However, raw JSON from APIs or files can often be unformatted and difficult to read, or contain syntax errors that break applications. Our tool is designed to solve these problems for developers, QA engineers, and students.</p>
+                    <p>It acts as a comprehensive JSON toolkit:
+                        <strong>Validator:</strong> It provides instant feedback on whether your JSON structure is valid, pointing out the line and character of any errors.
+                        <strong>Formatter/Beautifier:</strong> It transforms compact or messy JSON into a beautifully indented, human-readable format.
+                        <strong>Minifier:</strong> It strips out all non-essential whitespace, creating the smallest possible version of the JSON for efficient data transmission.
+                    </p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">What makes JSON "invalid"?</h3>
+                            <div class="faq-answer"><p>Common JSON syntax errors include: missing commas between elements, trailing commas after the last element in an object or array, keys not enclosed in double quotes, or mismatched brackets/braces. Our validator will catch these issues and help you pinpoint the error.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">Can this tool handle very large JSON files?</h3>
+                            <div class="faq-answer"><p>The tool operates entirely within your browser. While it can handle large amounts of data, performance with extremely large JSON files (many megabytes) will depend on your computer's memory and browser's performance. For most typical use cases, it will be very fast.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Does this tool support JSON with comments?</h3>
+                            <div class="faq-answer"><p>While the official JSON specification does not support comments, many real-world tools and configurations use them. Our tool will attempt to strip out standard JavaScript-style comments (// and /* */) before processing, allowing you to format JSON that contains them. However, for strict validation, comments will cause an error.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core JSON Formatter Logic ---
+        const jsonInput = document.getElementById('json-input');
+        const formatBtn = document.getElementById('format-btn');
+        const minifyBtn = document.getElementById('minify-btn');
+        const statusMessage = document.getElementById('status-message');
+        
+        // Utility buttons
+        const pasteBtn = document.getElementById('paste-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const clearBtn = document.getElementById('clear-btn');
+
+        jsonInput.addEventListener('input', validateJson);
+        formatBtn.addEventListener('click', formatJson);
+        minifyBtn.addEventListener('click', minifyJson);
+        
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                jsonInput.value = text;
+                validateJson();
+            } catch (err) { console.error('Failed to read clipboard: ', err); }
+        });
+        copyBtn.addEventListener('click', () => {
+            jsonInput.select();
+            document.execCommand('copy');
+        });
+        clearBtn.addEventListener('click', () => {
+            jsonInput.value = '';
+            validateJson();
+        });
+        
+        function setStatus(message, type) {
+            statusMessage.innerHTML = message;
+            statusMessage.className = type;
+            statusMessage.style.display = 'block';
+        }
+
+        function validateJson() {
+            const jsonString = jsonInput.value;
+            if (jsonString.trim() === '') {
+                statusMessage.style.display = 'none';
+                return;
+            }
+
+            try {
+                // Strip comments before parsing
+                const strippedJson = jsonString.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, '$1');
+                JSON.parse(strippedJson);
+                setStatus('<i class="fas fa-check-circle"></i> Valid JSON', 'success');
+            } catch (e) {
+                const message = e.message;
+                const match = message.match(/at position (\d+)/);
+                if (match) {
+                    const position = parseInt(match[1], 10);
+                    const textBeforeError = jsonString.substring(0, position);
+                    const lines = textBeforeError.split('\n');
+                    const line = lines.length;
+                    const char = lines[lines.length - 1].length + 1;
+                    setStatus(`<i class="fas fa-exclamation-triangle"></i> Invalid JSON: ${message} on <span class="error-line" title="Go to error location">line ${line}, character ${char}</span>`, 'error');
+                } else {
+                    setStatus(`<i class="fas fa-exclamation-triangle"></i> Invalid JSON: ${message}`, 'error');
+                }
+            }
+        }
+        
+        function formatJson() {
+            try {
+                const strippedJson = jsonInput.value.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, '$1');
+                const jsonObj = JSON.parse(strippedJson);
+                jsonInput.value = JSON.stringify(jsonObj, null, 2); // 2 spaces for indentation
+                validateJson();
+            } catch (e) {
+                validateJson(); // Show error if format fails
+            }
+        }
+
+        function minifyJson() {
+             try {
+                const strippedJson = jsonInput.value.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, '$1');
+                const jsonObj = JSON.parse(strippedJson);
+                jsonInput.value = JSON.stringify(jsonObj);
+                validateJson();
+            } catch (e) {
+                validateJson(); // Show error if minify fails
+            }
+        }
+
+    </script>
+</body>
+</html>

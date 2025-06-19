@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HEX to RGB Converter - Online Color Code Conversion | ToolCraft Pro</title>
+    <meta name="description" content="A free and fast online tool to convert color codes between HEX and RGB formats. Live conversion, color preview, and easy-to-use interface for developers and designers.">
+    <meta name="keywords" content="hex to rgb, rgb to hex, color converter, hex color code, rgb color, css color, hex to rgb converter">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
+        
+        /* --- HEX to RGB Converter Styles --- */
+        .converter-grid { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        .input-group label { font-weight: bold; font-size: 1.1rem; color: #E0E0E0; }
+        .hex-input-wrapper, .rgb-input-wrapper { position: relative; }
+        .hex-input-wrapper input, .rgb-input-wrapper input {
+            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
+            padding: 12px; border-radius: 8px; font-size: 1.2rem; width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .rgb-inputs { display: flex; gap: 10px; }
+        .rgb-inputs input { text-align: center; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #A0A0A0; cursor: pointer; font-size: 1.1rem;
+        }
+        .copy-btn:hover { color: var(--neon-pink); }
+        
+        #color-preview { width: 100%; height: 100px; border-radius: 8px; margin-top: 20px; border: 1px solid var(--neon-blue); transition: background-color 0.3s; }
+        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; background-color: rgba(255, 85, 85, 0.1); color: #ff5555; border: 1px solid #ff5555; }
+
+        @media (min-width: 768px) {
+            .converter-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools" class="active"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">HEX to RGB Converter</span>
+                </nav>
+                <h1><span class="neon-text">HEX to RGB</span> Converter</h1>
+                <p class="subtitle">Instantly convert color codes between HEX and RGB formats.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="converter-grid">
+                    <div class="input-group">
+                        <label for="hex-input">HEX Color</label>
+                        <div class="hex-input-wrapper">
+                            <input type="text" id="hex-input" value="#00F7FF">
+                            <button class="copy-btn" id="copy-hex-btn" title="Copy HEX"><i class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>RGB Color</label>
+                        <div class="rgb-inputs">
+                            <input type="number" id="rgb-r" min="0" max="255" value="0">
+                            <input type="number" id="rgb-g" min="0" max="255" value="247">
+                            <input type="number" id="rgb-b" min="0" max="255" value="255">
+                        </div>
+                    </div>
+                </div>
+                <div id="color-preview"></div>
+                <div id="status-message"></div>
+            </div>
+        </div>
+
+        <section class="neon-section">
+            <div class="container">
+                <div class="content-section">
+                    <h2>How to Convert Colors</h2>
+                    <ol style="padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Enter a Color:</strong> You can either:
+                            <ul>
+                                <li>Type a hexadecimal color code (e.g., `#FF5733`) into the HEX field.</li>
+                                <li>Type numeric values (0-255) into the R, G, and B fields.</li>
+                            </ul>
+                        </li>
+                        <li><strong>View Live Conversion:</strong> The tool updates in real-time. As you change a value in one format, the other format will automatically update to match.</li>
+                        <li><strong>See the Preview:</strong> The color preview box at the bottom will display the color you have selected.</li>
+                        <li><strong>Copy the Result:</strong> Click the copy icon next to the HEX code to copy it to your clipboard.</li>
+                    </ol>
+                </div>
+                <div class="content-section">
+                    <h2>About HEX and RGB Color Models</h2>
+                    <p>HEX (Hexadecimal) and RGB (Red, Green, Blue) are the two most common ways to represent colors in web design and digital media. Understanding how to convert between them is a fundamental skill for developers and designers.</p>
+                    <ul>
+                        <li><strong>RGB:</strong> This is an additive color model where red, green, and blue light are added together in various ways to reproduce a broad array of colors. Each component has an intensity value from 0 to 255.</li>
+                        <li><strong>HEX:</strong> This is essentially a different way of writing RGB values. It groups the three values into a 6-digit hexadecimal number. For example, `rgb(255, 0, 195)` is equivalent to `#FF00C3`.</li>
+                    </ul>
+                    <p>Our tool provides a seamless, real-time bridge between these two formats, making your design and development workflow faster and more efficient.</p>
+                </div>
+                <div class="content-section">
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h3 class="faq-question">What's the difference between a 3-digit and 6-digit HEX code?</h3>
+                            <div class="faq-answer"><p>A 3-digit HEX code is a shorthand for a 6-digit code where each pair of digits is the same. For example, `#F0C` is shorthand for `#FF00CC`. Our converter correctly handles both formats.</p></div>
+                        </div>
+                        <div class="faq-item">
+                            <h3 class="faq-question">What are the valid ranges for RGB values?</h3>
+                            <div class="faq-answer"><p>Each component (Red, Green, and Blue) in the RGB model has a value ranging from 0 (no intensity) to 255 (full intensity). This allows for 256 * 256 * 256 = 16,777,216 possible colors.</p></div>
+                        </div>
+                         <div class="faq-item">
+                            <h3 class="faq-question">Can I convert colors with transparency (alpha)?</h3>
+                            <div class="faq-answer"><p>This specific tool focuses on the conversion between standard HEX and RGB, which do not include an alpha (transparency) channel. For RGBA or 8-digit HEX codes, we recommend using our more advanced Color Picker & Converter tool.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // --- Core HEX to RGB Converter Logic ---
+        const hexInput = document.getElementById('hex-input');
+        const rInput = document.getElementById('rgb-r');
+        const gInput = document.getElementById('rgb-g');
+        const bInput = document.getElementById('rgb-b');
+        const colorPreview = document.getElementById('color-preview');
+        const statusMessage = document.getElementById('status-message');
+        const copyHexBtn = document.getElementById('copy-hex-btn');
+        
+        // --- Event Listeners ---
+        hexInput.addEventListener('input', updateFromHex);
+        [rInput, gInput, bInput].forEach(input => {
+            input.addEventListener('input', updateFromRgb);
+        });
+        copyHexBtn.addEventListener('click', () => navigator.clipboard.writeText(hexInput.value));
+        
+        function setStatus(message) {
+            statusMessage.textContent = message;
+            statusMessage.style.display = 'block';
+        }
+        function clearStatus() {
+            statusMessage.style.display = 'none';
+        }
+
+        function updateFromHex() {
+            clearStatus();
+            let hex = hexInput.value.trim();
+            if (!/^#?([0-9a-fA-F]{3}){1,2}$/.test(hex)) {
+                setStatus('Invalid HEX code format.');
+                return;
+            }
+
+            const rgb = hexToRgb(hex);
+            if (rgb) {
+                rInput.value = rgb.r;
+                gInput.value = rgb.g;
+                bInput.value = rgb.b;
+                updatePreview(hex);
+            }
+        }
+
+        function updateFromRgb() {
+            clearStatus();
+            const r = parseInt(rInput.value);
+            const g = parseInt(gInput.value);
+            const b = parseInt(bInput.value);
+            
+            if (isNaN(r) || isNaN(g) || isNaN(b) || r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+                setStatus('RGB values must be between 0 and 255.');
+                return;
+            }
+
+            const hex = rgbToHex(r, g, b);
+            hexInput.value = hex.toUpperCase();
+            updatePreview(hex);
+        }
+
+        function updatePreview(color) {
+            colorPreview.style.backgroundColor = color;
+        }
+
+        // --- Conversion Functions ---
+        function hexToRgb(hex) {
+            let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+            
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(r, g, b) {
+            const toHex = c => ('0' + c.toString(16)).slice(-2);
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+        
+        // Initial sync
+        updateFromHex();
+
+    </script>
+</body>
+</html>

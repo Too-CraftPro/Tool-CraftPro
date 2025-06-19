@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Color Picker & Converter - HEX, RGB, HSL, CMYK | ToolCraft Pro</title>
+    <meta name="description" content="An advanced online color tool with a visual color picker. Convert colors between HEX, RGB, HSL, and CMYK formats. Get tints and shades for any color.">
+    <meta name="keywords" content="color picker, color converter, hex to rgb, rgb to hex, hex color, color palette, css colors, color tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        
+        /* --- Color Picker Styles --- */
+        .color-picker-section, .color-info-section, .color-palette-section {
+            background-color: var(--card-bg); padding: 25px; border-radius: 12px;
+            border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.1);
+        }
+        
+        #color-picker-wheel { width: 100%; max-width: 300px; height: 300px; margin: 0 auto; position: relative; }
+        #color-picker-wheel .wheel { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); cursor: crosshair; }
+        #color-picker-wheel .saturation { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, transparent, #fff); }
+        #color-picker-wheel .lightness { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, transparent, #000); opacity: 0; }
+        #picker-handle {
+            position: absolute; width: 20px; height: 20px; border-radius: 50%;
+            border: 2px solid #fff; box-shadow: 0 0 5px #000;
+            transform: translate(-50%, -50%); pointer-events: none;
+        }
+
+        .slider-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .slider-group input[type="range"] { width: 100%; }
+        
+        .color-values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .value-input-group { position: relative; }
+        .value-input-group label { font-size: 0.9rem; color: #a0a0a0; }
+        .value-input-group input { width: 100%; background: #0F0F1A; border: 1px solid var(--neon-blue); border-radius: 5px; color: #e0e0e0; padding: 8px 30px 8px 8px; font-family: monospace; }
+        .copy-value-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-30%); background: none; border: none; color: #a0a0a0; cursor: pointer; font-size: 0.9rem; }
+        .copy-value-btn:hover { color: var(--neon-pink); }
+        
+        .palette-row { display: flex; margin-top: 10px; }
+        .palette-row h4 { writing-mode: vertical-rl; text-orientation: mixed; margin: 0 10px 0 0; font-size: 0.8rem; text-transform: uppercase; }
+        .palette-colors { display: flex; flex-grow: 1; }
+        .palette-box { flex: 1; height: 60px; transition: transform 0.2s; cursor: pointer; }
+        .palette-box:hover { transform: scale(1.1); z-index: 10; }
+        
+        @media (min-width: 992px) {
+            .tool-interface-container { grid-template-columns: 350px 1fr; }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools" class="active"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#color-tools-section">Color Tools</a> &gt; <span class="current">Color Picker & Converter</span>
+                </nav>
+                <h1><span class="neon-text">Color Picker</span> & Converter</h1>
+                <p class="subtitle">An advanced tool for all your color needs.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="color-picker-section">
+                    <div id="color-picker-wheel">
+                        <div class="wheel"></div>
+                        <div class="saturation"></div>
+                        <div class="lightness"></div>
+                        <div id="picker-handle"></div>
+                    </div>
+                    <div class="slider-group">
+                        <label for="lightness-slider">Lightness</label>
+                        <input type="range" id="lightness-slider" min="0" max="100" value="50">
+                    </div>
+                </div>
+
+                <div class="color-info-section">
+                    <h3>Color Values</h3>
+                    <div class="color-values-grid">
+                        <div class="value-input-group">
+                            <label for="hex-input">HEX</label>
+                            <input type="text" id="hex-input">
+                            <button class="copy-value-btn" data-input="hex-input"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <div class="value-input-group">
+                            <label for="rgb-input">RGB</label>
+                            <input type="text" id="rgb-input">
+                            <button class="copy-value-btn" data-input="rgb-input"><i class="fas fa-copy"></i></button>
+                        </div>
+                         <div class="value-input-group">
+                            <label for="hsl-input">HSL</label>
+                            <input type="text" id="hsl-input">
+                            <button class="copy-value-btn" data-input="hsl-input"><i class="fas fa-copy"></i></button>
+                        </div>
+                         <div class="value-input-group">
+                            <label for="cmyk-input">CMYK</label>
+                            <input type="text" id="cmyk-input">
+                            <button class="copy-value-btn" data-input="cmyk-input"><i class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="color-palette-section">
+                        <h3>Color Palette</h3>
+                        <div class="palette-row">
+                            <h4>Tints</h4>
+                            <div class="palette-colors" id="tints-palette"></div>
+                        </div>
+                         <div class="palette-row">
+                            <h4>Shades</h4>
+                            <div class="palette-colors" id="shades-palette"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="content-section">
+                <h2>How to Use the Color Picker & Converter</h2>
+                <ol style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Pick a Color:</strong> Click and drag on the color wheel to select a hue and saturation. Use the slider below it to adjust the lightness.</li>
+                    <li><strong>Input a Value:</strong> Alternatively, type a known color value into any of the input boxes (e.g., `#ff00c3` in the HEX field) and press Enter. The picker will update to match.</li>
+                    <li><strong>Get All Formats:</strong> The tool instantly converts the selected color into HEX, RGB, HSL, and CMYK formats.</li>
+                    <li><strong>Explore Palettes:</strong> View the automatically generated tints (mixed with white) and shades (mixed with black) for your selected color. Click on any of these swatches to select it.</li>
+                    <li><strong>Copy Values:</strong> Use the copy icon next to any value to quickly copy it to your clipboard.</li>
+                </ol>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Color Picker & Converter Logic ---
+        // This is a complex tool. The logic handles the visual picker, color model conversions, and palette generation.
+        
+        const colorPickerWheel = document.getElementById('color-picker-wheel');
+        const pickerHandle = document.getElementById('picker-handle');
+        const lightnessSlider = document.getElementById('lightness-slider');
+        const lightnessOverlay = document.querySelector('.lightness');
+        
+        const hexInput = document.getElementById('hex-input');
+        const rgbInput = document.getElementById('rgb-input');
+        const hslInput = document.getElementById('hsl-input');
+        const cmykInput = document.getElementById('cmyk-input');
+        
+        const tintsPalette = document.getElementById('tints-palette');
+        const shadesPalette = document.getElementById('shades-palette');
+        
+        let hue = 0, saturation = 100, lightness = 50;
+        let isDragging = false;
+        
+        // --- Event Listeners ---
+        colorPickerWheel.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', endDrag);
+        lightnessSlider.addEventListener('input', updateFromLightnessSlider);
+        
+        // Input field listeners
+        hexInput.addEventListener('change', () => updateFromInput('hex', hexInput.value));
+        rgbInput.addEventListener('change', () => updateFromInput('rgb', rgbInput.value));
+        hslInput.addEventListener('change', () => updateFromInput('hsl', hslInput.value));
+
+        // --- Picker Logic ---
+        function startDrag(e) {
+            isDragging = true;
+            updateColorFromPicker(e);
+        }
+        function drag(e) {
+            if (isDragging) updateColorFromPicker(e);
+        }
+        function endDrag() {
+            isDragging = false;
+        }
+
+        function updateColorFromPicker(e) {
+            const rect = colorPickerWheel.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const x = e.clientX - centerX;
+            const y = e.clientY - centerY;
+            
+            const angle = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+            const distance = Math.min(Math.sqrt(x*x + y*y), rect.width / 2);
+            
+            hue = angle;
+            saturation = (distance / (rect.width / 2)) * 100;
+            
+            updateAll();
+        }
+
+        function updateFromLightnessSlider() {
+            lightness = lightnessSlider.value;
+            updateAll();
+        }
+
+        // --- Main Update Function ---
+        function updateAll() {
+            const rgb = hslToRgb(hue / 360, saturation / 100, lightness / 100);
+            const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+            
+            // Update UI elements
+            updatePickerPosition();
+            lightnessOverlay.style.opacity = 1 - (lightness / 100);
+            
+            // Update input fields
+            hexInput.value = hex.toUpperCase();
+            rgbInput.value = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+            hslInput.value = `hsl(${Math.round(hue)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`;
+            
+            const cmyk = rgbToCmyk(rgb[0], rgb[1], rgb[2]);
+            cmykInput.value = `cmyk(${cmyk[0]}%, ${cmyk[1]}%, ${cmyk[2]}%, ${cmyk[3]}%)`;
+            
+            generatePalettes(rgb[0], rgb[1], rgb[2]);
+        }
+        
+        function updatePickerPosition() {
+            const radius = colorPickerWheel.offsetWidth / 2;
+            const distance = (saturation / 100) * radius;
+            const angleRad = hue * Math.PI / 180;
+            const x = Math.cos(angleRad) * distance + radius;
+            const y = Math.sin(angleRad) * distance + radius;
+            
+            pickerHandle.style.left = `${x}px`;
+            pickerHandle.style.top = `${y}px`;
+            pickerHandle.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
+        
+        function updateFromInput(type, value) {
+            let rgb;
+            switch(type) {
+                case 'hex':
+                    rgb = hexToRgb(value);
+                    break;
+                case 'rgb':
+                    const rgbMatch = value.match(/(\d+)/g);
+                    if (rgbMatch) rgb = [parseInt(rgbMatch[0]), parseInt(rgbMatch[1]), parseInt(rgbMatch[2])];
+                    break;
+                case 'hsl':
+                    const hslMatch = value.match(/(\d+)/g);
+                    if (hslMatch) {
+                        const h = parseInt(hslMatch[0]), s = parseInt(hslMatch[1]), l = parseInt(hslMatch[2]);
+                        rgb = hslToRgb(h / 360, s / 100, l / 100);
+                    }
+                    break;
+            }
+            if (rgb) {
+                const hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+                hue = hsl[0] * 360;
+                saturation = hsl[1] * 100;
+                lightness = hsl[2] * 100;
+                lightnessSlider.value = lightness;
+                updateAll();
+            }
+        }
+        
+        // --- Palette Generation ---
+        function generatePalettes(r, g, b) {
+            tintsPalette.innerHTML = '';
+            shadesPalette.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                // Tints (mix with white)
+                const tintR = Math.round(r + (255 - r) * (i * 0.2));
+                const tintG = Math.round(g + (255 - g) * (i * 0.2));
+                const tintB = Math.round(b + (255 - b) * (i * 0.2));
+                const tintHex = rgbToHex(tintR, tintG, tintB);
+                tintsPalette.innerHTML += `<div class="palette-box" style="background-color: ${tintHex}" data-hex="${tintHex}"></div>`;
+                
+                // Shades (mix with black)
+                const shadeR = Math.round(r * (1 - (i * 0.15)));
+                const shadeG = Math.round(g * (1 - (i * 0.15)));
+                const shadeB = Math.round(b * (1 - (i * 0.15)));
+                const shadeHex = rgbToHex(shadeR, shadeG, shadeB);
+                shadesPalette.innerHTML += `<div class="palette-box" style="background-color: ${shadeHex}" data-hex="${shadeHex}"></div>`;
+            }
+            
+            // Add event listeners to new palette boxes
+            document.querySelectorAll('.palette-box').forEach(box => {
+                box.addEventListener('click', (e) => {
+                    updateFromInput('hex', e.target.dataset.hex);
+                });
+            });
+        }
+        
+        // --- Color Conversion Functions ---
+        function hslToRgb(h, s, l){ /* ... full implementation ... */ return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]; }
+        function rgbToHex(r, g, b){ return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1); }
+        function hexToRgb(hex){ const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex); return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null; }
+        function rgbToHsl(r, g, b){ r /= 255, g /= 255, b /= 255; /* ... full implementation ... */ return [h, s, l]; }
+        function rgbToCmyk(r, g, b){ let c = 1 - (r / 255); let m = 1 - (g / 255); let y = 1 - (b / 255); let k = Math.min(c, m, y); c = (c - k) / (1 - k); m = (m - k) / (1 - k); y = (y - k) / (1 - k); return [Math.round(c*100||0), Math.round(m*100||0), Math.round(y*100||0), Math.round(k*100||0)]; }
+        
+        // Full HSL implementations for completeness
+        function hslToRgb(h, s, l) { let r, g, b; if(s == 0) { r = g = b = l; } else { const hue2rgb = (p, q, t) => { if(t < 0) t += 1; if(t > 1) t -= 1; if(t < 1/6) return p + (q - p) * 6 * t; if(t < 1/2) return q; if(t < 2/3) return p + (q - p) * (2/3 - t) * 6; return p; }; const q = l < 0.5 ? l * (1 + s) : l + s - l * s; const p = 2 * l - q; r = hue2rgb(p, q, h + 1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1/3); } return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];}
+        function rgbToHsl(r, g, b){r /= 255, g /= 255, b /= 255; let max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if(max == min){ h = s = 0; } else { let d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch(max){ case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return [h, s, l];}
+        
+        // --- Copy Buttons ---
+        document.querySelectorAll('.copy-value-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const inputId = e.currentTarget.dataset.input;
+                const inputEl = document.getElementById(inputId);
+                navigator.clipboard.writeText(inputEl.value);
+            });
+        });
+        
+        // --- Initial Load ---
+        updateAll();
+
+    </script>
+</body>
+</html>

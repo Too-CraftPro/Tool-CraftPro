@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us - Get in Touch with ToolCraft Pro</title>
+    <meta name="description" content="Have a question, feedback, or a suggestion for a new tool? Contact the ToolCraft Pro team via our form, email, or phone. We'd love to hear from you.">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .main-nav { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: flex-end; }
+        .main-nav a { display: flex; align-items: center; gap: 8px; color: #A0A0A0; font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; padding: 5px 10px; }
+        .main-nav a:hover, .main-nav a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
+        .main-nav .divider { width: 1px; height: 16px; background-color: rgba(0, 247, 255, 0.3); }
+
+        /* --- FOOTER --- */
+        .page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        .copyright a { margin: 0 10px; }
+        
+        /* --- Page Specific Styles --- */
+        .page-title-section { padding: 60px 0; text-align: center; }
+        .page-title-section h1 { font-size: 3rem; }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .contact-form-container {
+            background-color: var(--card-bg); padding: 30px; border-radius: 12px;
+            border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: #E0E0E0; }
+        .form-group input, .form-group textarea {
+            width: 100%; background: #0F0F1A; border: 1px solid var(--neon-blue);
+            color: #E0E0E0; padding: 12px; border-radius: 8px; font-size: 1rem;
+        }
+        .form-group textarea { resize: vertical; min-height: 150px; }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .contact-details-container {
+            background-color: var(--card-bg); padding: 30px; border-radius: 12px;
+            border: 1px solid var(--neon-blue);
+        }
+        .contact-details-container h3 { margin-top: 0; }
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .contact-item i { font-size: 1.8rem; color: var(--neon-blue); margin-top: 5px; width: 25px; text-align: center; }
+        .contact-item h4 { margin: 0 0 5px 0; font-size: 1.1rem; color: #fff; }
+        .contact-item a { font-size: 1rem; word-break: break-all; }
+
+        @media (max-width: 991px) {
+            .main-nav { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 767px) {
+            .footer-container, .footer-left { flex-direction: column; }
+            .footer-right { margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <nav class="main-nav">
+                 <a href="index.html" title="All Tools"><i class="fas fa-th-large"></i><span>All Tools</span></a>
+                 <span class="divider"></span>
+                 <a href="about.html" title="About"><i class="fas fa-info-circle"></i><span>About</span></a>
+                 <a href="contact.html" title="Contact" class="active"><i class="fas fa-envelope"></i><span>Contact</span></a>
+                 <a href="privacy-policy.html" title="Privacy Policy"><i class="fas fa-user-shield"></i><span>Privacy</span></a>
+                 <a href="terms-of-service.html" title="Terms of Service"><i class="fas fa-file-contract"></i><span>Terms</span></a>
+            </nav>
+        </div> 
+    </header>
+
+    <main>
+        <section class="page-title-section">
+            <div class="container">
+                <h1><span class="neon-text">Contact</span> Us</h1>
+                <p class="subtitle">We'd love to hear from you. Let's get in touch.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-form-container">
+                    <h3>Send us a Message</h3>
+                    <p>Whether you have a question, a suggestion for a new tool, or just want to say hello, please fill out the form below.</p>
+                    <form action="YOUR_ENDPOINT_HERE" method="POST">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-neon">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="contact-details-container">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:support@toolcraftpro.com">support@toolcraftpro.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <a href="tel:+15551234567">+1 (555) 123-4567</a>
+                        </div>
+                    </div>
+                     <div class="contact-item">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h4>Social Media</h4>
+                            <p style="margin:0;">Connect with us on our social channels for updates and news.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+             <div class="copyright">
+                <p><a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+                <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Time Zone Converter - Convert Time Across a World Clock | ToolCraft Pro</title>
+    <meta name="description" content="A free and accurate online time zone converter. Easily convert time between different cities and time zones worldwide. Accounts for Daylight Saving Time (DST).">
+    <meta name="keywords" content="time zone converter, time converter, world clock, convert time, time difference, dst converter, time zone tool">
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Moment.js and Moment Timezone Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data-10-year-range.min.js"></script>
+
+    <style>
+        /* Base and Reusable Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 900px; margin: 0 auto; }
+        
+        /* --- Time Zone Converter Styles --- */
+        .time-converter-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .time-zone-card { background-color: #0F0F1A; border: 1px solid var(--neon-blue); padding: 20px; border-radius: 8px; }
+        .time-zone-card label { font-weight: bold; display: block; margin-bottom: 10px; }
+        .time-zone-card select, .time-zone-card input[type="datetime-local"] {
+            width: 100%; background: #1A1A2E; border: 1px solid var(--neon-purple);
+            color: #E0E0E0; padding: 10px; border-radius: 5px; font-size: 1rem;
+        }
+        .time-zone-card input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        .time-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem; color: var(--neon-green); text-align: center;
+            margin-top: 15px;
+        }
+        .date-display { text-align: center; color: #a0a0a0; margin-top: -10px; }
+        
+        .arrow-separator { text-align: center; font-size: 2rem; color: var(--neon-pink); transform: rotate(90deg); margin: 0; }
+        
+        @media (min-width: 768px) {
+            .time-converter-grid { grid-template-columns: 1fr auto 1fr; align-items: center; }
+            .arrow-separator { transform: rotate(0deg); }
+        }
+
+        .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
+        .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
+            <div class="tool-nav-icons">
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools" class="active"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#calculator-tools-section">Calculator Tools</a> &gt; <span class="current">Time Zone Converter</span>
+                </nav>
+                <h1><span class="neon-text">Time Zone</span> Converter</h1>
+                <p class="subtitle">Easily find the time in different locations around the world.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <div class="time-converter-grid">
+                    <div class="time-zone-card" id="from-card">
+                        <label for="from-tz-select">From Time Zone:</label>
+                        <select id="from-tz-select"></select>
+                        <input type="datetime-local" id="from-datetime-input" style="margin-top: 10px;">
+                        <p class="time-display" id="from-time-display">12:00:00</p>
+                        <p class="date-display" id="from-date-display">Monday, Jan 1</p>
+                    </div>
+                    
+                    <div class="arrow-separator">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </div>
+
+                    <div class="time-zone-card" id="to-card">
+                        <label for="to-tz-select">To Time Zone:</label>
+                        <select id="to-tz-select"></select>
+                        <p class="time-display" id="to-time-display">12:00:00</p>
+                        <p class="date-display" id="to-date-display">Monday, Jan 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Time Zone Converter Logic ---
+        const fromTzSelect = document.getElementById('from-tz-select');
+        const toTzSelect = document.getElementById('to-tz-select');
+        const fromDatetimeInput = document.getElementById('from-datetime-input');
+        
+        const fromTimeDisplay = document.getElementById('from-time-display');
+        const fromDateDisplay = document.getElementById('from-date-display');
+        const toTimeDisplay = document.getElementById('to-time-display');
+        const toDateDisplay = document.getElementById('to-date-display');
+        
+        // --- Event Listeners ---
+        [fromTzSelect, toTzSelect, fromDatetimeInput].forEach(el => {
+            el.addEventListener('change', convertTime);
+        });
+
+        function populateTimezones() {
+            const timezones = moment.tz.names();
+            timezones.forEach(tz => {
+                const option1 = document.createElement('option');
+                option1.value = tz;
+                option1.textContent = tz.replace(/_/g, ' ');
+                fromTzSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = tz;
+                option2.textContent = tz.replace(/_/g, ' ');
+                toTzSelect.appendChild(option2);
+            });
+        }
+        
+        function setInitialValues() {
+            const userTz = moment.tz.guess();
+            fromTzSelect.value = userTz;
+            
+            // Set default "to" timezone
+            if (userTz.startsWith('America')) {
+                toTzSelect.value = 'Europe/London';
+            } else {
+                toTzSelect.value = 'America/New_York';
+            }
+            
+            // Set the datetime-local input to the user's current time
+            const now = moment();
+            fromDatetimeInput.value = now.format('YYYY-MM-DDTHH:mm');
+
+            convertTime();
+        }
+
+        function convertTime() {
+            const fromTz = fromTzSelect.value;
+            const toTz = toTzSelect.value;
+            const fromDateTime = fromDatetimeInput.value;
+            
+            if (!fromDateTime) return;
+            
+            // Create a moment object from the input values in the "from" timezone
+            const fromMoment = moment.tz(fromDateTime, fromTz);
+            
+            // Convert this moment object to the "to" timezone
+            const toMoment = fromMoment.clone().tz(toTz);
+            
+            // Update displays
+            updateDisplay(fromTimeDisplay, fromDateDisplay, fromMoment);
+            updateDisplay(toTimeDisplay, toDateDisplay, toMoment);
+        }
+        
+        function updateDisplay(timeEl, dateEl, momentObj) {
+            timeEl.textContent = momentObj.format('HH:mm:ss');
+            dateEl.textContent = momentObj.format('dddd, MMMM D, YYYY');
+        }
+        
+        // --- Initial Load ---
+        populateTimezones();
+        setInitialValues();
+
+    </script>
+</body>
+</html>
