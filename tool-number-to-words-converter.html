@@ -5,33 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Number to Words Converter - Convert Numbers to Text | ToolCraft Pro</title>
-    <meta name="description" content="A free online tool to convert numbers into words instantly. Perfect for writing checks, filling legal documents, or any formal purpose. Supports currency format.">
-    <meta name="keywords" content="number to words, convert number to text, spell numbers, amount in words, number to text converter, check writing, numbers to english words">
+    <meta name="description" content="A free online tool to convert numbers into words instantly. Supports International (Million, Billion) and Indian (Lakh, Crore) numbering systems, and currency formats for INR, PKR, USD, GBP, and EUR.">
+    <meta name="keywords" content="number to words, convert number to text, spell numbers, amount in words, number to text converter, check writing, numbers to english words, number to words indian, lakh, crore, rupees, dollar, pound, euro">
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        /* Base and Reusable Styles */
+        /* Base and Reusable Styles from Master Template */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
         body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
         a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: #ff00c3; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; --btn-blue: #2a7de6; }
         .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
-        .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
-        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
-        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
-        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
-        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
 
-        /* --- HEADER --- */
+        /* --- HEADER (Master Template) --- */
         header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
-        header .container { display: flex; justify-content: space-between; align-items: center; }
+        header .container { max-width: 1200px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
         .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
         .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
@@ -39,54 +34,57 @@
         .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
         .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (Master Template) --- */
         .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
-        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .tool-page-footer .container { max-width: 1200px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .footer-left { display: flex; align-items: center; gap: 25px; }
         .footer-left .logo { font-size: 1.5rem; }
         .footer-right { display: flex; align-items: center; }
         .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
         .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
-        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
-        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
-        .social-icons a:hover .fa-youtube { color: #ff2f00; }
-        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
         .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
         
-        /* --- Tool Page Specific Styles --- */
-        .tool-header { padding: 30px 0; text-align: center; }
-        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
-        .tool-header .breadcrumb a { color: var(--neon-blue); }
-        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); max-width: 800px; margin: 0 auto; }
+        /* --- Tool Page Specific Styles (Merged & Refined) --- */
+        .tool-header-section { padding: 30px 0; text-align: center; }
+        .tool-header-section h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header-section .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header-section .breadcrumb a { color: var(--neon-blue); }
         
-        /* --- Number to Words Styles --- */
-        .converter-inputs { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .input-group { display: flex; flex-direction: column; }
-        .input-group label { font-weight: bold; margin-bottom: 8px; font-size: 1rem; color: #E0E0E0; }
-        .input-group textarea, .input-group select {
-            background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; 
-            padding: 12px; border-radius: 8px; font-size: 1.1rem; width: 100%;
-            font-family: 'Roboto', sans-serif;
-        }
-        .input-group textarea { resize: vertical; min-height: 80px; }
-        .tool-controls { text-align: center; margin-top: 25px; }
+        .tool-interface-wrapper { max-width: 900px; margin: 0 auto; }
+        
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 24px; border-radius: 5px; font-weight: bold; text-transform: none; letter-spacing: 0.5px; transition: all 0.3s ease; cursor: pointer; border: 1px solid transparent; font-size: 0.9rem; }
+        .btn-small { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-icon { padding: 8px 10px; font-size: 1rem; border-radius: 5px; background: transparent; color: #a0a0b0; border: none; }
+        .btn-icon:hover { color: var(--neon-blue); }
+        .btn-neon { background-color: var(--neon-green); color: var(--dark-bg); border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .btn-neon:hover:not(:disabled) { background-color: #00e074; transform: translateY(-1px); }
+        .btn-outline-neon { background-color: transparent; color: #a0a0b0; border-color: #4a4a65; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: #4a4a65; color: #fff; border-color: #5a5a75; }
+        .btn-gray { background-color: #3a3a50; color: #e0e0e0; border: 1px solid #555; }
+        .btn-gray:hover { background-color: #4a4a65; }
+        .btn-blue { background-color: var(--btn-blue); color: #fff; border-color: var(--btn-blue); }
+        .btn-blue:hover { background-color: #3f8ff0; }
+        
+        .top-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .input-area, .output-area { margin-bottom: 15px; border: 1px solid #333; border-radius: 8px; background-color: var(--card-bg); padding: 15px; }
+        .area-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .area-header label { font-weight: normal; font-size: 0.95rem; color: #E0E0E0; }
+        .area-header-icons { display: flex; align-items: center; }
+        textarea { background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 12px; border-radius: 8px; font-size: 1.1rem; width: 100%; font-family: 'Roboto', sans-serif; resize: vertical; }
+        #input-number { min-height: 100px; }
+        #output-words { min-height: 120px; background: #0A0A12; border-color: #333; }
+        .info-bar { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #888; padding: 8px 5px 0; }
+        .controls-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; padding: 15px; border-radius: 8px; background-color: var(--card-bg); border: 1px solid #333; margin-bottom: 15px; }
+        .main-controls, .format-options { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        #system-select { background: #3a3a50; border: 1px solid #555; color: #E0E0E0; padding: 8px 12px; border-radius: 5px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23e0e0e0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.7rem center; padding-right: 2rem; cursor: pointer;}
+        .radio-group label, .checkbox-group label { display: flex; align-items: center; cursor: pointer; font-size: 0.95rem; color: #E0E0E0; gap: 8px; }
+        .radio-group input[type="radio"], .checkbox-group input[type="checkbox"] { accent-color: var(--neon-pink); }
+        #file-upload-btn { position: relative; }
+        #file-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .output-controls button { font-size: 0.8rem; padding: 5px 10px; }
+        .final-actions { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 20px; }
 
-        #result-container { display: none; margin-top: 30px; padding: 25px; border: 1px solid var(--neon-green); background-color: rgba(0, 255, 132, 0.05); border-radius: 8px; }
-        #result-output {
-            font-size: 1.2rem;
-            color: #E0E0E0;
-            line-height: 1.7;
-            text-align: left;
-        }
-        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .result-header h3 { margin: 0; color: var(--neon-green); font-size: 1.2rem; }
-        #copy-btn { background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        #copy-btn:hover { background-color: var(--neon-green); color: var(--dark-bg); }
-        #copy-btn .fas { margin-right: 5px; }
-        
-        #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; background-color: rgba(255, 85, 85, 0.1); color: #ff5555; border: 1px solid #ff5555; }
-        
+        /* --- Content Sections (Master Template) --- */
         .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
         .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
         .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
@@ -94,9 +92,6 @@
         .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
         .faq-item.active .faq-question::after { transform: rotate(180deg); }
         .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
-        
-        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
-        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
     </style>
 </head>
 <body>
@@ -122,81 +117,121 @@
     </header>
 
     <main>
-        <section class="tool-header">
+        <section class="tool-header-section">
             <div class="container">
                 <nav class="breadcrumb" aria-label="breadcrumb">
-                    <a href="index.html">Home</a> &gt; <a href="index.html#text-tools-section">Text Tools</a> &gt; <span class="current">Number to Words Converter</span>
+                    <a href="index.html">Home</a> &gt; <a href="index.html#calculator-tools-section">Calculator Tools</a> &gt; <span class="current">Number to Words Converter</span>
                 </nav>
                 <h1><span class="neon-text">Number to Words</span> Converter</h1>
-                <p class="subtitle">Instantly convert numbers to their English word equivalent.</p>
+                <p class="subtitle">Instantly convert numbers to their English word equivalent for any currency or purpose.</p>
             </div>
         </section>
 
-        <div class="container">
-            <div class="tool-interface-container">
-                <div class="converter-inputs">
-                    <div class="input-group">
-                        <label for="number-input">Enter Number</label>
-                        <textarea id="number-input" placeholder="e.g., 12345.67"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label for="format-select">Select Format</label>
-                        <select id="format-select">
-                            <option value="plain">Plain Words (Title Case)</option>
-                            <option value="uppercase">Plain Words (UPPERCASE)</option>
-                            <option value="lowercase">Plain Words (lowercase)</option>
-                            <option value="currency">US Dollar Currency Format</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="tool-interface-wrapper">
+            <div class="top-actions">
+                <button id="add-to-fav-btn" class="btn btn-gray btn-small"><i class="far fa-heart"></i> Add to Fav</button>
+                <button id="new-btn" class="btn btn-blue btn-small">New</button>
+                <button id="save-share-btn" class="btn btn-gray btn-small">Save & Share</button>
+            </div>
 
-                <div class="tool-controls">
-                    <button id="convert-btn" class="btn btn-neon"><i class="fas fa-redo-alt"></i> Convert</button>
-                </div>
-                
-                <div id="status-message"></div>
-
-                <div id="result-container">
-                    <div class="result-header">
-                        <h3>Result in Words</h3>
-                        <button id="copy-btn"><i class="fas fa-copy"></i> Copy</button>
+            <div class="input-area">
+                <div class="area-header">
+                    <label for="input-number">Enter the Number</label>
+                    <div class="area-header-icons">
+                        <button id="sample-btn" class="btn-icon" title="Sample"><i class="fas fa-vial"></i></button>
+                        <button id="clear-btn" class="btn-icon" title="Clear"><i class="fas fa-trash"></i></button>
                     </div>
-                    <p id="result-output"></p>
                 </div>
+                <textarea id="input-number" placeholder="e.g., 12154465.65"></textarea>
+                <div class="info-bar">
+                    <span id="in-format-label">IN Format: </span>
+                    <span id="input-char-count">Size: 0 B, 0 Characters</span>
+                </div>
+            </div>
+
+            <div class="controls-grid">
+                <div class="main-controls">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="auto-convert-check" checked> Auto</label>
+                    </div>
+                    <button id="convert-btn" class="btn btn-neon"><i class="fas fa-sync-alt"></i> Convert</button>
+                    <select id="system-select">
+                        <option value="indian">Indian Rupees</option>
+                        <option value="pakistani">Pakistani Rupees</option>
+                        <option value="us">US Dollar</option>
+                        <option value="uk">British Pound</option>
+                        <option value="euro">Euro</option>
+                    </select>
+                    <button id="file-upload-btn" class="btn btn-gray btn-small">
+                        <i class="fas fa-upload"></i> File...
+                        <input type="file" id="file-input" accept=".txt">
+                    </button>
+                </div>
+                <div class="format-options radio-group">
+                    <label><input type="radio" name="format-style" value="default" checked> Default</label>
+                    <label><input type="radio" name="format-style" value="currency"> Show Currency</label>
+                    <label><input type="radio" name="format-style" value="check"> Writing Check?</label>
+                </div>
+            </div>
+
+            <div class="output-area">
+                 <div class="area-header">
+                    <label for="output-words">The Converted Words</label>
+                    <div class="area-header-icons output-controls">
+                        <button class="btn-outline-neon btn-small" data-case="uppercase">UpperCase</button>
+                        <button class="btn-outline-neon btn-small" data-case="lowercase">LowerCase</button>
+                        <button class="btn-outline-neon btn-small" data-case="titlecase">TitleCase</button>
+                        <button class="btn-outline-neon btn-small" data-case="sentencecase">SentenceCase</button>
+                        <button id="copy-icon-btn" class="btn-icon" title="Copy"><i class="far fa-copy"></i></button>
+                    </div>
+                </div>
+                <textarea id="output-words" readonly></textarea>
+                <div class="info-bar">
+                    <span id="output-char-count">Size: 0 B, 0 Characters</span>
+                </div>
+            </div>
+
+            <div class="final-actions">
+                <button id="copy-main-btn" class="btn btn-gray"><i class="far fa-copy"></i> Copy To Clipboard</button>
+                <button id="download-btn" class="btn btn-gray"><i class="fas fa-cloud-download-alt"></i> Download</button>
             </div>
         </div>
 
-        <section class="neon-section">
+        <section class="content-section">
             <div class="container">
-                <div class="content-section">
-                    <h2>How to Convert Numbers to Words</h2>
-                    <ol style="padding-left: 20px; line-height: 1.8;">
-                        <li><strong>Enter Number:</strong> Type or paste the number you want to convert into the input box. You can include decimals.</li>
-                        <li><strong>Select Format:</strong> Choose your desired output format from the dropdown menu (e.g., Title Case, UPPERCASE, or US Dollar currency style).</li>
-                        <li><strong>Convert:</strong> Click the "Convert" button.</li>
-                        <li><strong>Get Result:</strong> The number will be instantly spelled out in words in the green result box. You can then use the "Copy" button to easily copy the text.</li>
-                    </ol>
-                </div>
-                <div class="content-section">
-                    <h2>About Our Number to Words Converter</h2>
-                    <p>Writing out numbers, especially large or complex ones, can be tedious and prone to error. Our Number to Words Converter is a practical tool designed to eliminate this hassle. It's an essential utility for anyone who needs to write numbers in their text form, such as for filling out checks, creating legal documents, drafting financial reports, or in any formal writing where spelling out numbers is required for clarity and to prevent fraud.</p>
-                    <p>The tool can handle a vast range of numbers, including decimals, and offers multiple formatting options. Choose the standard title case, all uppercase for emphasis, or a specific currency format that spells out dollars and cents correctly. This converter ensures accuracy and saves you time, making it a reliable assistant for both personal and professional tasks.</p>
-                </div>
-                <div class="content-section">
-                    <h2>Frequently Asked Questions (FAQ)</h2>
-                    <div class="faq-list">
-                        <div class="faq-item">
-                            <h3 class="faq-question">What is the largest number this tool can handle?</h3>
-                            <div class="faq-answer"><p>This converter can accurately handle numbers up to the quadrillions (15 zeros), which covers the vast majority of practical use cases. For numbers beyond this, the tool may not produce a correct result.</p></div>
-                        </div>
-                        <div class="faq-item">
-                            <h3 class="faq-question">How does the "US Dollar Currency Format" work?</h3>
-                            <div class="faq-answer"><p>When you select this format and input a number like `123.45`, the tool will generate a result specifically for check writing: "One Hundred Twenty-Three and 45/100 Dollars". It separates the integer and decimal parts and formats them according to standard currency notation.</p></div>
-                        </div>
-                         <div class="faq-item">
-                            <h3 class="faq-question">Does it support languages other than English?</h3>
-                            <div class="faq-answer"><p>Currently, our Number to Words Converter is designed to output text in English only. We are considering adding support for other languages in future updates based on user demand.</p></div>
-                        </div>
+                <h2>How to Use the Number to Words Converter</h2>
+                <ol style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Enter Number:</strong> Type or paste the number into the input box. You can include decimals.</li>
+                    <li><strong>Select Currency System:</strong> Choose your desired currency from the dropdown menu (e.g., Indian Rupees, US Dollar, British Pound). The tool will automatically use the correct numbering system (Lakhs/Crores for India/Pakistan, Millions/Billions for others).</li>
+                    <li><strong>Choose Format:</strong>
+                        <ul>
+                            <li><b>Default:</b> Converts the number to plain words.</li>
+                            <li><b>Show Currency:</b> Appends the relevant currency names (e.g., "Dollars and Cents", "Pounds and Pence").</li>
+                            <li><b>Writing Check?:</b> Formats the number in the standard style used for checks (e.g., "...and 45/100 Dollars Only").</li>
+                        </ul>
+                    </li>
+                    <li><strong>Get Result:</strong> The number is converted instantly if "Auto" is checked. Otherwise, click "Convert". The result appears in the box below, ready to be copied or downloaded.</li>
+                </ol>
+            </div>
+            <div class="content-section">
+                <h2>About Our Advanced Number Converter</h2>
+                <p>Writing out numbers, especially for financial or legal purposes, demands precision. Our Number to Words Converter is an advanced utility designed to provide that accuracy effortlessly. It caters to global needs by supporting both the International (Million, Billion) and Indian (Lakh, Crore) numbering systems, with specific settings for major world currencies like the US Dollar, British Pound, Euro, and Indian/Pakistani Rupee.</p>
+                <p>Whether you're writing a check, drafting a legal contract, preparing a financial report, or just need to spell a number for any formal document, this tool is your reliable assistant. With multiple output formats, it ensures your numbers are written correctly every time, saving you time and preventing costly errors.</p>
+            </div>
+            <div class="content-section">
+                <h2>Frequently Asked Questions (FAQ)</h2>
+                <div class="faq-list">
+                     <div class="faq-item">
+                        <h3 class="faq-question">How does the currency selection work?</h3>
+                        <div class="faq-answer"><p>When you select a currency like "Indian Rupees" or "Pakistani Rupees", the tool automatically uses the Indian numbering system (Lakhs, Crores). For "US Dollar", "British Pound", or "Euro", it uses the International system (Thousands, Millions). It also uses the correct major and minor currency names (e.g., Pounds and Pence).</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">What is the largest number this tool can handle?</h3>
+                        <div class="faq-answer"><p>This converter is robust and can accurately handle very large numbers, up into the quadrillions for the International system and beyond thousands of crores for the Indian system. This covers virtually all practical use cases for financial and legal documents.</p></div>
+                    </div>
+                     <div class="faq-item">
+                        <h3 class="faq-question">Why does "IN Format" appear sometimes?</h3>
+                        <div class="faq-answer"><p>The "IN Format" label appears below the input box only when you select a currency that uses the Indian numbering system (Indian or Pakistani Rupees). It shows you how the number would be grouped with commas in that system (e.g., 1,23,45,678) as a helpful reference.</p></div>
                     </div>
                 </div>
             </div>
@@ -238,121 +273,222 @@
             });
         });
 
-        // --- Core Number to Words Logic ---
-        const numberInput = document.getElementById('number-input');
-        const formatSelect = document.getElementById('format-select');
+        // --- Main Tool Logic ---
+        const inputNumber = document.getElementById('input-number');
+        const outputWords = document.getElementById('output-words');
         const convertBtn = document.getElementById('convert-btn');
-        const copyBtn = document.getElementById('copy-btn');
-        const resultContainer = document.getElementById('result-container');
-        const resultOutput = document.getElementById('result-output');
-        const statusMessage = document.getElementById('status-message');
+        const inFormatLabel = document.getElementById('in-format-label');
+        const inputCharCount = document.getElementById('input-char-count');
+        const outputCharCount = document.getElementById('output-char-count');
+        const systemSelect = document.getElementById('system-select');
+        const sampleBtn = document.getElementById('sample-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const fileInput = document.getElementById('file-input');
+        const copyIconBtn = document.getElementById('copy-icon-btn');
+        const copyMainBtn = document.getElementById('copy-main-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const autoConvertCheck = document.getElementById('auto-convert-check');
+        const addToFavBtn = document.getElementById('add-to-fav-btn');
+        const newBtn = document.getElementById('new-btn');
+        const saveShareBtn = document.getElementById('save-share-btn');
+
+        let rawOutputText = '';
+
+        const currencyMap = {
+            indian: { major: 'rupees', minor: 'paise', system: 'indian' },
+            pakistani: { major: 'rupees', minor: 'paise', system: 'indian' },
+            us: { major: 'dollars', minor: 'cents', system: 'international' },
+            uk: { major: 'pounds', minor: 'pence', system: 'international' },
+            euro: { major: 'euros', minor: 'cents', system: 'international' }
+        };
+
+        // --- Event Listeners ---
+        inputNumber.addEventListener('input', handleInput);
+        convertBtn.addEventListener('click', convert);
+        systemSelect.addEventListener('change', handleInput);
+        document.querySelectorAll('input[name="format-style"]').forEach(radio => radio.addEventListener('change', () => autoConvertCheck.checked && convert()));
+        document.querySelectorAll('.output-controls button[data-case]').forEach(btn => btn.addEventListener('click', (e) => applyCase(e.currentTarget.dataset.case)));
+        sampleBtn.addEventListener('click', fillSample);
+        clearBtn.addEventListener('click', clearAll);
+        newBtn.addEventListener('click', clearAll);
+        addToFavBtn.addEventListener('click', () => alert('Added to Favorites! (This is a demo feature)'));
+        saveShareBtn.addEventListener('click', () => alert('Shareable link copied! (This is a demo feature)'));
+        fileInput.addEventListener('change', handleFileUpload);
+        copyIconBtn.addEventListener('click', () => copyToClipboard(copyIconBtn));
+        copyMainBtn.addEventListener('click', () => copyToClipboard(copyMainBtn));
+        downloadBtn.addEventListener('click', downloadResult);
         
-        convertBtn.addEventListener('click', convertNumberToWords);
-        copyBtn.addEventListener('click', copyToClipboard);
-
-        function showStatus(message) {
-            statusMessage.textContent = message;
-            statusMessage.style.display = 'block';
-            resultContainer.style.display = 'none';
+        function handleInput() {
+            updateInputInfo();
+            if (autoConvertCheck.checked) {
+                convert();
+            }
         }
 
-        function copyToClipboard() {
-            navigator.clipboard.writeText(resultOutput.textContent).then(() => {
-                const originalText = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
-            });
-        }
-
-        function convertNumberToWords() {
-            const numStr = numberInput.value.replace(/,/g, '');
-            if (numStr.trim() === '' || isNaN(parseFloat(numStr))) {
-                showStatus("Please enter a valid number.");
+        function convert() {
+            const numStr = inputNumber.value.replace(/[^0-9.]/g, '');
+            if (numStr.trim() === '') {
+                clearOutput();
                 return;
             }
-
-            const format = formatSelect.value;
-            statusMessage.style.display = 'none';
-            let result = '';
-
             try {
+                const currency = currencyMap[systemSelect.value];
+                const format = document.querySelector('input[name="format-style"]:checked').value;
+                const [integerPart, decimalPart] = numStr.split('.');
+                let words = currency.system === 'indian' ? toWordsIndian(integerPart || '0') : toWordsInternational(integerPart || '0');
+                let finalWords = words;
                 if (format === 'currency') {
-                    result = toCurrencyWords(numStr);
-                } else {
-                    result = toWords(numStr);
-                    if (format === 'uppercase') {
-                        result = result.toUpperCase();
-                    } else if (format === 'lowercase') {
-                        result = result.toLowerCase();
+                    finalWords += ` ${currency.major}`;
+                    if (decimalPart && parseInt(decimalPart, 10) > 0) {
+                        const decimalWords = toWordsInternational(decimalPart.padEnd(2, '0').substring(0, 2));
+                        finalWords += ` and ${decimalWords} ${currency.minor}`;
                     }
+                } else if (format === 'check') {
+                    const cents = decimalPart ? decimalPart.padEnd(2, '0').substring(0, 2) : '00';
+                    finalWords = `${words} ${currency.major} and ${cents}/100 Only`;
                 }
-                resultOutput.textContent = result;
-                resultContainer.style.display = 'block';
-            } catch(e) {
-                showStatus(e.message);
+                rawOutputText = finalWords.replace(/\s+/g, ' ').trim();
+                outputWords.value = toSpecialTitleCase(rawOutputText);
+                updateOutputInfo();
+            } catch (e) {
+                outputWords.value = `Error: ${e.message}`;
+            }
+        }
+
+        function fillSample() {
+            inputNumber.value = '12154465.65';
+            handleInput();
+        }
+
+        function clearAll() {
+            inputNumber.value = '';
+            handleInput();
+        }
+
+        function clearOutput() {
+            outputWords.value = '';
+            rawOutputText = '';
+            updateOutputInfo();
+        }
+        
+        function updateInputInfo() {
+            const text = inputNumber.value;
+            const cleanNumber = text.replace(/[^0-9.]/g, '').split('.')[0];
+            const selectedCurrencyInfo = currencyMap[systemSelect.value];
+            if (selectedCurrencyInfo.system === 'indian') {
+                inFormatLabel.style.display = 'inline';
+                inFormatLabel.textContent = `IN Format: ${formatIndian(cleanNumber)}`;
+            } else {
+                inFormatLabel.style.display = 'none';
+            }
+            inputCharCount.textContent = `Size: ${new Blob([text]).size} B, ${text.length} Characters`;
+        }
+
+        function updateOutputInfo() {
+            const text = outputWords.value;
+            outputCharCount.textContent = `Size: ${new Blob([text]).size} B, ${text.length} Characters`;
+        }
+
+        function formatIndian(numStr) {
+            if (!numStr) return '';
+            const lastThree = numStr.length > 3 ? numStr.substring(numStr.length - 3) : numStr;
+            const otherNumbers = numStr.substring(0, numStr.length - 3);
+            return otherNumbers ? otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree : lastThree;
+        }
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => { inputNumber.value = e.target.result; handleInput(); };
+                reader.readAsText(file);
             }
         }
         
-        // --- Conversion Logic ---
-        const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-        const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-        const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-        const thousands = ['', 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion'];
-
-        function convertChunk(n) {
-            let str = '';
-            const hundred = Math.floor(n / 100);
-            const rest = n % 100;
-            if (hundred > 0) str += ones[hundred] + ' Hundred';
-            if (rest > 0) {
-                str += (str ? ' ' : '');
-                if (rest < 10) str += ones[rest];
-                else if (rest < 20) str += teens[rest - 10];
-                else {
-                    str += tens[Math.floor(rest / 10)];
-                    if (rest % 10 > 0) str += '-' + ones[rest % 10];
-                }
-            }
-            return str;
+        function copyToClipboard(button) {
+            if (!outputWords.value) return;
+            navigator.clipboard.writeText(outputWords.value).then(() => {
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => { button.innerHTML = originalContent; }, 2000);
+            });
+        }
+        
+        function downloadResult() {
+             if (!outputWords.value) return;
+            const blob = new Blob([outputWords.value], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted-number.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
-        function toWords(numStr) {
-            const [integerPart, decimalPart] = numStr.split('.');
-            let integer = BigInt(integerPart);
-
-            if (integer === 0n) return 'Zero';
-            if (integer > 999999999999999999n) throw new Error("Number is too large to convert.");
-
-            let words = [];
-            let i = 0;
-            while (integer > 0) {
-                const chunk = Number(integer % 1000n);
-                if (chunk > 0) {
-                    words.unshift(convertChunk(chunk) + (i > 0 ? ' ' + thousands[i] : ''));
-                }
-                integer = integer / 1000n;
-                i++;
+        function applyCase(caseType) {
+            if (!rawOutputText) return;
+            switch (caseType) {
+                case 'uppercase': outputWords.value = rawOutputText.toUpperCase(); break;
+                case 'lowercase': outputWords.value = rawOutputText.toLowerCase(); break;
+                case 'titlecase': outputWords.value = toSpecialTitleCase(rawOutputText); break;
+                case 'sentencecase': outputWords.value = toSentenceCase(rawOutputText); break;
             }
-            let result = words.join(', ');
-
-            if (decimalPart) {
-                result += ' Point';
-                for (const digit of decimalPart) {
-                    result += ' ' + (digit === '0' ? 'Zero' : ones[parseInt(digit)]);
-                }
-            }
-
-            return result;
+            updateOutputInfo();
         }
 
-        function toCurrencyWords(numStr) {
-            const [integerPart, decimalPart] = numStr.split('.');
-            const dollars = toWords(integerPart || '0');
-            const cents = decimalPart ? decimalPart.padEnd(2, '0').substring(0, 2) : '00';
+        function toSpecialTitleCase(str) { return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); }
+        function toSentenceCase(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-            return `${dollars} and ${cents}/100 Dollars`;
+        const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        const thousands = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+        function convertLessThanOneThousand(n) {
+            let s = '';
+            if (n >= 100) { s += ones[Math.floor(n / 100)] + ' hundred'; n %= 100; if (n > 0) s += ' and '; }
+            if (n > 0) { if (n < 20) s += ones[n]; else { s += tens[Math.floor(n / 10)]; if (n % 10 > 0) s += ' ' + ones[n % 10]; } }
+            return s;
         }
 
+        function toWordsInternational(numStr) {
+            if (parseInt(numStr, 10) === 0) return 'zero';
+            if (numStr.length > 15) throw new Error("Number is too large.");
+            let num = BigInt(numStr), parts = [], i = 0;
+            while (num > 0n) {
+                const chunk = Number(num % 1000n);
+                if (chunk > 0) parts.unshift(convertLessThanOneThousand(chunk) + ' ' + thousands[i]);
+                num = num / 1000n; i++;
+            }
+            return parts.join(' ').replace(/\s+/g, ' ').trim();
+        }
+        
+        function toWordsIndian(numStr) {
+            if (parseInt(numStr, 10) === 0) return 'zero';
+            if (numStr.length > 19) throw new Error("Number too large for Indian system.");
+            let output = '';
+            if (numStr.length > 7) {
+                const crorePart = numStr.slice(0, -7);
+                output += toWordsIndian(crorePart) + ' crore ';
+                numStr = numStr.slice(-7);
+            }
+            if (numStr.length > 5) {
+                const lakhPart = numStr.slice(0, -5);
+                if (parseInt(lakhPart) > 0) output += convertLessThanOneThousand(parseInt(lakhPart)) + ' lakh ';
+                numStr = numStr.slice(-5);
+            }
+            if (numStr.length > 3) {
+                const thousandPart = numStr.slice(0, -3);
+                if (parseInt(thousandPart) > 0) output += convertLessThanOneThousand(parseInt(thousandPart)) + ' thousand ';
+                numStr = numStr.slice(-3);
+            }
+            if (parseInt(numStr) > 0) output += convertLessThanOneThousand(parseInt(numStr));
+            return output.replace(/\s+/g, ' ').trim();
+        }
+
+        // Initial call to set the UI correctly on page load
+        handleInput();
     </script>
 </body>
 </html>
