@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Free Online Image Cropper - Crop by Pixels, Ratio & Manual Input | ToolCraft Pro</title>
-    <meta name="description" content="Precisely crop images online with our free tool. Use a visual cropper, preset aspect ratios, or enter exact pixel coordinates for perfect results.">
+    <title>Image Cropper - Free Online Tool to Crop & Preview Images | ToolCraft Pro</title>
+    <meta name="description" content="A free, high-quality image cropper tool. Upload your image, crop it, preview the result, and download without losing quality. Supports manual and aspect-ratio cropping.">
+    <meta name="keywords" content="image cropper, crop image, preview crop, online image tool, aspect ratio cropper, free cropper, manual crop, high quality crop">
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Third-party Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" integrity="sha512-hvNR0F/e2Jb1Js1MWOKJYubwcX4s2ML8ocOKemOthzCFJsFNU2GQdpOCALM_HSTAcaCmoGjiAYCJQvgn59giOQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Cropper.js Library (The "Free API" for this tool) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
 
     <style>
         /* Base and Reusable Styles */
@@ -24,46 +29,64 @@
         :root { --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84; --dark-bg: #0F0F1A; --card-bg: #1A1A2E; }
         .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
         .btn { display: inline-block; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
-        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue); }
-        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; transform: translateY(-3px); }
-        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); }
-        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); transform: translateY(-3px); }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+        .btn-green-neon { background-color: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); }
+        .btn-green-neon:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 15px var(--neon-green), 0 0 30px var(--neon-green); }
 
-        /* Header & Footer */
+        /* --- HEADER --- */
         header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
-        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
         .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
         .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
         .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
         .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
-        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
-        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .footer-left { display: flex; align-items: center; gap: 25px; }
-        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
         .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
         
-        /* Tool Page Specific Styles */
+        /* --- Tool Page Specific Styles --- */
         .tool-header { padding: 30px 0; text-align: center; }
         .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
-        .upload-box { border: 3px dashed var(--neon-purple); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #0F0F1A; }
-        .upload-box:hover, .upload-box.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; }
-        .upload-box i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
-        #file-input { display: none; }
-        .cropper-container-wrapper { background-color: #080810; padding: 10px; border-radius: 8px; border: 1px solid rgba(157, 0, 255, 0.3); min-height: 400px; }
-        #image-to-crop { display: block; max-width: 100%; }
-        .cropper-controls { background: #0F0F1A; padding: 15px; border-radius: 8px; margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; }
-        .control-group { display: flex; gap: 10px; align-items: center; border-left: 2px solid var(--neon-purple); padding-left: 15px;}
-        .control-group:first-child { border-left: none; padding-left: 0; }
-        .control-group .btn { padding: 8px 15px; font-size: 0.8rem; }
-        .manual-crop-inputs label { font-size: 0.8rem; color: #A0A0A0; margin-right: 5px; }
-        .manual-crop-inputs input { width: 70px; background-color: var(--card-bg); border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 5px; border-radius: 4px; text-align: center; }
-        .tool-controls { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-interface-container { background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); text-align: center; }
+        
+        /* --- START: Image Cropper Enhanced Styles --- */
+        .image-workspace, .preview-workspace { display: none; margin: 25px auto 0; }
+        .image-workspace img { max-width: 100%; }
+        .preview-workspace h3 { color: var(--neon-blue); margin-bottom: 15px; }
+        #cropPreviewImage { max-width: 100%; max-height: 500px; border-radius: 8px; background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="%23333" d="M0 0h10v10H0zM10 10h10v10H10z"/></svg>'); border: 2px solid var(--neon-purple); }
+        .cropper-controls { display: none; flex-direction: column; align-items: center; gap: 20px; margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(157, 0, 255, 0.2); }
+        .control-group { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; }
+        .control-group label { font-weight: bold; color: #E0E0E0; }
+        .control-group input[type="number"] { background: #0F0F1A; border: 1px solid var(--neon-blue); color: #E0E0E0; padding: 8px 12px; border-radius: 8px; font-size: 1rem; width: 80px; text-align: center; }
+        #downloadBtn, #backToCropBtn { display: none; }
+        /* --- END: Image Cropper Enhanced Styles --- */
+
         .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
         .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
+        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
+        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
+        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
         
-        @media (max-width: 991px) { .cropper-controls, .control-group { flex-direction: column; border-left: none; padding-left: 0; } }
+        @media (max-width: 991px) { .tool-nav-icons a { font-size: 1.2rem; } }
         @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } }
     </style>
 </head>
@@ -71,9 +94,12 @@
 
     <header>
         <div class="container">
-            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <a href="index.html" class="logo">
+                <i class="fas fa-cubes-stacked"></i>
+                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
+            </a>
             <div class="tool-nav-icons">
-                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
                 <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
                 <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
                 <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
@@ -89,62 +115,74 @@
     <main>
         <section class="tool-header">
             <div class="container">
-                <h1 class="neon-text">Image Cropper</h1>
-                <p>Select the perfect area of your image with our intuitive online cropping tool.</p>
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> > <a href="index.html#image-tools-section">Image Tools</a> > <span class="current">Image Cropper</span>
+                </nav>
+                <h1><span class="neon-text">Image</span> Cropper</h1>
+                <p class="subtitle">Upload, crop, preview, and download images with precision.</p>
             </div>
         </section>
 
         <div class="container">
             <div class="tool-interface-container">
-                <input type="file" id="file-input" accept="image/*">
                 
-                <div id="upload-container">
-                    <div id="upload-box" class="upload-box">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p><strong>Drag & Drop</strong> or click to upload an image</p>
+                <label for="imageUpload" class="btn btn-neon" id="upload-label"><i class="fas fa-upload"></i> Upload Image</label>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                
+                <div class="image-workspace" id="imageWorkspace">
+                    <img id="imageToCrop">
+                </div>
+                
+                <div class="preview-workspace" id="previewWorkspace">
+                    <h3>Cropped Preview</h3>
+                    <img id="cropPreviewImage">
+                </div>
+
+                <div class="cropper-controls" id="cropControls">
+                    <div class="control-group" id="aspectRatioGroup">
+                        <label for="customWidth">Aspect Ratio:</label>
+                        <input type="number" id="customWidth" placeholder="W">
+                        <label> : </label>
+                        <input type="number" id="customHeight" placeholder="H">
+                        <button id="applyCustomSize" class="btn btn-outline-neon">Apply</button>
+                    </div>
+                    
+                    <div class="control-group" id="mainActions">
+                        <button id="cropBtn" class="btn btn-neon"><i class="fas fa-crop-alt"></i> Crop</button>
+                        <button id="backToCropBtn" class="btn btn-outline-neon"><i class="fas fa-arrow-left"></i> Back to Crop</button>
+                        <button id="downloadBtn" class="btn btn-green-neon"><i class="fas fa-download"></i> Download Image</button>
+                        <button id="clearQueueBtn" class="btn btn-outline-neon"><i class="fas fa-trash-alt"></i> Reset</button>
                     </div>
                 </div>
 
-                <div id="cropper-main" style="display: none;">
-                    <div class="cropper-container-wrapper">
-                        <img id="image-to-crop">
-                    </div>
-                    <div class="cropper-controls">
-                        <div class="control-group">
-                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="1.7777777777777777" title="16:9"><i class="fas fa-tv"></i> 16:9</button>
-                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="1" title="1:1"><i class="fas fa-square"></i> 1:1</button>
-                            <button class="btn btn-outline-neon" data-action="set-aspect-ratio" data-ratio="NaN" title="Free"><i class="fas fa-arrows-alt"></i> Free</button>
-                        </div>
-                        <div class="control-group">
-                            <button class="btn btn-outline-neon" data-action="rotate-left" title="Rotate Left"><i class="fas fa-undo"></i></button>
-                            <button class="btn btn-outline-neon" data-action="rotate-right" title="Rotate Right"><i class="fas fa-redo"></i></button>
-                        </div>
-                        <div class="control-group manual-crop-inputs">
-                            <label>X:</label><input type="number" id="crop-x">
-                            <label>Y:</label><input type="number" id="crop-y">
-                            <label>W:</label><input type="number" id="crop-w">
-                            <label>H:</label><input type="number" id="crop-h">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tool-controls">
-                    <button id="crop-btn" class="btn btn-neon" style="display: none;"><i class="fas fa-crop-alt"></i> Crop Image</button>
-                    <button id="new-btn" class="btn btn-outline-neon" style="display: none;"><i class="fas fa-sync"></i> Crop Another</button>
-                </div>
             </div>
         </div>
 
-        <section class="neon-section">
-            <div class="container">
-                <div class="content-section">
-                    <h2>How to Crop Your Image</h2>
-                    <ol style="padding-left: 20px; line-height: 1.8;">
-                        <li><strong>Upload Your Image:</strong> Drag your file to the upload box or click to select it.</li>
-                        <li><strong>Adjust Crop Area:</strong> A draggable crop box will appear. Drag the corners or edges to resize it, or move the entire box.</li>
-                        <li><strong>Use Controls:</strong> Use the buttons for fixed aspect ratios or enter exact pixel coordinates in the manual input boxes for precision.</li>
-                        <li><strong>Crop and Download:</strong> When ready, click "Crop Image". Your new file will download automatically.</li>
-                    </ol>
+        <section class="content-section">
+             <h2>How to Use the Enhanced Image Cropper</h2>
+             <ol style="padding-left: 20px; line-height: 1.8;">
+                 <li><strong>Upload Image:</strong> Click "Upload Image" to select a file.</li>
+                 <li><strong>Adjust Selection:</strong> The image will appear with crop anchors. Drag the corners and sides to select your desired area. Use the "Aspect Ratio" inputs for fixed dimensions (e.g., 16:9 for a banner).</li>
+                 <li><strong>Click Crop:</strong> Once you're satisfied with the selection, press the large "Crop" button.</li>
+                 <li><strong>Preview the Result:</strong> The main image will be replaced by a high-quality preview of your cropped selection.</li>
+                 <li><strong>Download or Go Back:</strong> If the preview looks perfect, click "Download Image". If you want to make adjustments, click "Back to Crop" to return to the previous step.</li>
+                 <li><strong>Reset:</strong> Click "Reset" at any time to clear everything and start over.</li>
+             </ol>
+        </section>
+        <section class="content-section">
+            <h2>About Our Free Image Cropper</h2>
+            <p>Our Image Cropper is a powerful, client-side tool designed for quick and precise image editing directly in your browser. Powered by the robust Cropper.js library, it allows for both freeform manual cropping and fixed aspect ratio cropping, giving you complete control over the final composition of your images. Because the entire process happens on your computer, your images are never uploaded to a server, ensuring 100% privacy and security.</p>
+        </section>
+        <section class="content-section">
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">Are my images uploaded to your server?</h3>
+                    <div class="faq-answer"><p><strong>Absolutely not.</strong> This tool operates entirely within your web browser. Your images are loaded from your computer, processed locally by the JavaScript in the page, and downloaded back to your computer. Your files never leave your device, guaranteeing your privacy and data security.</p></div>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Will cropping the image reduce its quality?</h3>
+                    <div class="faq-answer"><p>No, the tool is designed to avoid quality loss. It crops the image using the original file's data and resolution. The downloaded file is created from the highest-quality render of the selected area. For formats that support it (like PNG), transparency is preserved. For JPEGs, it saves at a very high quality setting to minimize compression artifacts.</p></div>
                 </div>
             </div>
         </section>
@@ -165,152 +203,124 @@
                 </div>
             </div>
         </div>
-        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" integrity="sha512-9KkIqdfN7ipEW6B6k+Aq20PVSAUiGpwSY8q9xZNuxLfXcOlHYRT9TfujaJDOAQItkdguLAZVRabIFnaJEOoP6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script>
-        // --- DOM Elements ---
-        const uploadContainer = document.getElementById('upload-container');
-        const fileInput = document.getElementById('file-input');
-        const cropperMain = document.getElementById('cropper-main');
-        const image = document.getElementById('image-to-crop');
-        const cropBtn = document.getElementById('crop-btn');
-        const newBtn = document.getElementById('new-btn');
-        const controls = document.querySelector('.cropper-controls');
-        const cropInputs = {
-            x: document.getElementById('crop-x'),
-            y: document.getElementById('crop-y'),
-            w: document.getElementById('crop-w'),
-            h: document.getElementById('crop-h'),
-        };
-        
-        // --- State Variables ---
-        let cropper;
-        let originalFile = null;
-        let debounceTimer;
-
-        // --- Event Listeners ---
-        uploadContainer.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-        
-        uploadContainer.addEventListener('dragover', (e) => { e.preventDefault(); uploadContainer.firstElementChild.classList.add('dragover'); });
-        uploadContainer.addEventListener('dragleave', () => uploadContainer.firstElementChild.classList.remove('dragover'));
-        uploadContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadContainer.firstElementChild.classList.remove('dragover');
-            handleFile(e.dataTransfer.files[0]);
-        });
-        
-        controls.addEventListener('click', handleControlEvents);
-        Object.values(cropInputs).forEach(input => {
-            input.addEventListener('input', () => {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(updateCropperFromInputs, 300);
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+                const faqAnswer = faqItem.querySelector('.faq-answer');
+                if (faqItem.classList.contains('active')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                } else {
+                    faqAnswer.style.maxHeight = '0px';
+                }
             });
         });
 
-        cropBtn.addEventListener('click', downloadCroppedImage);
-        newBtn.addEventListener('click', resetUI);
-        
-        // --- Core Functions ---
-        function handleFile(file) {
-            if (!file || !file.type.startsWith('image/')) {
-                alert('Please select a valid image file.');
-                return;
-            }
-            originalFile = file;
-            const reader = new FileReader();
+        // --- Core Image Cropper Logic (Enhanced) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUpload = document.getElementById('imageUpload');
+            const uploadLabel = document.getElementById('upload-label');
+            const imageWorkspace = document.getElementById('imageWorkspace');
+            const imageToCrop = document.getElementById('imageToCrop');
+            const previewWorkspace = document.getElementById('previewWorkspace');
+            const cropPreviewImage = document.getElementById('cropPreviewImage');
+            const cropControls = document.getElementById('cropControls');
+            const aspectRatioGroup = document.getElementById('aspectRatioGroup');
+            const customWidthInput = document.getElementById('customWidth');
+            const customHeightInput = document.getElementById('customHeight');
+            const applyCustomSizeBtn = document.getElementById('applyCustomSize');
+            const cropBtn = document.getElementById('cropBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const backToCropBtn = document.getElementById('backToCropBtn');
+            const clearQueueBtn = document.getElementById('clearQueueBtn');
 
-            // This is the correct, robust sequence for loading
-            reader.onload = (e) => {
-                image.onload = () => {
-                    initCropper();
+            let cropper = null;
+            let croppedCanvas = null;
+            let originalFileType = 'image/jpeg';
+            let originalFileName = 'cropped-image';
+
+            function setUIState(state) {
+                imageWorkspace.style.display = (state === 'cropping') ? 'block' : 'none';
+                previewWorkspace.style.display = (state === 'preview') ? 'block' : 'none';
+                cropControls.style.display = (state === 'cropping' || state === 'preview') ? 'flex' : 'none';
+                aspectRatioGroup.style.display = (state === 'cropping') ? 'flex' : 'none';
+                cropBtn.style.display = (state === 'cropping') ? 'inline-block' : 'none';
+                downloadBtn.style.display = (state === 'preview') ? 'inline-block' : 'none';
+                backToCropBtn.style.display = (state === 'preview') ? 'inline-block' : 'none';
+                uploadLabel.innerHTML = (state === 'initial') ? '<i class="fas fa-upload"></i> Upload Image' : '<i class="fas fa-sync-alt"></i> Change Image';
+            }
+            
+            imageUpload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                originalFileType = file.type;
+                originalFileName = file.name.split('.').slice(0, -1).join('.');
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageToCrop.src = e.target.result;
+                    if (cropper) cropper.destroy();
+                    setUIState('cropping');
+                    cropper = new Cropper(imageToCrop, {
+                        aspectRatio: NaN, viewMode: 1, background: false, autoCropArea: 0.8,
+                    });
                 };
-                image.src = e.target.result;
-            };
-            
-            reader.readAsDataURL(file);
-        }
-
-        function initCropper() {
-            if (cropper) {
-                cropper.destroy();
-            }
-            cropper = new Cropper(image, {
-                viewMode: 1,
-                background: false,
-                autoCropArea: 0.8,
-                crop(event) {
-                    updateInputsFromCropper(event.detail);
-                },
+                reader.readAsDataURL(file);
             });
-            setUIState('CROPPING');
-        }
 
-        function setUIState(state) {
-            uploadContainer.style.display = state === 'IDLE' ? 'block' : 'none';
-            cropperMain.style.display = state === 'CROPPING' ? 'block' : 'none';
-            cropBtn.style.display = state === 'CROPPING' ? 'inline-block' : 'none';
-            newBtn.style.display = state === 'CROPPING' ? 'inline-block' : 'none';
-        }
-
-        function handleControlEvents(e) {
-            const target = e.target.closest('button');
-            if (!target || !cropper) return;
-            const action = target.dataset.action;
-            if (action) e.preventDefault();
-            switch (action) {
-                case 'set-aspect-ratio': cropper.setAspectRatio(parseFloat(target.dataset.ratio)); break;
-                case 'rotate-left': cropper.rotate(-90); break;
-                case 'rotate-right': cropper.rotate(90); break;
-            }
-        }
-
-        function updateInputsFromCropper(data) {
-            cropInputs.x.value = Math.round(data.x);
-            cropInputs.y.value = Math.round(data.y);
-            cropInputs.w.value = Math.round(data.width);
-            cropInputs.h.value = Math.round(data.height);
-        }
-
-        function updateCropperFromInputs() {
-            if (!cropper) return;
-            cropper.setData({
-                x: parseInt(cropInputs.x.value) || 0,
-                y: parseInt(cropInputs.y.value) || 0,
-                width: parseInt(cropInputs.w.value) || 0,
-                height: parseInt(cropInputs.h.value) || 0,
+            applyCustomSizeBtn.addEventListener('click', () => {
+                if (!cropper) return;
+                const width = parseFloat(customWidthInput.value);
+                const height = parseFloat(customHeightInput.value);
+                cropper.setAspectRatio((!isNaN(width) && !isNaN(height) && width > 0 && height > 0) ? width / height : NaN);
             });
-        }
 
-        function downloadCroppedImage() {
-            if (!cropper || !originalFile) return;
-            const canvas = cropper.getCroppedCanvas({ imageSmoothingQuality: 'high' });
-            const mimeType = originalFile.type;
-            const originalName = originalFile.name.substring(0, originalFile.name.lastIndexOf('.'));
-            const extension = mimeType.split('/')[1] === 'jpeg' ? 'jpg' : mimeType.split('/')[1];
-            
-            canvas.toBlob((blob) => {
+            cropBtn.addEventListener('click', () => {
+                if (!cropper) return;
+                croppedCanvas = cropper.getCroppedCanvas({
+                    fillColor: '#fff', imageSmoothingEnabled: true, imageSmoothingQuality: 'high',
+                });
+                cropPreviewImage.src = croppedCanvas.toDataURL(originalFileType);
+                setUIState('preview');
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                if (!croppedCanvas) return;
+                let mimeType = 'image/jpeg', extension = 'jpg';
+                if (originalFileType === 'image/png' || originalFileType === 'image/gif') {
+                    mimeType = 'image/png'; extension = 'png';
+                }
                 const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `${originalName}-cropped.${extension}`;
+                link.href = croppedCanvas.toDataURL(mimeType, 1.0);
+                link.download = `${originalFileName}-cropped.${extension}`;
+                document.body.appendChild(link);
                 link.click();
-                URL.revokeObjectURL(link.href);
-            }, mimeType);
-        }
+                document.body.removeChild(link);
+            });
 
-        function resetUI() {
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
-            }
-            fileInput.value = '';
-            image.src = '';
-            setUIState('IDLE');
-        }
+            backToCropBtn.addEventListener('click', () => {
+                croppedCanvas = null;
+                cropPreviewImage.src = '';
+                setUIState('cropping');
+            });
 
-        resetUI();
+            clearQueueBtn.addEventListener('click', () => {
+                if (cropper) cropper.destroy();
+                cropper = null; croppedCanvas = null;
+                imageUpload.value = ''; imageToCrop.src = ''; cropPreviewImage.src = '';
+                customWidthInput.value = ''; customHeightInput.value = '';
+                setUIState('initial');
+            });
+
+            setUIState('initial');
+        });
     </script>
 </body>
 </html>
