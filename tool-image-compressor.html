@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Free Image Compressor - Optimize JPG & PNG Images Online | ToolCraft Pro</title>
-    <meta name="description" content="Reduce the file size of your JPG and PNG images with our free online image compressor. Balance quality and file size visually. No uploads, fast, and secure.">
-    <meta name="keywords" content="image compressor, compress image, reduce image size, optimize images, jpg compressor, png compressor, free tool">
+    <title>Free Image Compressor - Optimize JPG, PNG, WEBP in Bulk | ToolCraft Pro</title>
+    <meta name="description" content="Compress and optimize your JPG, PNG, and WEBP images in bulk with our powerful online tool. Choose your output format and quality to drastically reduce file sizes without losing quality.">
+    <meta name="keywords" content="image compressor, bulk image compressor, compress image, reduce image size, optimize images, jpg compressor, png compressor, webp converter, free tool">
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <style>
-        /* Base and Reusable Styles */
+        /* Base and Reusable Styles from tool-color-picker.html */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
         body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
@@ -33,36 +33,23 @@
         .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
         .btn-pink-hover:hover:not(:disabled) { color: #fff; border-color: var(--neon-pink); background-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); transform: translateY(-3px); }
 
-
-        /* --- HEADER --- */
+        /* Header & Footer from tool-color-picker.html */
         header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
-        header .container { display: flex; justify-content: space-between; align-items: center; }
+        header .container, .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
         .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
         .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
         .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
         .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
-        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
-
-        /* --- FOOTER --- */
-        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
-        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); }
         .footer-left { display: flex; align-items: center; gap: 25px; }
-        .footer-left .logo { font-size: 1.5rem; }
-        .footer-right { display: flex; align-items: center; }
-        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
-        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
-        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
-        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
-        .social-icons a:hover .fa-youtube { color: #ff2f00; }
-        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; }
         .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
         
         /* --- Tool Page Specific Styles --- */
         .tool-header { padding: 30px 0; text-align: center; }
         .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
-        .tool-header .breadcrumb a { color: var(--neon-blue); }
         .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
         #file-input { display: none; }
         
@@ -71,65 +58,55 @@
         #drop-zone.dragover { border-color: var(--neon-pink); background-color: #1A1A2E; transform: scale(1.02); }
         #drop-zone i { font-size: 3rem; color: var(--neon-blue); margin-bottom: 15px; }
         #drop-zone p { font-size: 1.1rem; }
-
-        /* Image Queue Styles with Scroll Arrows */
-        .queue-wrapper { position: relative; margin: 10px 0; }
-        .scroll-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(15, 15, 26, 0.7); border: 1px solid var(--neon-blue); color: var(--neon-blue); width: 40px; height: 40px; border-radius: 50%; z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.3s ease; backdrop-filter: blur(4px); }
-        .scroll-arrow:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue); }
-        .scroll-arrow.left { left: -15px; }
-        .scroll-arrow.right { right: -15px; }
-        .scroll-arrow:disabled { opacity: 0; cursor: default; pointer-events: none; }
         
-        .image-queue-container { display: flex; gap: 15px; padding: 15px 10px; min-height: 160px; align-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scroll-behavior: smooth; /* Hide scrollbar */ scrollbar-width: none; /* Firefox */ }
-        .image-queue-container::-webkit-scrollbar { display: none; /* Safari and Chrome */ }
-        
-        #queue-placeholder { width: 100%; text-align: center; color: #888; font-size: 1.1rem; align-self: center; }
-        .queue-item { position: relative; width: 140px; flex-shrink: 0; border: 2px solid var(--neon-blue); border-radius: 8px; background: #0F0F1A; padding: 5px; cursor: pointer; transition: all 0.3s ease; overflow: hidden; text-align: center; }
+        /* Image Queue Styles */
+        #queue-placeholder { width: 100%; text-align: center; color: #888; font-size: 1.1rem; align-self: center; padding: 20px; }
+        #image-queue-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .queue-item { position: relative; border: 2px solid var(--neon-blue); border-radius: 8px; background: #0F0F1A; padding: 5px; cursor: pointer; transition: all 0.3s ease; overflow: hidden; text-align: center; }
         .queue-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3); }
         .queue-item.active { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink), 0 0 5px var(--neon-pink) inset; }
-        .queue-item .thumb-img { width: 100%; height: 75px; object-fit: cover; border-radius: 4px; margin-bottom: 5px; }
+        .queue-item .thumb-img { width: 100%; height: 80px; object-fit: cover; border-radius: 4px; margin-bottom: 5px; }
         .queue-item .thumb-info { font-size: 0.7rem; line-height: 1.3; color: #ccc; word-break: break-all; padding: 0 3px; }
         .queue-item .file-name { font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; font-weight: bold; }
         .queue-item .size-details { display: flex; justify-content: space-between; gap: 5px; margin-bottom: 4px; }
-        .queue-item .size-details span { font-weight: bold; }
-        .queue-item .size-details .comp-size { color: var(--neon-green); }
-        .queue-item .thumb-reduction { font-weight: bold; color: var(--neon-green); font-size: 0.9rem; background: rgba(0, 255, 132, 0.15); padding: 1px 6px; border-radius: 20px; display: inline-block; }
-        .queue-item .remove-btn { position: absolute; top: -1px; right: -1px; background: var(--neon-pink); color: white; border: none; width: 22px; height: 22px; border-radius: 0 6px 0 11px; cursor: pointer; font-size: 0.9rem; opacity: 0.8; transition: all 0.2s ease; }
+        .queue-item .size-details .comp-size { color: var(--neon-green); font-weight: bold; }
+        .queue-item .thumb-reduction { font-weight: bold; color: var(--neon-green); font-size: 0.9rem; background: rgba(0, 255, 132, 0.15); padding: 1px 6px; border-radius: 20px; display: inline-block; margin-top: 3px; }
+        .queue-item .remove-btn { position: absolute; top: -1px; right: -1px; background: var(--neon-pink); color: white; border: none; width: 22px; height: 22px; border-radius: 0 6px 0 11px; cursor: pointer; font-size: 0.9rem; opacity: 0.8; transition: all 0.2s ease; z-index: 5; }
         .queue-item .remove-btn:hover { opacity: 1; transform: scale(1.1); }
         
         /* Main Processing Area */
-        #processing-layout-grid { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: stretch; margin-top: 20px; }
-        .image-preview-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-        .image-preview-box { background: #0F0F1A; border-radius: 8px; padding: 15px; border: 1px solid rgba(0,247,255,0.2); text-align: center;}
+        #processing-container { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; margin-top: 25px; }
+        .settings-and-preview { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .image-preview-area { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start; }
+        .image-preview-box { background: #0F0F1A; border-radius: 8px; padding: 15px; border: 1px solid rgba(0,247,255,0.2); text-align: center; }
         .image-preview-box h3 { font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 10px; }
         .image-preview-box img { max-width: 100%; max-height: 280px; border-radius: 4px; object-fit: contain; min-height: 100px; background: repeating-conic-gradient(#2a2a3e 0% 25%, #222233 0% 50%) 50% / 20px 20px;}
         .image-preview-box .size-info { font-size: 1rem; font-weight: bold; margin-top: 10px; }
         .image-preview-box .size-info span { color: var(--neon-green); }
         
-        /* Vertical Slider Styles */
-        #quality-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px 5px; background: #0F0F1A; border-radius: 8px; border: 1px solid rgba(157, 0, 255, 0.2); }
-        .form-group label { font-size: 1rem; color: #E0E0E0; margin-bottom: 20px; font-weight: bold; text-align: center; }
-        #quality-value { color: var(--neon-green); font-weight: bold; font-size: 1.2rem; display: block; }
-        #quality-slider { -webkit-appearance: none; appearance: none; width: 250px; height: 25px; margin: 0; transform: rotate(-90deg); cursor: pointer; background: transparent; }
-        #quality-slider::-webkit-slider-runnable-track { height: 5px; background: var(--neon-purple); border-radius: 5px; }
-        #quality-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; margin-top: -10px; height: 25px; width: 25px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); }
-        #quality-slider::-moz-range-track { height: 5px; background: var(--neon-purple); border-radius: 5px; }
-        #quality-slider::-moz-range-thumb { height: 25px; width: 25px; background: var(--neon-blue); border-radius: 50%; border: none; box-shadow: 0 0 10px var(--neon-blue); }
+        /* Controls & Settings */
+        .controls-panel { background: #0F0F1A; border-radius: 8px; padding: 20px; border: 1px solid rgba(157, 0, 255, 0.2); display: flex; flex-direction: column; gap: 20px; }
+        .control-group label { font-size: 1rem; color: #E0E0E0; margin-bottom: 10px; font-weight: bold; display: block; }
+        #quality-value { color: var(--neon-green); font-weight: bold; font-size: 1.1rem; }
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; background: var(--neon-purple); border-radius: 5px; cursor: pointer; outline: none; transition: opacity .2s; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); cursor: pointer; }
+        input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); cursor: pointer; border: none; }
 
-        .tool-controls { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
+        /* Custom Select for Format */
+        .custom-select-wrapper { position: relative; }
+        select#format-select { appearance: none; -webkit-appearance: none; background-color: var(--card-bg); border: 1px solid var(--neon-blue); color: #fff; padding: 10px; width: 100%; border-radius: 5px; font-size: 1rem; cursor: pointer; }
+        .custom-select-wrapper::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--neon-blue); position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+
+        .tool-actions { text-align: center; margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;}
         #status-message { margin-top: 20px; padding: 10px 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; }
         #status-message.success { background-color: rgba(0, 255, 132, 0.1); color: var(--neon-green); border: 1px solid var(--neon-green); }
-        #status-message.error { background-color: rgba(255, 47, 0, 0.1); color: var(--neon-pink); }
+        #status-message.error { background-color: rgba(255, 0, 195, 0.1); color: var(--neon-pink); border: 1px solid var(--neon-pink); }
         
+        /* Content Sections */
         .content-section { max-width: 900px; margin: 50px auto; color: #C0C0C0; }
         .content-section h2 { font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px; }
-        .faq-item { background: var(--card-bg); margin-bottom: 10px; border-radius: 8px; }
-        .faq-question { padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; position: relative; }
-        .faq-question::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 20px; transition: transform 0.3s ease; }
-        .faq-item.active .faq-question::after { transform: rotate(180deg); }
-        .faq-answer { max-height: 0; overflow: hidden; padding: 0 15px; transition: max-height 0.4s ease; }
-        
-        @media (max-width: 991px) { #processing-layout-grid { grid-template-columns: 1fr; } #quality-slider { transform: none; width: 80%; max-width: 400px; } #quality-container { margin-top: 20px; } }
+
+        @media (max-width: 991px) { .settings-and-preview { grid-template-columns: 1fr; } .controls-panel { order: -1; margin-bottom: 20px; } }
         @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } .image-preview-area { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -137,10 +114,7 @@
 
     <header>
         <div class="container">
-            <a href="index.html" class="logo">
-                <i class="fas fa-cubes-stacked"></i>
-                <span>Tool<span class="neon-pink">Craft</span> Pro</span>
-            </a>
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
             <div class="tool-nav-icons">
                 <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
                 <a href="index.html#image-tools-section" title="Image Tools" class="active"><i class="fas fa-image"></i></a>
@@ -158,11 +132,8 @@
     <main>
         <section class="tool-header">
             <div class="container">
-                <nav class="breadcrumb" aria-label="breadcrumb">
-                    <a href="index.html">Home</a> > <a href="index.html#image-tools-section">Image Tools</a> > <span class="current">Image Compressor</span>
-                </nav>
-                <h1><span class="neon-text">Image</span> Compressor</h1>
-                <p class="subtitle">Drastically reduce image file sizes while maintaining high visual quality.</p>
+                <h1 class="neon-text">Bulk Image Compressor</h1>
+                <p>Optimize JPG, PNG & WEBP images. Choose your format and quality for the perfect balance.</p>
             </div>
         </section>
 
@@ -177,33 +148,40 @@
                     <p style="font-size: 0.8rem; margin-top: 10px;">(Supports JPG, PNG, WEBP)</p>
                 </div>
 
-                <div class="queue-wrapper" id="queue-wrapper">
-                    <button id="scroll-left-btn" class="scroll-arrow left" disabled><i class="fas fa-chevron-left"></i></button>
-                    <div id="image-queue-container" class="image-queue-container">
-                        <p id="queue-placeholder">Your image queue is empty.</p>
-                    </div>
-                    <button id="scroll-right-btn" class="scroll-arrow right" disabled><i class="fas fa-chevron-right"></i></button>
+                <div id="image-queue-container">
+                    <p id="queue-placeholder">Your image queue is empty.</p>
                 </div>
 
                 <div id="processing-container" style="display: none;">
-                     <div id="processing-layout-grid">
+                    <div class="settings-and-preview">
                         <div class="image-preview-area">
                             <div class="image-preview-box">
                                 <h3>Original</h3>
                                 <img id="original-preview" src="" alt="Original Image Preview">
                                 <p class="size-info" id="original-size"></p>
                             </div>
-                             <div class="image-preview-box">
+                            <div class="image-preview-box">
                                 <h3>Compressed</h3>
                                 <img id="compressed-preview" src="" alt="Compressed Image Preview">
                                 <p class="size-info" id="compressed-size"></p>
                             </div>
                         </div>
 
-                        <div id="quality-container">
-                            <div class="form-group">
-                                <label for="quality-slider">Quality<span id="quality-value">80%</span></label>
+                        <div class="controls-panel">
+                            <div class="control-group">
+                                <label for="quality-slider">Quality: <span id="quality-value">80%</span></label>
                                 <input type="range" id="quality-slider" min="10" max="100" step="5" value="80">
+                            </div>
+                             <div class="control-group">
+                                <label for="format-select">Output Format</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="format-select">
+                                        <option value="auto">Auto (Best match)</option>
+                                        <option value="image/jpeg">JPG</option>
+                                        <option value="image/png">PNG</option>
+                                        <option value="image/webp">WEBP</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -211,7 +189,7 @@
                 
                 <div id="status-message"></div>
 
-                <div class="tool-controls">
+                <div class="tool-actions">
                     <button id="download-btn" class="btn btn-neon" style="display: none;"><i class="fas fa-download"></i> Download Selected</button>
                     <button id="download-all-btn" class="btn btn-outline-neon" style="display: none;"><i class="fas fa-archive"></i> Download All (.zip)</button>
                     <button id="clear-queue-btn" class="btn btn-outline-neon btn-pink-hover" style="display: none;"><i class="fas fa-trash"></i> Clear Queue</button>
@@ -219,35 +197,15 @@
             </div>
         </div>
 
-        <section class="content-section-wrapper">
+        <section class="content-section">
             <div class="container">
-                <div class="content-section">
-                    <h2>How to Compress Your Images</h2>
-                    <ol style="padding-left: 20px; line-height: 1.8;">
-                        <li><strong>Upload Images:</strong> Drag and drop multiple JPG, PNG, or WEBP files, or click the select button.</li>
-                        <li><strong>Select an Image:</strong> Click on any image in the queue to make it active. Use the arrows to scroll if you have many images.</li>
-                        <li><strong>Adjust Quality:</strong> Use the vertical slider on the right to find the perfect balance. The preview and file size will update in real-time.</li>
-                        <li><strong>Download:</strong> Click "Download Selected" for the active image, or "Download All" to get a .zip file of all compressed images.</li>
-                    </ol>
-                </div>
-                <div class="content-section">
-                    <h2>About Our Free Image Compressor</h2>
-                    <p>Page speed is critical for user experience and SEO. Large images are often the biggest cause of slow websites. Our Image Compressor solves this by intelligently reducing the file size of your images without significant loss in visual quality. This process, also known as image optimization, is essential for web developers, bloggers, and anyone sharing images online.</p>
-                    <p>The tool works by applying smart compression algorithms. For JPG and WEBP files, you have direct control over the quality level, allowing you to see the trade-off between size and clarity instantly. For PNGs, it uses efficient encoding to reduce size while keeping quality intact. Like all our tools, this is done securely in your browser—your images are never sent to our servers.</p>
-                </div>
-                <div class="content-section">
-                    <h2>Frequently Asked Questions (FAQ)</h2>
-                    <div class="faq-list">
-                        <div class="faq-item">
-                            <h3 class="faq-question">What's the best quality setting to use?</h3>
-                            <div class="faq-answer"><p>There's no single "best" setting, as it depends on the image and its use case. For web use, a quality level between 70% and 85% is often the sweet spot, providing huge file size savings with very little noticeable difference in quality. We recommend starting at 80% and adjusting from there.</p></div>
-                        </div>
-                        <div class="faq-item">
-                            <h3 class="faq-question">Will this tool work with PNG transparency?</h3>
-                            <div class="faq-answer"><p>Yes. Our compressor is designed to handle PNG files with transparency (alpha channels). It will reduce the file size while preserving the transparent background, making it perfect for logos and web graphics.</p></div>
-                        </div>
-                    </div>
-                </div>
+                <h2>How to Use the Bulk Image Compressor</h2>
+                <ol style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Upload Images:</strong> Drag and drop multiple JPG, PNG, or WEBP files, or click the "Select Files" button.</li>
+                    <li><strong>Adjust Settings:</strong> Use the controls on the right to set your desired compression quality and output format (JPG, PNG, WEBP, or Auto). These settings will apply to the active image and any subsequent compressions.</li>
+                    <li><strong>Review Preview:</strong> Click any image in the queue to make it active. The "Original" and "Compressed" previews will update instantly, showing you the file size savings.</li>
+                    <li><strong>Download:</strong> Click "Download Selected" to save the active image, or "Download All" to get a .zip file containing all your optimized images.</li>
+                </ol>
             </div>
         </section>
     </main>
@@ -267,32 +225,16 @@
                 </div>
             </div>
         </div>
-        <div class="copyright">
-            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
-        </div>
+        <div class="copyright"><p>© 2025 ToolCraft Pro. All rights reserved.</p></div>
     </footer>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- FAQ Accordion Logic ---
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.parentElement;
-                faqItem.classList.toggle('active');
-                const faqAnswer = faqItem.querySelector('.faq-answer');
-                faqAnswer.style.maxHeight = faqItem.classList.contains('active') ? faqAnswer.scrollHeight + 'px' : '0px';
-            });
-        });
-
-        // --- Core Image Compressor Logic ---
         const fileInput = document.getElementById('file-input');
         const dropZone = document.getElementById('drop-zone');
         const uploadBtn = document.getElementById('upload-btn');
         const queueContainer = document.getElementById('image-queue-container');
-        const queueWrapper = document.getElementById('queue-wrapper');
         const queuePlaceholder = document.getElementById('queue-placeholder');
-        const scrollLeftBtn = document.getElementById('scroll-left-btn');
-        const scrollRightBtn = document.getElementById('scroll-right-btn');
         const processingContainer = document.getElementById('processing-container');
         const originalPreview = document.getElementById('original-preview');
         const compressedPreview = document.getElementById('compressed-preview');
@@ -300,6 +242,7 @@
         const compressedSize = document.getElementById('compressed-size');
         const qualitySlider = document.getElementById('quality-slider');
         const qualityValue = document.getElementById('quality-value');
+        const formatSelect = document.getElementById('format-select');
         const downloadBtn = document.getElementById('download-btn');
         const downloadAllBtn = document.getElementById('download-all-btn');
         const clearQueueBtn = document.getElementById('clear-queue-btn');
@@ -315,48 +258,26 @@
         
         dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
         dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files);
-        });
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
 
-        qualitySlider.addEventListener('input', () => {
-            qualityValue.textContent = `${qualitySlider.value}%`;
+        const recompressActiveImage = () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                if(activeFileId) compressImage(activeFileId);
-            }, 200);
+                if (activeFileId) compressImage(activeFileId, true);
+            }, 250);
+        };
+        qualitySlider.addEventListener('input', () => {
+            qualityValue.textContent = `${qualitySlider.value}%`;
+            recompressActiveImage();
         });
+        formatSelect.addEventListener('change', recompressActiveImage);
         
         downloadBtn.addEventListener('click', downloadSelectedFile);
         downloadAllBtn.addEventListener('click', downloadAllFiles);
         clearQueueBtn.addEventListener('click', resetUI);
         
-        // --- Scroll Arrow Listeners ---
-        scrollLeftBtn.addEventListener('click', () => { queueContainer.scrollBy({ left: -300, behavior: 'smooth' }); });
-        scrollRightBtn.addEventListener('click', () => { queueContainer.scrollBy({ left: 300, behavior: 'smooth' }); });
-        queueContainer.addEventListener('scroll', () => requestAnimationFrame(updateScrollButtons));
-        window.addEventListener('resize', () => requestAnimationFrame(updateScrollButtons));
-
-        function updateScrollButtons() {
-            const { scrollWidth, clientWidth, scrollLeft } = queueContainer;
-            const isScrollable = scrollWidth > clientWidth;
-            
-            queueWrapper.style.display = filesQueue.length > 0 ? 'block' : 'none';
-            if (!isScrollable) {
-                scrollLeftBtn.disabled = true;
-                scrollRightBtn.disabled = true;
-                return;
-            }
-
-            scrollLeftBtn.disabled = scrollLeft <= 0;
-            // Use a small tolerance for the right button check
-            scrollRightBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 1);
-        }
-        
         function formatBytes(bytes, decimals = 1) {
-            if (bytes === 0) return '0 Bytes';
+            if (!bytes || bytes === 0) return '0 Bytes';
             const k = 1024;
             const dm = decimals < 0 ? 0 : decimals;
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -364,25 +285,25 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         }
 
-        function handleFiles(files) {
+        async function handleFiles(files) {
             const validFiles = Array.from(files).filter(file => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type));
             if(validFiles.length !== files.length){
                 showStatus('Warning: Some unsupported file types were ignored.', 'error');
             }
             if(validFiles.length === 0) return;
 
-            validFiles.forEach((file, index) => {
+            for (const [index, file] of validFiles.entries()) {
                 const fileId = Date.now() + index;
                 const fileObject = {
                     id: fileId,
                     originalFile: file,
                     originalSrc: URL.createObjectURL(file),
-                    quality: 80,
                     imageElement: null,
                     compressedBlob: null,
                 };
                 filesQueue.push(fileObject);
-            });
+                await compressImage(fileId, false); // Pre-compress on upload
+            }
 
             renderQueue();
             if (!activeFileId && filesQueue.length > 0) {
@@ -392,19 +313,28 @@
         }
 
         function renderQueue() {
-            queueContainer.innerHTML = '';
             if (filesQueue.length === 0) {
+                queueContainer.innerHTML = '';
                 queueContainer.appendChild(queuePlaceholder);
-                updateScrollButtons();
                 return;
             }
+            queuePlaceholder.style.display = 'none';
 
             filesQueue.forEach(fileObj => {
-                const item = document.createElement('div');
-                item.className = 'queue-item';
-                item.dataset.id = fileObj.id;
-                if (fileObj.id === activeFileId) item.classList.add('active');
-
+                let item = queueContainer.querySelector(`.queue-item[data-id="${fileObj.id}"]`);
+                if (!item) {
+                    item = document.createElement('div');
+                    item.className = 'queue-item';
+                    item.dataset.id = fileObj.id;
+                    queueContainer.appendChild(item);
+                    item.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('remove-btn')) return;
+                        setActiveFile(fileObj.id);
+                    });
+                }
+                
+                item.classList.toggle('active', fileObj.id === activeFileId);
+                
                 const reduction = fileObj.compressedBlob 
                     ? 100 - (fileObj.compressedBlob.size / fileObj.originalFile.size * 100) 
                     : 0;
@@ -415,99 +345,106 @@
                     <div class="thumb-info">
                         <div class="file-name" title="${fileObj.originalFile.name}">${fileObj.originalFile.name}</div>
                         <div class="size-details">
-                            <div>Orig: <span>${formatBytes(fileObj.originalFile.size)}</span></div>
-                            <div>Comp: <span class="comp-size">${fileObj.compressedBlob ? formatBytes(fileObj.compressedBlob.size) : '...'}</span></div>
+                            <span>${formatBytes(fileObj.originalFile.size)}</span>
+                            <span class="comp-size">${fileObj.compressedBlob ? formatBytes(fileObj.compressedBlob.size) : '...'}</span>
                         </div>
                         ${fileObj.compressedBlob ? `<div class="thumb-reduction">-${reduction.toFixed(0)}%</div>` : ''}
-                    </div>
-                `;
-                
-                item.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('remove-btn')) return;
-                    setActiveFile(fileObj.id);
-                });
+                    </div>`;
                 item.querySelector('.remove-btn').addEventListener('click', () => removeFile(fileObj.id));
-
-                queueContainer.appendChild(item);
             });
-            updateScrollButtons();
         }
         
         function removeFile(id) {
-            const fileToRemove = filesQueue.find(f => f.id === id);
-            if (fileToRemove) { URL.revokeObjectURL(fileToRemove.originalSrc); }
-            filesQueue = filesQueue.filter(f => f.id !== id);
-           
-            if (activeFileId === id) {
-                activeFileId = null;
-                if (filesQueue.length > 0) {
-                    setActiveFile(filesQueue[0].id);
+            const index = filesQueue.findIndex(f => f.id === id);
+            if (index > -1) {
+                const fileToRemove = filesQueue[index];
+                URL.revokeObjectURL(fileToRemove.originalSrc);
+                filesQueue.splice(index, 1);
+                
+                const itemElement = queueContainer.querySelector(`.queue-item[data-id="${id}"]`);
+                if (itemElement) itemElement.remove();
+
+                if (activeFileId === id) {
+                    activeFileId = null;
+                    if (filesQueue.length > 0) {
+                        setActiveFile(filesQueue[0].id);
+                    } else {
+                        resetUI();
+                    }
                 }
+                 updateUiVisibility();
             }
-            renderQueue();
-            updateUiVisibility();
         }
 
         function setActiveFile(id) {
+            if (activeFileId === id) return;
             activeFileId = id;
             const fileObj = filesQueue.find(f => f.id === id);
             if (!fileObj) {
                 processingContainer.style.display = 'none';
                 return;
             }
-
+            
             processingContainer.style.display = 'block';
             originalPreview.src = fileObj.originalSrc;
             originalSize.innerHTML = `Size: <span>${formatBytes(fileObj.originalFile.size)}</span>`;
 
-            qualitySlider.value = fileObj.quality;
-            qualityValue.textContent = `${fileObj.quality}%`;
-            
             if (fileObj.compressedBlob) {
                 const compressedSrc = URL.createObjectURL(fileObj.compressedBlob);
                 compressedPreview.src = compressedSrc;
                 const reduction = 100 - (fileObj.compressedBlob.size / fileObj.originalFile.size) * 100;
                 compressedSize.innerHTML = `Size: <span>${formatBytes(fileObj.compressedBlob.size)}</span> (${reduction.toFixed(0)}% smaller)`;
+                 URL.revokeObjectURL(compressedPreview.src); // Revoke previous blob URL
             } else {
                 compressedPreview.src = "";
                 compressedSize.innerHTML = `Size: <span>...</span>`;
-                compressImage(id);
             }
             renderQueue();
         }
 
-        function compressImage(id) {
+        async function compressImage(id, isManualUpdate) {
             const fileObj = filesQueue.find(f => f.id === id);
             if (!fileObj) return;
-
-            fileObj.quality = parseInt(qualitySlider.value);
 
             if (!fileObj.imageElement) {
                 fileObj.imageElement = new Image();
                 fileObj.imageElement.src = fileObj.originalSrc;
-                fileObj.imageElement.onload = () => processCanvas(fileObj);
-            } else {
-                processCanvas(fileObj);
+                await new Promise(resolve => { fileObj.imageElement.onload = resolve; });
             }
+            await processCanvas(fileObj);
+            
+            if (isManualUpdate || fileObj.id === activeFileId) {
+                setActiveFile(fileObj.id); // Update preview if it's the active one
+            }
+            renderQueue(); // Always update the thumbnail
         }
         
         function processCanvas(fileObj){
-            const quality = fileObj.quality / 100;
-            const canvas = document.createElement('canvas');
-            canvas.width = fileObj.imageElement.width;
-            canvas.height = fileObj.imageElement.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(fileObj.imageElement, 0, 0);
-
-            canvas.toBlob(blob => {
-                fileObj.compressedBlob = blob;
-                // Only update previews if this is the currently active file
-                if(fileObj.id === activeFileId){
-                    setActiveFile(fileObj.id);
-                } else {
-                    renderQueue(); // Update thumbnail info without changing the main preview
+            return new Promise(resolve => {
+                const quality = parseInt(qualitySlider.value) / 100;
+                let mimeType = formatSelect.value;
+                if (mimeType === 'auto') {
+                    mimeType = fileObj.originalFile.type === 'image/png' ? 'image/png' : 'image/jpeg';
                 }
-            }, fileObj.originalFile.type, quality);
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = fileObj.imageElement.width;
+                canvas.height = fileObj.imageElement.height;
+                
+                // Fill background with white for formats that don't support transparency
+                if (mimeType === 'image/jpeg' && fileObj.originalFile.type === 'image/png') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                ctx.drawImage(fileObj.imageElement, 0, 0);
+
+                canvas.toBlob(blob => {
+                    fileObj.compressedBlob = blob;
+                    resolve();
+                }, mimeType, quality);
+            });
         }
 
         function downloadSelectedFile() {
@@ -516,47 +453,42 @@
                 showStatus('Error: No compressed image to download.', 'error');
                 return;
             }
-            downloadBlob(fileObj.compressedBlob, fileObj.originalFile.name);
+            downloadBlob(fileObj.compressedBlob, fileObj.originalFile.name, fileObj.compressedBlob.type);
         }
 
-        function downloadAllFiles() {
+        async function downloadAllFiles() {
             const zip = new JSZip();
             const compressedFiles = filesQueue.filter(f => f.compressedBlob);
 
-            if(compressedFiles.length === 0){
+            if (compressedFiles.length === 0) {
                 showStatus('No files have been compressed yet.', 'error');
                 return;
             }
+            showStatus(`Zipping ${compressedFiles.length} files...`, 'success');
 
             compressedFiles.forEach(fileObj => {
-                zip.file(getCompressedFilename(fileObj.originalFile.name), fileObj.compressedBlob);
+                const filename = getCompressedFilename(fileObj.originalFile.name, fileObj.compressedBlob.type);
+                zip.file(filename, fileObj.compressedBlob);
             });
             
-            zip.generateAsync({ type: "blob" }).then(content => {
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(content);
-                link.download = `ToolCraftPro-Compressed-Images.zip`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
-            });
+            const content = await zip.generateAsync({ type: "blob" });
+            downloadBlob(content, "ToolCraftPro-Compressed-Images.zip");
         }
         
-        function downloadBlob(blob, name){
+        function downloadBlob(blob, name, type) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = getCompressedFilename(name);
+            link.download = type ? getCompressedFilename(name, type) : name;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
         }
         
-        function getCompressedFilename(originalName) {
+        function getCompressedFilename(originalName, mimeType) {
             const name = originalName.substring(0, originalName.lastIndexOf('.'));
-            const ext = originalName.substring(originalName.lastIndexOf('.'));
-            return `${name}-compressed${ext}`;
+            const ext = mimeType.split('/')[1];
+            return `${name}-compressed.${ext}`;
         }
 
         function resetUI() {
@@ -570,17 +502,18 @@
         
         function updateUiVisibility() {
             const hasFiles = filesQueue.length > 0;
+            queuePlaceholder.style.display = hasFiles ? 'none' : 'block';
             processingContainer.style.display = hasFiles && activeFileId ? 'block' : 'none';
             downloadBtn.style.display = hasFiles && activeFileId ? 'inline-block' : 'none';
             downloadAllBtn.style.display = hasFiles ? 'inline-block' : 'none';
             clearQueueBtn.style.display = hasFiles ? 'inline-block' : 'none';
-            statusMessage.style.display = 'none';
-            updateScrollButtons();
+            if (!hasFiles) statusMessage.style.display = 'none';
         }
 
         function showStatus(message, type) {
             statusMessage.textContent = message;
-            statusMessage.className = type;
+            statusMessage.className = ``;
+            statusMessage.classList.add(type);
             statusMessage.style.display = 'block';
             setTimeout(() => { statusMessage.style.display = 'none'; }, 4000);
         }
