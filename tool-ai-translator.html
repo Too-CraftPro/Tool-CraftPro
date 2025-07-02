@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant AI Translator - Translate Text & Voice | ToolCraft Pro</title>
+    <meta name="description" content="Free, real-time text and voice translation between dozens of languages. Features automatic language detection, speech-to-text, and instant results.">
+    <meta name="keywords" content="translator, translate, language translator, google translate alternative, free translation, voice translator, text translator">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base and Reusable Styles from Image Compressor */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'Roboto', sans-serif; background-color: #0F0F1A; color: #E0E0E0; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 0.75em; }
+        a { color: #00f7ff; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: #ff00c3; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        :root {
+            --neon-blue: #00f7ff; --neon-pink: #ff00c3; --neon-purple: #9d00ff; --neon-green: #00ff84;
+            --dark-bg: #0F0F1A; --card-bg: #1A1A2E; --danger-color: #f28b82;
+        }
+        .neon-text { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue), 0 0 20px var(--neon-pink); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 24px; border-radius: 50px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; font-size: 0.85rem; }
+        .btn:disabled { cursor: not-allowed; background-color: #555 !important; box-shadow: none !important; color: #999 !important; border-color: #555 !important; transform: none !important; }
+        .btn-neon { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
+        .btn-neon:hover:not(:disabled) { background-color: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 5px #fff inset; transform: translateY(-3px); }
+        .btn-outline-neon { background-color: transparent; color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue) inset; }
+        .btn-outline-neon:hover:not(:disabled) { background-color: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); transform: translateY(-3px); }
+
+        /* --- HEADER & FOOTER (from Compressor) --- */
+        header { background-color: rgba(15, 15, 26, 0.90); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 247, 255, 0.1); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 1.5em; color: var(--neon-blue); }
+        .logo span span.neon-pink { text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink); }
+        .tool-nav-icons { display: flex; align-items: center; gap: 25px; }
+        .tool-nav-icons a { color: #A0A0A0; font-size: 1.3rem; transition: all 0.3s ease; }
+        .tool-nav-icons a:hover, .tool-nav-icons a.active { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue), 0 0 15px var(--neon-blue); transform: translateY(-2px); }
+        .tool-page-footer { background-color: #0A0A12; padding: 30px 0; margin-top: 50px; border-top: 2px solid var(--neon-purple); box-shadow: 0 -2px 15px rgba(157, 0, 255, 0.15); }
+        .tool-page-footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-left { display: flex; align-items: center; gap: 25px; }
+        .footer-left .logo { font-size: 1.5rem; }
+        .footer-right { display: flex; align-items: center; }
+        .social-icons a { color: #A0A0A0; font-size: 1.5rem; margin-left: 18px; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px) scale(1.1); }
+        .social-icons a:hover .fa-twitter { color: var(--neon-blue); }
+        .social-icons a:hover .fa-instagram { color: var(--neon-pink); }
+        .social-icons a:hover .fa-youtube { color: #ff2f00; }
+        .social-icons a:hover .fa-facebook-f { color: #1877F2; }
+        .copyright { width: 100%; text-align: center; padding-top: 25px; margin-top: 20px; border-top: 1px solid rgba(157, 0, 255, 0.2); font-size: 0.8rem; color: #888; }
+        
+        /* --- Tool Page Specific Styles (from Compressor) --- */
+        .tool-header { padding: 30px 0; text-align: center; }
+        .tool-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .tool-header .breadcrumb { font-size: 0.9rem; color: #A0A0A0; }
+        .tool-header .breadcrumb a { color: var(--neon-blue); }
+        .tool-interface-container { background-color: var(--card-bg); padding: 25px; border-radius: 12px; border: 1px solid var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.2); }
+
+        /* --- Translator Specific Styles (Themed) --- */
+        .top-language-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap; }
+        .lang-selector { display: flex; gap: 10px; align-items: center; }
+        .lang-selector select { background: var(--dark-bg); color: var(--neon-blue); border: 1px solid var(--neon-purple); border-radius: 50px; padding: 10px 15px; font-weight: bold; -webkit-appearance: none; appearance: none; cursor: pointer; transition: all 0.3s ease; }
+        .lang-selector select:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .lang-selector select option { background-color: var(--card-bg); color: #E0E0E0; }
+        .lang-btn { padding: 10px 15px; font-size: 0.8rem; }
+        .lang-btn:not(.active) { background: transparent; border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: none; }
+        .lang-btn.active { background: var(--neon-blue); color: var(--dark-bg); }
+        #swap-btn { width: 48px; height: 48px; padding: 0; min-width: 48px; }
+
+        .text-io-wrapper { display: flex; gap: 15px; }
+        .io-section { width: 50%; display: flex; flex-direction: column; background-color: var(--dark-bg); border-radius: 8px; border: 1px solid rgba(157, 0, 255, 0.3); overflow: hidden; }
+        textarea {
+            width: 100%; height: 250px; background: transparent; border: none; resize: none; outline: none; padding: 15px;
+            font-size: 1.2rem; color: #E0E0E0; line-height: 1.5;
+        }
+        textarea::placeholder { color: #888; }
+        
+        .bottom-bar { display: flex; justify-content: space-between; align-items: center; padding: 5px 15px; border-top: 1px solid rgba(157, 0, 255, 0.3); }
+        .char-count { font-size: 0.8rem; color: #888; }
+        .bottom-icons { display: flex; gap: 5px; }
+        .icon-btn {
+            background: none; border: none; color: #A0A0A0; font-size: 1.1rem;
+            width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .icon-btn:hover { background-color: rgba(0, 247, 255, 0.1); color: var(--neon-blue); }
+        .mic-btn.listening { color: var(--danger-color); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { background-color: rgba(242, 139, 130, 0.1); box-shadow: 0 0 0 0 rgba(242, 139, 130, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(242, 139, 130, 0); } 100% { background-color: transparent; box-shadow: 0 0 0 0 rgba(242, 139, 130, 0); } }
+
+        /* Status message for translation loading */
+        .status { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #888; font-size: 1.1rem; display: none; }
+        #to-text-section { position: relative; }
+        
+        @media (max-width: 991px) { .text-io-wrapper { flex-direction: column; } .io-section { width: 100%; } }
+        @media (max-width: 767px) { .tool-nav-icons a:not(:first-child):not(.active) { display: none; } .tool-page-footer .container, .footer-left { flex-direction: column; } .footer-right { margin-top: 10px; } .top-language-bar { justify-content: center; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i><span>Tool<span class="neon-pink">Craft</span> Pro</span></a>
+            <div class="tool-nav-icons">
+                <a href="index.html" title="Home"><i class="fas fa-home"></i></a>
+                <a href="index.html#image-tools-section" title="Image Tools"><i class="fas fa-image"></i></a>
+                <a href="index.html#pdf-tools-section" title="PDF & Document Tools"><i class="fas fa-file-pdf"></i></a>
+                <a href="index.html#calculator-tools-section" title="Calculator Tools"><i class="fas fa-calculator"></i></a>
+                <a href="index.html#text-tools-section" title="Text Tools" class="active"><i class="fas fa-font"></i></a>
+                <a href="index.html#developer-tools-section" title="Developer Tools"><i class="fas fa-code"></i></a>
+                <a href="index.html#color-tools-section" title="Color Tools"><i class="fas fa-palette"></i></a>
+                <a href="index.html#seo-tools-section" title="SEO Tools"><i class="fas fa-search-dollar"></i></a>
+                <a href="index.html#utility-tools-section" title="Utility Tools"><i class="fas fa-wrench"></i></a>
+            </div>
+        </div> 
+    </header>
+
+    <main>
+        <section class="tool-header">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="breadcrumb">
+                    <a href="index.html">Home</a> &gt; <a href="index.html#text-tools-section">Text Tools</a> &gt; <span class="current">Translator</span>
+                </nav>
+                <h1><span class="neon-text">AI</span> Translator</h1>
+                <p class="subtitle">Real-time text & voice translation powered by advanced AI.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="tool-interface-container">
+                <!-- UI Elements for Translator -->
+                <div class="top-language-bar">
+                    <div class="lang-selector">
+                        <button class="btn lang-btn detect-lang active">Detect</button>
+                        <select id="from-lang-select"></select>
+                    </div>
+                    <button id="swap-btn" class="btn btn-outline-neon" title="Swap languages"><i class="fas fa-exchange-alt"></i></button>
+                    <div class="lang-selector">
+                        <select id="to-lang-select"></select>
+                    </div>
+                </div>
+
+                <div class="text-io-wrapper">
+                    <div class="io-section" id="from-text-section">
+                        <textarea id="from-text" placeholder="Enter text..."></textarea>
+                        <div class="bottom-bar">
+                            <span class="char-count" id="from-char-count">0 / 5,000</span>
+                            <div class="bottom-icons">
+                                <button class="icon-btn mic-btn" id="mic-btn" title="Speech to text"><i class="fas fa-microphone"></i></button>
+                                <button class="icon-btn" id="from-speak-btn" title="Listen"><i class="fas fa-volume-up"></i></button>
+                                <button class="icon-btn" id="from-copy-btn" title="Copy text"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="io-section" id="to-text-section">
+                        <textarea id="to-text" readonly placeholder="Translation"></textarea>
+                        <div class="status" id="translation-status">Translating...</div>
+                        <div class="bottom-bar">
+                            <span></span>
+                            <div class="bottom-icons">
+                                <button class="icon-btn" id="to-speak-btn" title="Listen"><i class="fas fa-volume-up"></i></button>
+                                <button class="icon-btn" id="to-copy-btn" title="Copy text"><i class="fas fa-copy"></i></button>
+                                <button class="icon-btn" id="download-btn" title="Download translation"><i class="fas fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section from Compressor, adapted for Translator -->
+        <section class="content-section-wrapper" style="max-width: 900px; margin: 50px auto;">
+            <div class="content-section">
+                <h2 style="font-size: 1.8rem; border-left: 4px solid var(--neon-blue); padding-left: 15px;">How It Works</h2>
+                <p>Our translator uses a powerful AI model to provide instant, high-quality translations. Simply type, paste, or speak text into the left box. The tool automatically detects the source language and translates it into your chosen target language in the right box. Use the buttons for speech-to-text, listening to the pronunciation, copying, or downloading the translation.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="tool-page-footer">
+        <div class="container">
+            <div class="footer-left">
+                <a href="index.html" class="logo"><i class="fas fa-cubes-stacked"></i></a>
+                <a href="index.html" class="btn btn-outline-neon"><i class="fas fa-th-large"></i> Back to All Tools</a>
+            </div>
+            <div class="footer-right">
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 ToolCraft Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // --- 100% UNCHANGED TRANSLATOR JAVASCRIPT LOGIC ---
+    const fromText = document.getElementById('from-text');
+    const toText = document.getElementById('to-text');
+    const fromLangSelect = document.getElementById('from-lang-select');
+    const toLangSelect = document.getElementById('to-lang-select');
+    const swapBtn = document.getElementById('swap-btn');
+    const fromCharCount = document.getElementById('from-char-count');
+    const fromSpeakBtn = document.getElementById('from-speak-btn');
+    const toSpeakBtn = document.getElementById('to-speak-btn');
+    const fromCopyBtn = document.getElementById('from-copy-btn');
+    const toCopyBtn = document.getElementById('to-copy-btn');
+    const detectLangBtn = document.querySelector('.detect-lang');
+    const translationStatus = document.getElementById('translation-status');
+    const micBtn = document.getElementById('mic-btn');
+    const downloadBtn = document.getElementById('download-btn');
+
+    let detectionModeActive = true;
+    const languages = { "en": "English", "ur": "Urdu", "ar": "Arabic", "zh-CN": "Chinese", "fr": "French", "de": "German", "hi": "Hindi", "it": "Italian", "ja": "Japanese", "ko": "Korean", "pt": "Portuguese", "ru": "Russian", "es": "Spanish", "tr": "Turkish", "pa": "Punjabi", "bn": "Bengali", "fa": "Persian", "nl": "Dutch", "sv": "Swedish", "id": "Indonesian", "ms": "Malay", "th": "Thai", "vi": "Vietnamese", "el": "Greek", "he": "Hebrew", "pl": "Polish", "ro": "Romanian", "hu": "Hungarian", "cs": "Czech", "da": "Danish", "fi": "Finnish", "no": "Norwegian" };
+
+    for (const langCode in languages) {
+        let option = `<option value="${langCode}">${languages[langCode]}</option>`;
+        fromLangSelect.insertAdjacentHTML('beforeend', option);
+        toLangSelect.insertAdjacentHTML('beforeend', option);
+    }
+    fromLangSelect.value = "en";
+    toLangSelect.value = "ur";
+
+    let debounceTimeout;
+    const translate = async () => {
+        const text = fromText.value.trim();
+        if (!text) {
+            toText.value = '';
+            return;
+        }
+        translationStatus.style.display = 'block';
+        toText.value = '';
+
+        const sourceLang = detectionModeActive ? 'auto' : fromLangSelect.value;
+        const targetLang = toLangSelect.value;
+
+        try {
+            const apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const translatedText = data[0].map(segment => segment[0]).join('');
+            toText.value = translatedText;
+
+            const detectedLangCode = data[2];
+            if (detectionModeActive && languages[detectedLangCode]) {
+                fromLangSelect.value = detectedLangCode;
+                setDetectionMode(false);
+            }
+        } catch (error) {
+            toText.value = 'Error: Translation service failed.';
+        } finally {
+            translationStatus.style.display = 'none';
+        }
+    };
+
+    function setDetectionMode(isActive) {
+        detectionModeActive = isActive;
+        detectLangBtn.classList.toggle('active', isActive);
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onstart = () => micBtn.classList.add('listening');
+        recognition.onend = () => { micBtn.classList.remove('listening'); if (fromText.value.trim()) translate(); };
+        recognition.onresult = (event) => { fromText.value = Array.from(event.results).map(result => result[0].transcript).join(''); };
+        micBtn.addEventListener('click', () => {
+            if (micBtn.classList.contains('listening')) {
+                recognition.stop();
+            } else {
+                recognition.lang = fromLangSelect.value;
+                fromText.value = ''; toText.value = '';
+                recognition.start();
+            }
+        });
+    } else { micBtn.style.display = 'none'; }
+
+    fromText.addEventListener('paste', () => setTimeout(translate, 0));
+    fromText.addEventListener('keyup', () => { clearTimeout(debounceTimeout); debounceTimeout = setTimeout(translate, 500); });
+    fromText.addEventListener('input', () => { fromCharCount.textContent = `${fromText.value.length} / 5,000`; });
+
+    swapBtn.addEventListener('click', () => {
+        const tempText = fromText.value; fromText.value = toText.value; toText.value = tempText;
+        const tempLang = fromLangSelect.value; fromLangSelect.value = toLangSelect.value; toLangSelect.value = tempLang;
+        setDetectionMode(false);
+        if (fromText.value.trim()) translate();
+    });
+
+    fromLangSelect.addEventListener('change', () => { setDetectionMode(false); if(fromText.value.trim()) translate(); });
+    toLangSelect.addEventListener('change', () => { if(fromText.value.trim()) translate(); });
+    detectLangBtn.addEventListener('click', () => { setDetectionMode(true); if (fromText.value.trim()) translate(); });
+    
+    const speak = (text, lang) => { if (!text || !window.speechSynthesis) return; const utterance = new SpeechSynthesisUtterance(text); utterance.lang = lang.split('-')[0]; utterance.rate = 0.9; speechSynthesis.speak(utterance); };
+    fromSpeakBtn.addEventListener('click', () => speak(fromText.value, fromLangSelect.value));
+    toSpeakBtn.addEventListener('click', () => speak(toText.value, toLangSelect.value));
+
+    const copyToClipboard = (text, button) => { if (!text) return; navigator.clipboard.writeText(text).then(() => { const originalIcon = button.innerHTML; button.innerHTML = '<i class="fas fa-check"></i>'; setTimeout(() => { button.innerHTML = originalIcon; }, 1500); }); };
+    fromCopyBtn.addEventListener('click', () => copyToClipboard(fromText.value, fromCopyBtn));
+    toCopyBtn.addEventListener('click', () => copyToClipboard(toText.value, toCopyBtn));
+
+    downloadBtn.addEventListener('click', () => { const textToDownload = toText.value.trim(); if (!textToDownload) return; const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'translation.txt'; a.click(); URL.revokeObjectURL(a.href); });
+    </script>
+
+</body>
+</html>
